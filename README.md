@@ -1,4 +1,4 @@
-### This page contain tutorials on how to deploy various crypto project servers Whatever happens to bitcoin, other cryptocurrencies are gaining ground and more respect
+### Simply guide for testnet runner. 
  <hr>
 <p style="font-size:14px" align="justify">
 <a href="https://nodexploit.me/" target="_blank">Visit Our Website </a>
