@@ -1,15 +1,15 @@
 #!/bin/bash
 echo "=========================================="
 echo -e "\033[0;35m"
-echo " ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::  ";
-echo " :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:   ";
-echo " :+:+:+  +:+ +:+    +:+ +:+    +:+ +:+        +:+   +:+    ";
-echo " +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#       ";
-echo " +#+  +#+#+# +#+    +#+ +#+    +#+ +#+        +#+   +#+    ";
-echo " #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#   ";
-echo " ###    ####  ########  #########  ######## ###       ###  ";
+echo "       ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::  ";
+echo "      :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:    ";
+echo "     :+:+:+  +:+ +:+    +:+ +:+    +:+ +:+        +:+   +:+      ";
+echo "    +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#          ";
+echo "   +#+  +#+#+# +#+    +#+ +#+    +#+ +#+        +#+   +#+        ";
+echo "  #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#        ";
+echo " ###    ####  ########  #########  ######## ###        ###       ";
 echo -e "\e[0m"
-echo "==========================================="
+echo "=========================================="
 
 sleep 2
 
@@ -200,7 +200,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable celestia-bridge
 sudo systemctl restart celestia-bridge
 
-echo '=============== SETUP FINISHED ==================='
-echo -e 'To check validator logs: \e[1m\e[32mjournalctl -u celestia-appd -f -o cat \e[0m'
-echo -e 'To check bridge logs: \e[1m\e[32mjournalctl -u celestia-bridge -f -o cat \e[0m'
-echo -e 'To check sync status: \e[1m\e[32mcurl -s localhost:26657/status | jq .result.sync_info \e[0m'
+echo '=============== CONGRATS! SETUP FINISHED  ==================='
+echo -e 'To check your validator logs: \e[1m\e[32mjournalctl -u celestia-appd -f -o cat \e[0m'
+echo -e 'To check your bridge logs: \e[1m\e[32mjournalctl -u celestia-bridge -f -o cat \e[0m'
+echo -e 'To check your sync status: \e[1m\e[32mcurl -s localhost:26657/status | jq .result.sync_info \e[0m'
