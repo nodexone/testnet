@@ -10,9 +10,6 @@ Official documentation:
 Explorer:
 >-  https://poolparty.stride.zone/
 
-## Usefull tools and references
-> To set up monitoring for your validator node navigate to [Set up monitoring and alerting for stride validator](https://github.com/kj89/testnet_manuals/blob/main/stride/monitoring/README.md)
->
 > To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/kj89/testnet_manuals/blob/main/stride/migrate_validator.md)
 
 ## Hardware Requirements
@@ -195,9 +192,6 @@ sudo ufw limit ssh/tcp
 sudo ufw allow ${STRIDE_PORT}656,${STRIDE_PORT}660/tcp
 sudo ufw enable
 ```
-
-## Monitoring
-To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for stride validator](https://github.com/kj89/testnet_manuals/blob/main/stride/monitoring/README.md)
 
 ## Calculate synchronization time
 This script will help you to estimate how much time it will take to fully synchronize your node\
