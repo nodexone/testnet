@@ -13,9 +13,13 @@ NODENAME=<YOUR_MONIKER_NAME_GOES_HERE>
 
 Save and import variables into system
 ```
+CELESTIA_PORT=20
 echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
-echo "export WALLET=wallet" >> $HOME/.bash_profile
-echo "export CHAIN_ID=mamaki" >> $HOME/.bash_profile
+if [ ! $WALLET ]; then
+	echo "export WALLET=wallet" >> $HOME/.bash_profile
+fi
+echo "export CELESTIA_CHAIN_ID=mamaki" >> $HOME/.bash_profile
+echo "export CELESTIA_PORT=${CELESTIA_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
@@ -62,18 +66,18 @@ git clone https://github.com/celestiaorg/networks.git
 
 ## Config app
 ```
-celestia-appd config chain-id $CHAIN_ID
+celestia-appd config chain-id $CELESTIA_CHAIN_ID
 celestia-appd config keyring-backend test
 ```
 
 ## Init app
 ```
-celestia-appd init $NODENAME --chain-id $CHAIN_ID
+celestia-appd init $NODENAME --chain-id $CELESTIA_CHAIN_ID
 ```
 
 ## Update genesis
 ```
-cp $HOME/networks/$CHAIN_ID/genesis.json $HOME/.celestia-app/config
+cp $HOME/networks/$CELESTIA_CHAIN_ID/genesis.json $HOME/.celestia-app/config
 ```
 
 ## Set minimum gas price
