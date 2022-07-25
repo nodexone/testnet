@@ -1,7 +1,3 @@
-<p style="font-size:14px" align="right">
-<a href="https://hetzner.cloud/?ref=y8pQKS2nNy7i" target="_blank">Deploy your VPS using our referral link to get 20€ bonus <img src="https://user-images.githubusercontent.com/50621007/174612278-11716b2a-d662-487e-8085-3686278dd869.png" width="30"/></a>
-</p>
-
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/170463282-576375f8-fa1e-4fce-8350-6312b415b50d.png">
 </p>
@@ -15,10 +11,10 @@ Explorer:
 - https://celestia.explorers.guru
 
 Manual guides:
-- [Run Validator and Bridge Node on same machine](https://github.com/kj89/testnet_manuals/blob/main/celestia/manual_install.md)
-- [Run Bridge Node seperately](https://github.com/kj89/testnet_manuals/blob/main/celestia/manual_bridge.md)
-- [Run Light Node seperately](https://github.com/kj89/testnet_manuals/blob/main/celestia/manual_light.md)
-- [Run Full Node seperately](https://github.com/kj89/testnet_manuals/blob/main/celestia/manual_full.md)
+- [Run Validator and Bridge Node on same machine](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_install.md)
+- [Run Bridge Node seperately](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_bridge.md)
+- [Run Light Node seperately](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_light.md)
+- [Run Full Node seperately](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_full.md)
 
 ## Hardware requirements
 - Memory: 8 GB RAM
@@ -30,11 +26,11 @@ Manual guides:
 ### Option 1 (automatic)
 You can setup your celestia fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O celestia.sh https://raw.githubusercontent.com/kj89/testnet_manuals/main/celestia/celestia.sh && chmod +x celestia.sh && ./celestia.sh
+wget -O celestia.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/celestia/celestia.sh && chmod +x celestia.sh && ./celestia.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/kj89/testnet_manuals/blob/main/celestia/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_install.md) if you better prefer setting up node manually
 
 ## Post installation
 
@@ -152,14 +148,11 @@ sudo ufw allow ${CELESTIA_PORT}656,${CELESTIA_PORT}660/tcp
 sudo ufw enable
 ```
 
-## Monitoring
-To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for celestia validator](https://github.com/kj89/testnet_manuals/blob/main/celestia/monitoring/README.md)
-
 ## Calculate synchronization time
 This script will help you to estimate how much time it will take to fully synchronize your node\
 It measures average blocks per minute that are being synchronized for period of 5 minutes and then gives you results
 ```
-wget -O synctime.py https://raw.githubusercontent.com/kj89/testnet_manuals/main/celestia/tools/synctime.py && python3 ./synctime.py
+wget -O synctime.py https://raw.githubusercontent.com/nodesxploit/testnet/main/celestia/tools/synctime.py && python3 ./synctime.py
 ```
 
 ### Get list of validators
