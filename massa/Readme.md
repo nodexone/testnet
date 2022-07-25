@@ -12,7 +12,7 @@
 You can set up your defund node in minutes using the automated script below.
 
 ```
-wget -O Massa.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/massa/massa.sh && chmod +x massa.sh && ./massa.sh
+wget -O massa.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/massa/massa.sh && chmod +x massa.sh && ./massa.sh
 ```
 
 ## Post-Installation Steps
