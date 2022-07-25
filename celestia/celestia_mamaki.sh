@@ -22,11 +22,11 @@ echo "export WALLET=wallet" >> $HOME/.bash_profile
 echo "export CHAIN_ID=mamaki" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-echo '================================================='
+echo '====================INFORMATION========================'
 echo -e "Your Moniker: \e[1m\e[32m$NODENAME\e[0m"
 echo -e "Your Wallet: \e[1m\e[32m$WALLET\e[0m"
 echo -e "Chain Name: \e[1m\e[32m$CHAIN_ID\e[0m"
-echo -e '================================================='
+echo '====================INFORMATION========================'
 sleep 2
 
 echo -e "\e[1m\e[32m1. Updating packages... \e[0m" && sleep 1
