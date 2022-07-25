@@ -15,7 +15,7 @@ sleep 2
 
 # set vars
 if [ ! $NODENAME ]; then
-	read -p "Enter node name: " NODENAME
+	read -p "Enter your Moniker: " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
 CELESTIA_PORT=20
@@ -26,12 +26,12 @@ echo "export CELESTIA_CHAIN_ID=mamaki" >> $HOME/.bash_profile
 echo "export CELESTIA_PORT=${CELESTIA_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-echo '================================================='
-echo -e "Your node name: \e[1m\e[32m$NODENAME\e[0m"
-echo -e "Your wallet name: \e[1m\e[32m$WALLET\e[0m"
-echo -e "Your chain name: \e[1m\e[32m$CELESTIA_CHAIN_ID\e[0m"
-echo -e "Your port: \e[1m\e[32m$CELESTIA_PORT\e[0m"
-echo '================================================='
+echo '===================INFORMATION======================='
+echo -e "Your Moniker: \e[1m\e[32m$NODENAME\e[0m"
+echo -e "Your Wallet: \e[1m\e[32m$WALLET\e[0m"
+echo -e "Chain Name: \e[1m\e[32m$CELESTIA_CHAIN_ID\e[0m"
+echo -e "Your Port: \e[1m\e[32m$CELESTIA_PORT\e[0m"
+echo '===================INFORMATION======================='
 sleep 2
 
 echo -e "\e[1m\e[32m1. Updating packages... \e[0m" && sleep 1
