@@ -4,6 +4,7 @@
 
 # Manual node setup
 If you want to setup fullnode manually follow the steps below
+
 https://github.com/nodesxploit/testnet/blob/main/rebus/README.md
 
 ## Setting up vars
