@@ -1,16 +1,17 @@
 <p align="center">
-  <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/177221972-75fcf1b3-6e95-44dd-b43e-e32377685af8.png">
+  <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/183283696-d1c4192b-f594-45bb-b589-15a5e57a795c.png">
 </p>
 
-# stride node setup for mainnet — STRIDE
+# stride node setup for testnet — STRIDE
 
 Official documentation:
 >- [Validator setup instructions](https://github.com/Stride-Labs/testnet)
 
 Explorer:
->-  https://poolparty.stride.zone/
+>-  https://stride.explorers.guru
 
-> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/kj89/testnet_manuals/blob/main/stride/migrate_validator.md)
+## Usefull tools and references
+> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodesxploit/testnet/blob/main/stride/migrate_validator.md)
 
 ## Hardware Requirements
 Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
@@ -19,23 +20,23 @@ Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
  - 4x CPUs; the faster clock speed the better
  - 8GB RAM
  - 100GB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during mainnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
+ - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
 
 ### Recommended Hardware Requirements 
  - 4x CPUs; the faster clock speed the better
  - 32GB RAM
  - 200GB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during mainnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
+ - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
 
 ## Set up your stride fullnode
 ### Option 1 (automatic)
 You can setup your stride fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O stride.sh https://raw.githubusercontent.com/kj89/testnet_manuals/main/stride/stride.sh && chmod +x stride.sh && ./stride.sh
+wget -O stride.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/stride/stride.sh && chmod +x stride.sh && ./stride.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/kj89/testnet_manuals/blob/main/stride/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/stride/manual_install.md) if you better prefer setting up node manually
 
 ## Post installation
 
@@ -49,29 +50,10 @@ Next you have to make sure your validator is syncing blocks. You can use command
 strided status 2>&1 | jq .SyncInfo
 ```
 
-### (OPTIONAL) Disable and cleanup indexing
-```
-indexer="null"
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.stride/config/config.toml
-sudo systemctl restart strided
-sleep 3
-sudo rm -rf $HOME/.stride/data/tx_index.db
-```
-
 ### (OPTIONAL) State Sync
 You can state sync your node in minutes by running commands below
 ```
-SNAP_RPC1="stride-node2.poolparty.stridenet.co:26657" \
-&& SNAP_RPC2="stride-node3.poolparty.stridenet.co:26657"
-LATEST_HEIGHT=$(curl -s $SNAP_RPC2/block | jq -r .result.block.header.height) \
-&& BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)) \
-&& TRUST_HASH=$(curl -s "$SNAP_RPC2/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC1,$SNAP_RPC2\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.strided/config/config.toml
-strided tendermint unsafe-reset-all --home $HOME/.strided
-sudo systemctl restart strided && journalctl -fu strided -o cat
+N/A
 ```
 
 ### Create wallet
@@ -94,12 +76,7 @@ strided keys list
 Add wallet and valoper address into variables 
 ```
 STRIDE_WALLET_ADDRESS=$(strided keys show $WALLET -a)
-```
-```
 STRIDE_VALOPER_ADDRESS=$(strided keys show $WALLET --bech val -a)
-```
-Load variables into the system
-```
 echo 'export STRIDE_WALLET_ADDRESS='${STRIDE_WALLET_ADDRESS} >> $HOME/.bash_profile
 echo 'export STRIDE_VALOPER_ADDRESS='${STRIDE_VALOPER_ADDRESS} >> $HOME/.bash_profile
 source $HOME/.bash_profile
@@ -107,17 +84,12 @@ source $HOME/.bash_profile
 
 ### Fund your wallet
 In order to create validator first you need to fund your wallet with testnet tokens.
-To top up your wallet join [Stride discord server](https://discord.gg/97qe8u7t) and navigate to:
-- **#faucet** to request test tokens
+To top up your wallet join [Stride discord server](https://discord.gg/n6KrK77t) and navigate to:
+- **#token-faucet** to request test tokens
 
 To request a faucet grant:
 ```
-$faucet:<YOUR_WALLET_ADDRESS>
-```
-
-To check wallet balance:
-```
-$balance:<YOUR_WALLET_ADDRESS>
+$faucet-stride:<STRIDE_WALLET_ADDRESS>
 ```
 
 ### Create validator
@@ -154,20 +126,21 @@ strided tx stakeibc liquid-stake 1000 uatom --from $WALLET --chain-id $STRIDE_CH
 ### Redeem stake
 After accruing some staking rewards, you can unstake your tokens. Currently, the unbonding period on our Gaia (Cosmos Hub) testnet is around 30 minutes.
 ```
-strided tx stakeibc redeem-stake 999 GAIA <cosmos_address_you_want_to_redeem_to> --chain-id $STRIDE_CHAIN_ID --from $WALLET
+strided tx stakeibc redeem-stake 1000 GAIA <COSMOS_ADDRESS_YOU_WANT_TO_REDEEM_TO> --chain-id $STRIDE_CHAIN_ID --from $WALLET
 ```
 
 ### Check if tokens are claimable
 If you'd like to see whether your tokens are ready to be claimed, look for your `UserRedemptionRecord` keyed by `<your_stride_account>`. 
 ```
-strided q records list-user-redemption-record --output json | jq --arg WALLET_ADDRESS "$STRIDE_WALLET_ADDRESS" '.UserRedemptionRecord | map(select(.sender == $WALLET_ADDRESS))'
+strided q records list-user-redemption-record --limit 10000 --output json | jq --arg WALLET_ADDRESS "$STRIDE_WALLET_ADDRESS" '.UserRedemptionRecord | map(select(.sender == $WALLET_ADDRESS))'
 ```
 If your record has the attribute `isClaimable=true`, they're ready to be claimed!
 
 ### Claim tokens
 After your tokens have unbonded, they can be claimed by triggering the claim process. 
 ```
-strided tx stakeibc claim-undelegated-tokens GAIA 5 --chain-id $STRIDE_CHAIN_ID --from $WALLET
+wget -qO claim.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/stride/tools/claim.sh && chmod +x claim.sh
+./claim.sh $STRIDE_WALLET_ADDRESS
 ```
 > Note: this function triggers claims in a FIFO queue, meaning if your claim is 20th in line, you'll have process other claims before seeing your tokens appear in your account.
 
@@ -197,7 +170,12 @@ sudo ufw enable
 This script will help you to estimate how much time it will take to fully synchronize your node\
 It measures average blocks per minute that are being synchronized for period of 5 minutes and then gives you results
 ```
-wget -O synctime.py https://raw.githubusercontent.com/kj89/testnet_manuals/main/stride/tools/synctime.py && python3 ./synctime.py
+wget -O synctime.py https://raw.githubusercontent.com/nodesxploit/testnet/main/stride/tools/synctime.py && python3 ./synctime.py
+```
+
+### Check your validator key
+```
+[[ $(strided q staking validator $STRIDE_VALOPER_ADDRESS -oj | jq -r .consensus_pubkey.key) = $(strided status | jq -r .ValidatorInfo.PubKey.value) ]] && echo -e "\n\e[1m\e[32mTrue\e[0m\n" || echo -e "\n\e[1m\e[31mFalse\e[0m\n"
 ```
 
 ### Get list of validators
@@ -335,4 +313,21 @@ sudo rm /etc/systemd/system/stride* -rf
 sudo rm $(which strided) -rf
 sudo rm $HOME/.stride* -rf
 sudo rm $HOME/stride -rf
+sed -i '/STRIDE_/d' ~/.bash_profile
+```
+
+### Pruning for state sync node
+```
+pruning="custom"
+pruning_keep_recent="100"
+pruning_keep_every="2000"
+pruning_interval="50"
+snapshot_interval="2000"
+snapshot_keep_recent="5"
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.stride/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.stride/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.stride/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.stride/config/app.toml
+sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"$snapshot_interval\"/" $HOME/.stride/config/app.toml
+sed -i -e "s/^snapshot-keep-recent *=.*/snapshot-keep-recent = \"$snapshot_keep_recent\"/" $HOME/.stride/config/app.toml
 ```
