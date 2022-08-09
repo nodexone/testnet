@@ -2,14 +2,15 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/169664551-39020c2e-fa95-483b-916b-c52ce4cb907c.png">
 </p>
 
-# Sei node setup for Testnet
+# sei node setup for Testnet — atlantic-1
 
 Official documentation:
->- [Validator setup instructions](https://docs.seinetwork.io/nodes-and-validators/joining-testnets)
+>- [Validator setup instructions](https://docs.seinetwork.io/nodes-and-validators/seinami-incentivized-testnet/joining-incentivized-testnet)
 
 Chain explorer:
 >- [Explorer from Nodes.Guru](https://sei.explorers.guru/)
->
+
+## Usefull tools and references
 > To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodesxploit/testnet/blob/main/sei/migrate_validator.md)
 
 ## Hardware Requirements
@@ -37,46 +38,6 @@ wget -O sei.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/sei/se
 ### Option 2 (manual)
 You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/sei/manual_install.md) if you better prefer setting up node manually
 
-
-## Chain upgrade from 1.0.2beta to 1.0.3beta
-Once the chain reaches the upgrade height, you will encounter the following panic error message:\
-`ERR UPGRADE "upgrade-1.0.3beta" NEEDED at height: 153759`
-```
-cd $HOME && rm $HOME/sei-chain -rf
-git clone https://github.com/sei-protocol/sei-chain.git && cd $HOME/sei-chain
-git checkout 1.0.3beta
-make install
-mv ~/go/bin/seid /usr/local/bin/seid
-systemctl restart seid && journalctl -fu seid -o cat
-```
-
-## Chain upgrade from 1.0.3beta to 1.0.4beta
-Once the chain reaches the upgrade height, you will encounter the following panic error message:\
-`ERR UPGRADE "upgrade-1.0.4beta" NEEDED at height: 681000`
-```
-cd $HOME && rm $HOME/sei-chain -rf
-git clone https://github.com/sei-protocol/sei-chain.git && cd $HOME/sei-chain
-git checkout 1.0.4beta
-make install
-mv ~/go/bin/seid /usr/local/bin/seid
-systemctl restart seid && journalctl -fu seid -o cat
-```
-
-## Chain upgrade from 1.0.4beta to 1.0.5beta
-Once the chain reaches the upgrade height, you will encounter the following panic error message:\
-`ERR UPGRADE "upgrade-1.0.5beta" NEEDED at height: 1059047`
-```
-cd $HOME && rm $HOME/sei-chain -rf
-git clone https://github.com/sei-protocol/sei-chain.git && cd $HOME/sei-chain
-git checkout 1.0.5beta
-make install
-mv ~/go/bin/seid /usr/local/bin/seid
-systemctl restart seid && journalctl -fu seid -o cat
-```
-
-## Chain upgrade from 1.0.5beta to 1.0.6beta
-Follow instructions mentioned [here](https://github.com/nodesxploit/testnet/blob/main/sei/sei_upgrade_106beta.md)
-
 ## Post installation
 
 When installation is finished please load variables into system
@@ -87,6 +48,23 @@ source $HOME/.bash_profile
 Next you have to make sure your validator is syncing blocks. You can use command below to check synchronization status
 ```
 seid status 2>&1 | jq .SyncInfo
+```
+
+### Data snapshot
+```
+sudo apt update
+sudo apt install lz4 -y
+sudo systemctl stop seid
+seid tendermint unsafe-reset-all --home $HOME/.sei --keep-addr-book
+
+cd $HOME/.sei
+rm -rf data
+
+SNAP_NAME=$(curl -s https://snapshots1-testnet.nodejumper.io/sei-testnet/ | egrep -o ">atlantic-1.*\.tar.lz4" | tr -d ">")
+curl https://snapshots1-testnet.nodejumper.io/sei-testnet/${SNAP_NAME} | lz4 -dc - | tar -xf -
+
+sudo systemctl restart seid
+sudo journalctl -u seid -f --no-hostname -o cat
 ```
 
 ### Create wallet
@@ -116,7 +94,7 @@ source $HOME/.bash_profile
 ```
 
 ### Fund your wallet
-To top up your wallet join [Sei discord server](https://discord.gg/CSczWRVT) and navigate to **#testnet-faucet** channel
+To top up your wallet join [Sei discord server](https://discord.gg/sPsUN6ay) and navigate to **#atlantic-1-faucet** channel
 
 To request a faucet grant:
 ```
@@ -310,4 +288,5 @@ sudo rm /etc/systemd/system/sei* -rf
 sudo rm $(which seid) -rf
 sudo rm $HOME/.sei -rf
 sudo rm $HOME/sei-chain -rf
+sed -i '/SEI_/d' ~/.bash_profile
 ```
