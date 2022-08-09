@@ -10,6 +10,7 @@ echo "  #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#        ";
 echo " ###    ####  ########  #########  ######## ###        ###       ";
 echo -e "\e[0m"
 echo "=========================================="
+
 sleep 2
 
 # set vars
@@ -21,7 +22,7 @@ SEI_PORT=12
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export SEI_CHAIN_ID=sei-testnet-2" >> $HOME/.bash_profile
+echo "export SEI_CHAIN_ID=atlantic-1" >> $HOME/.bash_profile
 echo "export SEI_PORT=${SEI_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -55,12 +56,9 @@ go version
 echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
 # download binary
 cd $HOME
-sudo rm sei-chain -rf
-git clone https://github.com/sei-protocol/sei-chain.git
-cd sei-chain
-git checkout 1.0.2beta
+git clone https://github.com/sei-protocol/sei-chain.git && cd sei-chain
+git checkout 1.0.6beta
 make install 
-sudo mv ~/go/bin/seid /usr/local/bin/seid
 
 # config
 seid config chain-id $SEI_CHAIN_ID
@@ -71,17 +69,33 @@ seid config node tcp://localhost:${SEI_PORT}657
 seid init $NODENAME --chain-id $SEI_CHAIN_ID
 
 # download genesis and addrbook
-wget -qO $HOME/.sei/config/genesis.json "https://raw.githubusercontent.com/sei-protocol/testnet/master/sei-testnet-2/genesis.json"
-wget -qO $HOME/.sei/config/addrbook.json "https://raw.githubusercontent.com/sei-protocol/testnet/master/sei-testnet-2/addrbook.json"
+wget -qO $HOME/.sei/config/genesis.json "https://raw.githubusercontent.com/sei-protocol/testnet/main/sei-incentivized-testnet/genesis.json"
+wget -qO $HOME/.sei/config/addrbook.json "https://raw.githubusercontent.com/sei-protocol/testnet/main/sei-incentivized-testnet/addrbook.json"
 
 # set peers and seeds
-SEEDS=""
-PEERS="a31a25a812e13bbbe58a58c14db3cd529c4f870d@3.15.197.187:26656,5b5ec09067a5fcaccf75f19b45ab29ce07e0167c@18.118.159.154:26656,20528d7ab115e56660b06fbff1b95c543e19e2e3@194.163.150.25:26256,49e9d66477cd5df48ceb884b6870cccfc5fa96c5@47.156.153.124:56656,ddb046d461bd698bf2b5f0608bc9ed9ebb69821b@20.46.229.243:12656,44c4e0294f6912b130f57a0fddc5d7434b68ca37@65.108.7.120:26656,3ddc21e72f88e1d83ff2098d25fb6988f59598fa@38.242.250.253:26656,a50a2c2a39e740e18e2a3810867ce8786d64f718@75.119.155.73:12656,591b797c0a4af6d3decaaf0f14dab8ce92d7c3ae@51.120.95.14:12656,f161690e4f552194097b3e99501a526c8862c03c@20.38.38.1:12656,b1bab63a99b58cdc05e015875e426bc28eb9716c@149.102.143.141:12656,b6e9a99fb9a960fa71d36f0c9b442c2b9fba9484@51.120.1.230:12656,c89a26cf8d4812fb8873f6e46bead2363f8ab67c@147.182.203.5:12656,52517312816bf4c6ab1d99fc347647b4626064e7@52.155.104.204:26656,7886e2704b892ed032ff5091e41542216309f39c@20.249.4.115:12656,59bbe8e365c56e29ccd1d88462fe92c43bc8e173@89.163.143.208:26656,a3f055c2cd623d9d1353d8c6566b9d00e01ef0be@13.87.71.97:12656,51213fb34076bd39d7f687ea94deb6916301d118@20.118.224.134:12656,93578f85728acfc14f8d9c1f84f7d8d0548cfd15@20.40.89.41:12656,9c74bdb1f6d34e1eb45b6810e116e8033b2d7014@20.119.48.205:12656,dff3c3c5679d06166476773d2ee777b4c6dfd3eb@52.255.136.48:12656,38b4d78c7d6582fb170f6c19330a7e37e6964212@194.163.189.114:46656,1c6b5b7d880e488e87e86b0de420ad92d4cece50@149.102.158.204:12656,edf25610498e0a1192c743f39368502ece89ec8d@144.76.19.103:26656,678580163a228a8240a3d15ee128ad94fe623141@159.89.204.218:12656,cd2ce7465937c046aeefb286744c45afd1b63ebb@139.59.100.192:12656,396f45e6270f34f608ffc1727c2fc0d1955aff3b@137.184.76.160:12656,99c0a0a5bdb19a9b8be05b8f268d6e12a01e6dc3@146.19.24.34:26656,db4fa2ced59020bcec13668b3204a2fd2ac5b720@188.166.228.170:26656,bccab1003dd4f794ad8be49209700129fb86de99@38.242.221.88:26656,d4479d0bf6e543ec60fae27206ec5a70837c555e@38.242.129.240:36376,a452faddaf371e840fcbb0e44c7234551949d1b7@34.66.153.93:26656"
+SEEDS="df1f6617ff5acdc85d9daa890300a57a9d956e5e@sei-atlantic-1.seed.rhinostake.com:16660"
+PEERS="22991efaa49dbaae857669d44cb564406a244811@18.222.18.162:26656,a37d65086e78865929ccb7388146fb93664223f7@18.144.13.149:26656,873a358b46b07c0c7c0280397a5ad27954a10633@141.95.175.196:26656,e66f9a9cab4428bfa3a7f32abbedbc684e734a48@185.193.17.129:12656,16225e262a0d38fe73073ab199f583e4a607e471@135.181.59.162:19656,2efd524f097b3fef2d26d0031fda21a72a51a765@38.242.213.174:12656,3b5ae3a1691d4ed24e67d7fe1499bc081c3ad8b0@65.108.131.189:20956,ad6d30dc6805df4f48b49d9013bbb921a5713fa6@20.211.82.153:26656,4e53c634e89f7b7ecff98e0d64a684269403dd78@38.242.235.141:26656,da5f6fcd1cd2ba8c7de8a06fb3ab56ab6a8157cf@38.242.235.142:26656,89e7d8c9eefc1c9a9b3e1faff31c67e0674f9c08@165.227.11.230:26656,94b6fa7ae5554c22e81a81e4a0928c48e41801d8@88.99.3.158:10956,b95aa07e60928fbc5ba7da9b6fe8c51798bd40be@51.250.6.195:26656,94b72206c0b0007494e20e2f9b958cd57e970d48@209.145.50.102:26656,94cf3893ded18bc6e3991d5add88449cd3f6c297@65.108.230.75:26656,82de728de0d663c03a820e570b94adac19c09adf@5.9.80.215:26656,5e1f8ccfa64dfd1c17e3fdac0dbf50f5fcc1acc3@209.126.7.113:26656,6a5113e8412f68bbeab733bb1297a0a38f884f7c@162.55.80.116:26656,7c95b2eec599369bebb8281b960589dc2857548a@164.215.102.44:26656,4bf8aa7b80f4db8a6f2abf5d757c9cab5d3f4d85@188.40.98.169:26656,9e38cf7ccb898632482a09b26ecba3f7e1a9e300@51.75.135.46:26656,641eea8d26c4b3b479b95a2cb4bd04712f3eda29@135.181.249.71:12656,8625abf6079da0e3326b0ad74c9c0e263af39654@137.184.44.146:12656,11c84300b4417af7e6c081f413003176b33b3877@51.75.135.47:26656,8a349512cf1ce179a126cb8762aea955ca1a261f@195.201.243.40:26651,6c27c768936ff8eebde94fe898b54df71f936e48@47.156.153.124:56656,7f037abdf485d02b95e50e9ba481166ddd6d6cae@185.144.99.65:26656,90916e0b118f2c00e90a40a0180b275261b547f2@65.108.72.121:26656,02be57dc6d6491bf272b823afb81f24d61243e1e@141.94.139.233:26656,ed3ec09ab24b8fcf0a36bc80de4b97f1e379d346@38.242.206.198:26656,7caa7add8d8a279e2da67a72700ab2d4540fbc08@34.97.43.89:12656,cce4c3526409ec516107db695233f9b047d52bf6@128.199.59.125:36376,3f6e68bd476a7cd3f491105da50306f8ebb74643@65.21.143.79:21156"
+
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.sei/config/config.toml
 
 # set custom ports
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${SEI_PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${SEI_PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${SEI_PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${SEI_PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${SEI_PORT}660\"%" $HOME/.sei/config/config.toml
 sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${SEI_PORT}317\"%; s%^address = \":8080\"%address = \":${SEI_PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${SEI_PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${SEI_PORT}091\"%" $HOME/.sei/config/app.toml
+
+#seiport command ceation
+echo -e "\e[1m\e[32m create seiport command /usr/local/bin \e[0m" && sleep 3
+echo echo curl -s localhost:${SEI_PORT}657/status >seiport
+echo echo proxy PORT = :${SEI_PORT}658 >>seiport
+echo echo RPC server PORT = :${SEI_PORT}657 >>seiport
+echo echo pprof listen PORT = :${SEI_PORT}060 >>seiport
+echo echo p2p PORT = :${SEI_PORT}656 >>seiport
+echo echo prometheus PORT = :${SEI_PORT}660 >>seiport
+echo echo api server PORT = :${SEI_PORT}317 >>seiport
+echo echo rosetta PORT = :${SEI_PORT}080 >>seiport
+echo echo gRPC server PORT = :${SEI_PORT}090 >>seiport
+echo echo gRPC-web server PORT = :${SEI_PORT}091 >>seiport
+chmod +x ./seiport
+sudo mv ./seiport /usr/local/bin
 
 # disable indexing
 indexer="null"
@@ -129,6 +143,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable seid
 sudo systemctl restart seid
 
-echo '=============== SETUP FINISHED ==================='
+echo '=============== CONGRATS! SETUP FINISHED ==================='
 echo -e 'To check logs: \e[1m\e[32mjournalctl -u seid -f -o cat\e[0m'
 echo -e "To check sync status: \e[1m\e[32mcurl -s localhost:${SEI_PORT}657/status | jq .result.sync_info\e[0m"
