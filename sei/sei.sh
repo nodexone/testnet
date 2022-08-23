@@ -15,7 +15,7 @@ sleep 2
 
 # set vars
 if [ ! $NODENAME ]; then
-	read -p "Enter Moniker: " NODENAME
+	read -p "Enter node name: " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
 SEI_PORT=12
@@ -27,10 +27,10 @@ echo "export SEI_PORT=${SEI_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 echo '================================================='
-echo -e "Your Moniker: \e[1m\e[32m$NODENAME\e[0m"
-echo -e "Your Wallet: \e[1m\e[32m$WALLET\e[0m"
-echo -e "Chain Name: \e[1m\e[32m$SEI_CHAIN_ID\e[0m"
-echo -e "Your Port: \e[1m\e[32m$SEI_PORT\e[0m"
+echo -e "Your node name: \e[1m\e[32m$NODENAME\e[0m"
+echo -e "Your wallet name: \e[1m\e[32m$WALLET\e[0m"
+echo -e "Your chain name: \e[1m\e[32m$SEI_CHAIN_ID\e[0m"
+echo -e "Your port: \e[1m\e[32m$SEI_PORT\e[0m"
 echo '================================================='
 sleep 2
 
@@ -143,6 +143,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable seid
 sudo systemctl restart seid
 
-echo '=============== CONGRATS! SETUP FINISHED ==================='
+echo '=============== SETUP FINISHED ==================='
 echo -e 'To check logs: \e[1m\e[32mjournalctl -u seid -f -o cat\e[0m'
 echo -e "To check sync status: \e[1m\e[32mcurl -s localhost:${SEI_PORT}657/status | jq .result.sync_info\e[0m"
+
