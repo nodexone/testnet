@@ -5,7 +5,7 @@
 ## Official Guide
 - https://github.com/pointnetwork/point-chain/blob/xnet-triton/VALIDATORS.md)
 
-## Try Point Network
+## Point Network Website
 - https://pointnetwork.io
 
 ## Set up your Point fullnode
