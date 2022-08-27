@@ -1,10 +1,12 @@
 
-## Point Network Testnet Incentivized
+## Point Network Incentivized Testnet
+<br>
 
-## [Official Guide](https://github.com/pointnetwork/point-chain/blob/xnet-triton/VALIDATORS.md)
-## [Try Point Network](https://pointnetwork.io/?i=366120433928)
-## [Manual Install](https://github.com/elangrr/Point-Network/blob/main/Manual_install.md) , WARNING! The variable are different from official guide and this guide
+## Official Guide
+- https://github.com/pointnetwork/point-chain/blob/xnet-triton/VALIDATORS.md)
 
+## Try Point Network
+- https://pointnetwork.io
 
 ## Set up your Point fullnode
 ### Option 1 (automatic)
