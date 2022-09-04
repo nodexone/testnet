@@ -1,6 +1,8 @@
 ![haqq](https://user-images.githubusercontent.com/44331529/185350224-62b92bc1-bd4e-4ce7-a56b-0abfc631c95c.png)
 
-# Haqq Validator Guide
+# Haqq Incentivized Testnet - Fullnode Guide
+Official guide : https://docs.haqq.network/guides/validators/setup.html
+Official Wesite : https://islamiccoin.net/
 
 ## Minimum Requirements
  - 4 or more physical CPU cores
