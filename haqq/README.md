@@ -2,6 +2,7 @@
 
 # Haqq Incentivized Testnet - Fullnode Guide
 Official guide : https://docs.haqq.network/guides/validators/setup.html
+
 Official Wesite : https://islamiccoin.net/
 
 ## Minimum Requirements
