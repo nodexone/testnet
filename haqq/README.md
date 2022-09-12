@@ -16,7 +16,7 @@ Official Wesite : https://islamiccoin.net/
 wget -O haqq.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/haqq/haqq.sh && chmod +x haqq.sh && ./haqq.sh
 ```
 
-### Option 2 (manual)
+## Option 2 (manual)
 You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/haqq/manual_install.md) if you better prefer setting up node manually
 
 ## Post Installation
