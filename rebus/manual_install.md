@@ -2,7 +2,7 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/177221972-75fcf1b3-6e95-44dd-b43e-e32377685af8.png">
 </p>
 
-# Manual node setup
+# Manual node setup for mainnet
 If you want to setup fullnode manually follow the steps below
 
 https://github.com/nodesxploit/testnet/blob/main/rebus/README.md
