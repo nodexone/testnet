@@ -4,15 +4,6 @@
 <span style="font-size:14px" align="right">
 <a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
 <span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Reddit</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Youtube</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">TikTok</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Instagram</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Facebook</a></span>⭐
 <hr>
 
 # Ironfish Incentivized Testnet - Miner Setup

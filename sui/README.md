@@ -4,15 +4,6 @@
 <span style="font-size:14px" align="right">
 <a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
 <span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Reddit</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Youtube</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">TikTok</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Instagram</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Facebook</a></span>⭐
 <hr>
 
 <p align="center">
@@ -146,8 +137,8 @@ Now lets do some operations with objects
 ### Merge two objects into one
 ```
 JSON=$(sui client gas --json | jq -r)
-FIRST_OBJECT_ID=$(echo $JSON | jq -r .[0].info.id)
-SECOND_OBJECT_ID=$(echo $JSON | jq -r .[1].info.id)
+FIRST_OBJECT_ID=$(echo $JSON | jq -r .[0].id.id)
+SECOND_OBJECT_ID=$(echo $JSON | jq -r .[1].id.id)
 sui client merge-coin --primary-coin ${FIRST_OBJECT_ID} --coin-to-merge ${SECOND_OBJECT_ID} --gas-budget 1000
 ```
 
@@ -200,6 +191,11 @@ Update sui version
 wget -qO update.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/sui/tools/update.sh && chmod +x update.sh && ./update.sh
 ```
 
+Update sui version with database cleanup
+```
+wget -qO update_db_cleanup.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/sui/tools/update_db_cleanup.sh && chmod +x update_db_cleanup.sh && ./update_db_cleanup.sh
+```
+
 ## Recover your keys
 Copy your keys into `$HOME/.sui/sui_config/` directory and restart the node
 
@@ -209,3 +205,4 @@ systemctl stop suid
 systemctl disable suid
 rm -rf $HOME/.sui /usr/local/bin/sui*
 ```
+

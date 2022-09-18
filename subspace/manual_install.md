@@ -1,0 +1,117 @@
+<span tyle="font-size:14px" align="right">NodeX Official Accounts :
+<span style="font-size:14px" align="right">
+<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<hr>
+
+<p align="center">
+  <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/171398816-7e0432f4-4d39-42ad-a72e-cd8dd008028f.png">
+</p>
+
+# Install Subspace node
+To setup Subspace node follow the steps below
+
+## Setting up vars
+>Replace `YOUR_NODENAME` below with the name of your node\
+>Replace `YOUR_WALLET_ADDRESS` below with your account address from Polkadot.js wallet\
+>Replace `YOUR_PLOT_SIZE` with plot size in gigabytes or terabytes, for instance 100G or 2T (but leave at least 10G of disk space for node)
+
+> **Note**\
+> Default plot size will be set to 100 GB maximum (farmers may change their plot size to be less than 100 GB, but not greater)
+
+```
+NODENAME=<YOUR_NODENAME>
+WALLET_ADDRESS=<YOUR_WALLET_ADDRESS>
+PLOT_SIZE=100G
+```
+
+Save and import variables into system
+```
+echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
+echo "export WALLET_ADDRESS=$WALLET_ADDRESS" >> $HOME/.bash_profile
+echo "export PLOT_SIZE=$PLOT_SIZE" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+```
+
+## Update packages
+```
+sudo apt update && sudo apt upgrade -y
+```
+
+## Install dependencies
+```
+sudo apt install curl jq ocl-icd-opencl-dev libopencl-clang-dev libgomp1 -y
+```
+
+## Update executables
+```
+cd $HOME
+rm -rf subspace-*
+APP_VERSION=$(curl -s https://api.github.com/repos/subspace/subspace/releases/latest | jq -r ".tag_name" | sed "s/runtime-/""/g")
+wget -O subspace-node https://github.com/subspace/subspace/releases/download/${APP_VERSION}/subspace-node-ubuntu-x86_64-${APP_VERSION}
+wget -O subspace-farmer https://github.com/subspace/subspace/releases/download/${APP_VERSION}/subspace-farmer-ubuntu-x86_64-${APP_VERSION}
+chmod +x subspace-*
+mv subspace-* /usr/local/bin/
+```
+
+## Create subspace-node service
+```
+tee $HOME/subspaced.service > /dev/null <<EOF
+[Unit]
+Description=Subspace Node
+After=network.target
+
+[Service]
+User=$USER
+Type=simple
+ExecStart=$(which subspace-node) --chain gemini-2a --execution wasm --state-pruning archive --validator --name $NODENAME
+Restart=on-failure
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+mv $HOME/subspaced.service /etc/systemd/system/
+```
+
+## Create subspaced-farmer service
+```
+tee $HOME/subspaced-farmer.service > /dev/null <<EOF
+[Unit]
+Description=Subspaced Farm
+After=network.target
+
+[Service]
+User=$USER
+Type=simple
+ExecStart=$(which subspace-farmer) farm --reward-address $WALLET_ADDRESS --plot-size $PLOT_SIZE
+Restart=on-failure
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+mv $HOME/subspaced-farmer.service /etc/systemd/system/
+```
+
+## Run subspace services
+```
+sudo systemctl restart systemd-journald
+sudo systemctl daemon-reload
+sudo systemctl enable subspaced subspaced-farmer
+sudo systemctl restart subspaced
+sleep 30
+sudo systemctl restart subspaced-farmer
+```
+
+## Check node status
+```
+service subspaced status
+```
+
+## Check farmer status
+```
+service subspaced-farmer status
+```

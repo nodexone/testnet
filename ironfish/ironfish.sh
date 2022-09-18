@@ -23,6 +23,7 @@ if [ -f "$bash_profile" ]; then
     . $HOME/.bash_profile
 fi
 sleep 1 
+
 echo -e "\033[0;35m"
 echo "       ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::  ";
 echo "      :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:    ";

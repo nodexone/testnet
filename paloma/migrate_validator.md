@@ -1,3 +1,11 @@
+<span tyle="font-size:14px" align="right">NodeX Official Accounts :
+<span style="font-size:14px" align="right">
+<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<hr>
+
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/172488614-7d93b016-5fe4-4a51-99e2-67da5875ab7a.png">
 </p>

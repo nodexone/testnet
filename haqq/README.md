@@ -4,15 +4,6 @@
 <span style="font-size:14px" align="right">
 <a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
 <span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Reddit</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Youtube</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">TikTok</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Instagram</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Facebook</a></span>⭐
 <hr>
 
 ![haqq](https://user-images.githubusercontent.com/44331529/185350224-62b92bc1-bd4e-4ce7-a56b-0abfc631c95c.png)

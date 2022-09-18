@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "=========================================="
 echo -e "\033[0;35m"
 echo "       ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::  ";
 echo "      :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:    ";
@@ -10,8 +9,6 @@ echo "   +#+  +#+#+# +#+    +#+ +#+    +#+ +#+        +#+   +#+        ";
 echo "  #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#        ";
 echo " ###    ####  ########  #########  ######## ###        ###       ";
 echo -e "\e[0m"
-echo "=========================================="
-
 
 sleep 2
 
@@ -24,7 +21,7 @@ STRIDE_PORT=16
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export STRIDE_CHAIN_ID=STRIDE-TESTNET-4" >> $HOME/.bash_profile
+echo "export STRIDE_CHAIN_ID=stride-1" >> $HOME/.bash_profile
 echo "export STRIDE_PORT=${STRIDE_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -61,7 +58,7 @@ echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
 cd $HOME
 git clone https://github.com/Stride-Labs/stride.git
 cd stride
-git checkout cf4e7f2d4ffe2002997428dbb1c530614b85df1b
+git checkout v1.0.2
 make build
 sudo cp $HOME/stride/build/strided /usr/local/bin
 
@@ -74,11 +71,11 @@ strided config node tcp://localhost:${STRIDE_PORT}657
 strided init $NODENAME --chain-id $STRIDE_CHAIN_ID
 
 # download genesis and addrbook
-wget -qO $HOME/.stride/config/genesis.json "https://raw.githubusercontent.com/Stride-Labs/testnet/main/poolparty/genesis.json"
+wget -qO $HOME/.stride/config/genesis.json "https://raw.githubusercontent.com/Stride-Labs/testnet/infra-test/poolparty/infra/genesis.json"
 
 # set peers and seeds
-SEEDS="d2ec8f968e7977311965c1dbef21647369327a29@seedv2.poolparty.stridenet.co:26656"
-PEERS="2771ec2eeac9224058d8075b21ad045711fe0ef0@34.135.129.186:26656,a3afae256ad780f873f85a0c377da5c8e9c28cb2@54.219.207.30:26656,328d459d21f82c759dda88b97ad56835c949d433@78.47.222.208:26639,bf57701e5e8a19c40a5135405d6757e5f0f9e6a3@143.244.186.222:16656,f93ce5616f45d6c20d061302519a5c2420e3475d@135.125.5.31:54356"
+SEEDS="cb91a11588d66cfd9c01f99541df4978a08e0e39@seedv1.main.stridenet.co:26656"
+PEERS="a757fc9ea95a7f643d392ec9fdaa31cbf06e76d9@195.3.221.21:12256,076e97f47762a477f2ae3dd3e798a7970b6bb20d@52.52.110.228:26656,e821acdaf0c7a3c60ea3cd4eb4a98a62dad06f58@43.201.12.41:26656,04dbfff241762b9460b3e23148378fbc8e559a9e@116.203.17.177:26656,74b693b1b0745d250becfbdb550d36504e03bf92@93.115.25.15:26656,b5f9fa874781f975687018ae559f0d952d3a2e24@52.52.208.179:26656,cb0b38aa612e8ac05f704d9b2feb7526607afb77@159.203.191.62:26656,6a1087004245692128a6ad11b812bb3640955b86@162.55.235.69:25656,23180f90318d0003a4e8140a1e67407bf874d69d@78.107.234.44:25656,186b989136983db3ec3147f3e245943d6022e5d4@116.202.227.117:16656"
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.stride/config/config.toml
 
 # set custom ports

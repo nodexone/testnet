@@ -1,3 +1,11 @@
+<span tyle="font-size:14px" align="right">NodeX Official Accounts :
+<span style="font-size:14px" align="right">
+<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<hr>
+
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/179568169-a81fb8a8-12d2-4865-aa91-3dba7649d54e.png">
 </p>
@@ -138,3 +146,4 @@ sudo systemctl daemon-reload
 sudo systemctl enable teritorid
 sudo systemctl restart teritorid && sudo journalctl -u teritorid -f -o cat
 ```
+

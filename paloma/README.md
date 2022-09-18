@@ -4,17 +4,7 @@
 <span style="font-size:14px" align="right">
 <a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
 <span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Reddit</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Youtube</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">TikTok</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Instagram</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Facebook</a></span>⭐
 <hr>
-
 
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/172488614-7d93b016-5fe4-4a51-99e2-67da5875ab7a.png">
@@ -29,7 +19,9 @@ Explorer:
 >-  https://paloma.explorers.guru/
 
 ## Usefull tools and references
-> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/kj89/testnet_manuals/blob/main/paloma/migrate_validator.md)
+> To set up monitoring for your validator node navigate to [Set up monitoring and alerting for paloma validator](https://github.com/nodesxploit/testnet/blob/main/paloma/monitoring/README.md)
+>
+> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodesxploit/testnet/blob/main/paloma/migrate_validator.md)
 
 ## Hardware Requirements
 Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
@@ -50,11 +42,11 @@ Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
 ### Option 1 (automatic)
 You can setup your paloma fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O paloma.sh https://raw.githubusercontent.com/kj89/testnet_manuals/main/paloma/paloma.sh && chmod +x paloma.sh && ./paloma.sh
+wget -O paloma.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/paloma/paloma.sh && chmod +x paloma.sh && ./paloma.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/kj89/testnet_manuals/blob/main/paloma/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/paloma/manual_install.md) if you better prefer setting up node manually
 
 ## Post installation
 
@@ -143,13 +135,13 @@ sudo ufw enable
 ```
 
 ## Monitoring
-To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for paloma validator](https://github.com/kj89/testnet_manuals/blob/main/paloma/monitoring/README.md)
+To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for paloma validator](https://github.com/nodesxploit/testnet/blob/main/paloma/monitoring/README.md)
 
 ## Calculate synchronization time
 This script will help you to estimate how much time it will take to fully synchronize your node\
 It measures average blocks per minute that are being synchronized for period of 5 minutes and then gives you results
 ```
-wget -O synctime.py https://raw.githubusercontent.com/kj89/testnet_manuals/main/paloma/tools/synctime.py && python3 ./synctime.py
+wget -O synctime.py https://raw.githubusercontent.com/nodesxploit/testnet/main/paloma/tools/synctime.py && python3 ./synctime.py
 ```
 
 ### Get list of validators
@@ -287,4 +279,5 @@ sudo rm /etc/systemd/system/paloma* -rf
 sudo rm $(which palomad) -rf
 sudo rm $HOME/.paloma* -rf
 sudo rm $HOME/paloma -rf
+sed -i '/PALOMA_/d' ~/.bash_profile
 ```

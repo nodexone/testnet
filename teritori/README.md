@@ -4,15 +4,6 @@
 <span style="font-size:14px" align="right">
 <a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
 <span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Reddit</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Youtube</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">TikTok</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Instagram</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Facebook</a></span>⭐
 <hr>
 
 <p align="center">
@@ -178,6 +169,7 @@ sudo ufw allow ${TERITORI_PORT}656,${TERITORI_PORT}660/tcp
 sudo ufw enable
 ```
 
+
 ## Calculate synchronization time
 This script will help you to estimate how much time it will take to fully synchronize your node\
 It measures average blocks per minute that are being synchronized for period of 5 minutes and then gives you results
@@ -322,3 +314,4 @@ sudo rm $HOME/.teritorid* -rf
 sudo rm $HOME/teritori -rf
 sed -i '/TERITORI_/d' ~/.bash_profile
 ```
+

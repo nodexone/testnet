@@ -1,5 +1,12 @@
-## Point Network Testnet Incentivized
+<span tyle="font-size:14px" align="right">NodeX Official Accounts :
+<span style="font-size:14px" align="right">
+<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<hr>
 
+## Point Network Testnet Incentivized
 
 ## Manual node setup
 If you want to setup fullnode manually follow the steps below

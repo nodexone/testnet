@@ -4,15 +4,6 @@
 <span style="font-size:14px" align="right">
 <a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
 <span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Reddit</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Youtube</a></span>⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">TikTok</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">Instagram</a></span> ⭐
-<span style="font-size:14px" align="right">
-<a href="https://nodex.codes/" target="_blank">Facebook</a></span>⭐
 <hr>
 
 
@@ -20,7 +11,7 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/183283696-d1c4192b-f594-45bb-b589-15a5e57a795c.png">
 </p>
 
-# stride node setup for testnet — STRIDE
+# stride node setup for mainnet — stride-1
 
 Official documentation:
 >- [Validator setup instructions](https://github.com/Stride-Labs/testnet)
@@ -41,9 +32,9 @@ Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
  - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
 
 ### Recommended Hardware Requirements 
- - 4x CPUs; the faster clock speed the better
- - 32GB RAM
- - 200GB of storage (SSD or NVME)
+ - 8x CPUs; the faster clock speed the better
+ - 64GB RAM
+ - 1TB of storage (SSD or NVME)
  - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
 
 ## Set up your stride fullnode
@@ -98,16 +89,6 @@ STRIDE_VALOPER_ADDRESS=$(strided keys show $WALLET --bech val -a)
 echo 'export STRIDE_WALLET_ADDRESS='${STRIDE_WALLET_ADDRESS} >> $HOME/.bash_profile
 echo 'export STRIDE_VALOPER_ADDRESS='${STRIDE_VALOPER_ADDRESS} >> $HOME/.bash_profile
 source $HOME/.bash_profile
-```
-
-### Fund your wallet
-In order to create validator first you need to fund your wallet with testnet tokens.
-To top up your wallet join [Stride discord server](https://discord.gg/n6KrK77t) and navigate to:
-- **#token-faucet** to request test tokens
-
-To request a faucet grant:
-```
-$faucet-stride:<STRIDE_WALLET_ADDRESS>
 ```
 
 ### Create validator

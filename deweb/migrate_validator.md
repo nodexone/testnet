@@ -1,3 +1,11 @@
+<span tyle="font-size:14px" align="right">NodeX Official Accounts :
+<span style="font-size:14px" align="right">
+<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<a href="https://twitter.com/nodexploit/" target="_blank">Twitter</a></span> ⭐ 
+<span style="font-size:14px" align="right">
+<hr>
+
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/166676803-ee125d04-dfe2-4c92-8f0c-8af357aad691.png">
 </p>
@@ -5,7 +13,7 @@
 # Migrate your validator to another machine
 
 ### 1. Run a new full node on a new machine
-To setup full node you can follow my guide [deweb node setup for Testnet](https://github.com/kj89/testnet_manuals/blob/main/deweb/README.md)
+To setup full node you can follow my guide [deweb node setup for Testnet](https://github.com/nodesxploit/testnet/blob/main/deweb/README.md)
 
 ### 2. Confirm that you have the recovery seed phrase information for the active key running on the old machine
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "=========================================="
 echo -e "\033[0;35m"
 echo "       ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::  ";
 echo "      :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:    ";
@@ -10,14 +9,14 @@ echo "   +#+  +#+#+# +#+    +#+ +#+    +#+ +#+        +#+   +#+        ";
 echo "  #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#        ";
 echo " ###    ####  ########  #########  ######## ###        ###       ";
 echo -e "\e[0m"
-echo "=========================================="
+
 
 
 sleep 2
 
 # set vars
 if [ ! $NODENAME ]; then
-	read -p "Enter Moniker: " NODENAME
+	read -p "Enter node name: " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
 TERITORI_PORT=19
@@ -29,10 +28,10 @@ echo "export TERITORI_PORT=${TERITORI_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 echo '================================================='
-echo -e "Your Moniker: \e[1m\e[32m$NODENAME\e[0m"
-echo -e "Your Wallet: \e[1m\e[32m$WALLET\e[0m"
-echo -e "Chain Name: \e[1m\e[32m$TERITORI_CHAIN_ID\e[0m"
-echo -e "Your Port: \e[1m\e[32m$TERITORI_PORT\e[0m"
+echo -e "Your node name: \e[1m\e[32m$NODENAME\e[0m"
+echo -e "Your wallet name: \e[1m\e[32m$WALLET\e[0m"
+echo -e "Your chain name: \e[1m\e[32m$TERITORI_CHAIN_ID\e[0m"
+echo -e "Your port: \e[1m\e[32m$TERITORI_PORT\e[0m"
 echo '================================================='
 sleep 2
 
@@ -125,6 +124,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable teritorid
 sudo systemctl restart teritorid
 
-echo '=============== CONGRATS! SETUP FINISHED ==================='
+echo '=============== SETUP FINISHED ==================='
 echo -e 'To check logs: \e[1m\e[32mjournalctl -u teritorid -f -o cat\e[0m'
 echo -e "To check sync status: \e[1m\e[32mcurl -s localhost:${TERITORI_PORT}657/status | jq .result.sync_info\e[0m"
