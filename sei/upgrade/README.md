@@ -1,3 +1,11 @@
+<strong><p style="font-size:14px" align="left">Founder :
+<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
+<strong><p style="font-size:14px" align="left">Visit Our Website : 
+<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
+<strong><p style="font-size:14px" align="left">Follow Me :
+<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<hr>
+
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/169664551-39020c2e-fa95-483b-916b-c52ce4cb907c.png">
 </p>

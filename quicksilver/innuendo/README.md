@@ -1,8 +1,16 @@
+<strong><p style="font-size:14px" align="left">Founder :
+<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
+<strong><p style="font-size:14px" align="left">Visit Our Website : 
+<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
+<strong><p style="font-size:14px" align="left">Follow Me :
+<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<hr>
+
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/166148846-93575afe-e3ce-4ca5-a3f7-a21e8a8609cb.png">
 </p>
 
-# Quicksilver node setup for Testnet — innuendo-1
+# Quicksilver node setup for Testnet — innuendo-3
 
 Official documentation:
 >- [Validator setup instructions](https://github.com/ingenuity-build/testnets)
@@ -11,7 +19,7 @@ Explorer:
 >-  https://quicksilver.explorers.guru/
 
 ## Usefull tools and references
-> To generate gentx for innuendo-1 testnet please navigate to [Generate gentx for innuendo-1 testnet](https://github.com/kj89/testnet_manuals/blob/main/quicksilver/innuendo/gentx/README.md)
+> To generate gentx for innuendo-3 testnet please navigate to [Generate gentx for innuendo-3 testnet](https://github.com/kj89/testnet_manuals/blob/main/quicksilver/innuendo/gentx/README.md)
 >
 > To set up monitoring for your validator node navigate to [Set up monitoring and alerting for quicksilver validator](https://github.com/kj89/testnet_manuals/blob/main/quicksilver/innuendo/monitoring/README.md)
 >

@@ -4,8 +4,6 @@
 <a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
 <strong><p style="font-size:14px" align="left">Follow Me :
 <a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
-<strong><p style="font-size:14px" align="left">Motto :
-<a>I want to be a useful person in the community✨</a></p></strong>
 <hr>
 
 <p align="center">
@@ -28,7 +26,7 @@ echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export QUICKSILVER_CHAIN_ID=innuendo-1" >> $HOME/.bash_profile
+echo "export QUICKSILVER_CHAIN_ID=innuendo-3" >> $HOME/.bash_profile
 echo "export QUICKSILVER_PORT=${QUICKSILVER_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
@@ -61,10 +59,7 @@ fi
 ```
 cd $HOME
 rm quicksilver -rf
-git clone https://github.com/ingenuity-build/quicksilver.git --branch v0.6.1
-cd quicksilver
-make build
-sudo chmod +x ./build/quicksilverd && sudo mv ./build/quicksilverd /usr/local/bin/quicksilverd
+sudo wget -O /usr/local/bin/quicksilverd https://github.com/ingenuity-build/testnets/releases/download/v0.9.0/quicksilverd-v0.9.1-amd64
 ```
 
 ## Config app
@@ -87,7 +82,7 @@ wget -qO $HOME/.quicksilverd/config/genesis.json "https://raw.githubusercontent.
 ## Set seeds and peers
 ```
 SEEDS="7b21198feaf0882f09fcbb24060961f434d158a3@34.105.163.125:26656"
-PEERS="c172ce6ecb094729caa703986ef9dbbb6ac900f5@74.96.207.62:26656,f43bbd9bdceca5195a1b447adcc9108e4b960518@195.201.165.123:21026,1c4274460224753e8080d0efd16c0ed88fe27fc0@51.195.145.103:26656,2096650d8586b858d3369205f3b46ac4c765bc8e@65.109.53.155:26656,64c58848cae4f3f1cb5d7700d3c225aa21536d28@142.132.155.252:47656,4bf435ccd8d1f79592e25054e98169f4a31ca44c@142.132.147.189:47656,b9b8bb23e61d53ff3b293485d04ea567ebcd7933@65.108.65.94:26656,5c6bfcfd42e8a4cf7960cf8b1860eed3de17196d@65.108.75.237:2010,efdd108aef069b76c26687b37e56b89586d51cc3@78.46.16.236:42656,c896ef12812a82eea865111c49f226849ad077db@144.76.236.90:26656,41f7d7004cace7bd1760a5f980a86123700c8f1d@185.146.148.116:26656,926ce3f8ce4cda6f1a5ee97a937a44f59ff28fbf@65.108.13.176:26656,28c744925f3d436d258d0070deeb6f4990c1086c@142.132.151.99:15619,7b21198feaf0882f09fcbb24060961f434d158a3@35.242.163.107:26656,884919e20a71dc0c632739f44275897f80725159@185.16.39.51:11656,8a334ed2e728ca1164f8ef6ae58dd5fda31da5be@66.94.104.239:26641,5ef217edd40494336c2572f7767a4f7ec7f16223@65.108.77.250:46641,025e1a9ba7e536e1db47569b55081f7adf6d2f9e@95.217.83.28:26636,dc88be3a0075ce429a423237abe223a9528ce0df@65.108.204.119:31656,20b6b3f6c0927c14a2348f5e378b98cb8596fc06@34.105.195.160:26656"
+PEERS="8ff8a186fe9cbc70d0f34891fa051f87e561a48b@158.160.0.93:26656,8f9e7cf4cc2809933e714b2c2e757a4da99fd7b4@35.189.115.248:26656,7fe3007cba4de49584cbdad9489ffecfc9651c57@65.108.79.246:26673,b02f304fa0f10090491f62bf12ed32bf73138d5c@148.72.153.85:11656,18b711011fe7c0fa4a1555c89808dffecf9a3ba3@65.21.142.30:26656,433f85361545a434ad6b4202e2f373e4894ecf39@142.132.151.99:15619,1c1ca90d704c22844570d57039ccf2e8f58e475d@80.64.208.123:26656,8a334ed2e728ca1164f8ef6ae58dd5fda31da5be@66.94.104.239:26641"
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.quicksilverd/config/config.toml
 ```
 

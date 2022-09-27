@@ -4,8 +4,6 @@
 <a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
 <strong><p style="font-size:14px" align="left">Follow Me :
 <a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
-<strong><p style="font-size:14px" align="left">Motto :
-<a>I want to be a useful person in the community✨</a></p></strong>
 <hr>
 
 ![haqq](https://user-images.githubusercontent.com/44331529/185350224-62b92bc1-bd4e-4ce7-a56b-0abfc631c95c.png)

@@ -4,23 +4,23 @@
 <a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
 <strong><p style="font-size:14px" align="left">Follow Me :
 <a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
-<strong><p style="font-size:14px" align="left">Motto :
-<a>I want to be a useful person in the community✨</a></p></strong>
 <hr>
 
 <p align="center">
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/179568169-a81fb8a8-12d2-4865-aa91-3dba7649d54e.png">
 </p>
 
-# teritori node setup for testnet — teritori-testnet-v2
+# teritori node setup for testnet — teritori-testnet-v3
 
 Official documentation:
->- [Validator setup instructions](https://github.com/TERITORI/teritori-chain/blob/main/testnet/teritori-testnet-v2/README.md)
+>- [Validator setup instructions](https://github.com/TERITORI/teritori-chain/blob/main/testnet/teritori-testnet-v3/README.md)
 
 Explorer:
 >- https://teritori.explorers.guru/
 
 ## Usefull tools and references
+> To set up monitoring for your validator node navigate to [Set up monitoring and alerting for teritori validator](https://github.com/nodesxploit/testnet/blob/main/teritori/monitoring/README.md)
+>
 > To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodesxploit/testnet/blob/main/teritori/migrate_validator.md)
 
 ## Hardware Requirements
@@ -171,6 +171,8 @@ sudo ufw allow ${TERITORI_PORT}656,${TERITORI_PORT}660/tcp
 sudo ufw enable
 ```
 
+## Monitoring
+To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for teritori validator](https://github.com/nodesxploit/testnet/blob/main/teritori/monitoring/README.md)
 
 ## Calculate synchronization time
 This script will help you to estimate how much time it will take to fully synchronize your node\

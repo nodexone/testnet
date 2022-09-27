@@ -4,8 +4,6 @@
 <a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
 <strong><p style="font-size:14px" align="left">Follow Me :
 <a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
-<strong><p style="font-size:14px" align="left">Motto :
-<a>I want to be a useful person in the community✨</a></p></strong>
 <hr>
 
 <p align="center">
@@ -41,7 +39,7 @@ source $HOME/.bash_profile
 
 ## Download and build binaries
 ```
-wget -O - https://github.com/palomachain/pigeon/releases/download/v0.7.0/pigeon_Linux_x86_64.tar.gz | \
+wget -O - https://github.com/palomachain/pigeon/releases/download/v0.8.1/pigeon_Linux_x86_64.tar.gz | \
 tar -C /usr/local/bin -xvzf - pigeon
 chmod +x /usr/local/bin/pigeon
 mkdir ~/.pigeon

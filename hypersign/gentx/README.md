@@ -4,8 +4,6 @@
 <a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
 <strong><p style="font-size:14px" align="left">Follow Me :
 <a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
-<strong><p style="font-size:14px" align="left">Motto :
-<a>I want to be a useful person in the community✨</a></p></strong>
 <hr>
 
 <p align="center">
@@ -69,7 +67,7 @@ hid-noded config keyring-backend test
 hid-noded init $NODENAME --chain-id $CHAIN_ID
 ```
 
-## Recover or create new wallet for mainnet
+## Recover or create new wallet for testnet
 Option 1 - generate new wallet
 ```
 hid-noded keys add $WALLET
@@ -99,10 +97,10 @@ hid-noded gentx $WALLET 100000000000uhid \
 
 ## Things you have to backup
 - `24 word mnemonic` of your generated wallet
-- contents of `$HOME/.hid-noded/config/*`
+- contents of `$HOME/.hid-node/config/*`
 
 ## Submit PR with Gentx
-1. Copy the contents of ${HOME}/.hid-noded/config/gentx/gentx-XXXXXXXX.json.
+1. Copy the contents of ${HOME}/.hid-node/config/gentx/gentx-XXXXXXXX.json.
 2. Fork https://github.com/hypersign-protocol/networks
 3. Create a file `gentx-<VALIDATOR_NAME>.json` under the `testnet/jagrat/gentxs/` folder in the forked repo, paste the copied text into the file.
 4. Create a Pull Request to the main branch of the repository
