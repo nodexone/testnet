@@ -60,17 +60,23 @@ Next you have to make sure your validator is syncing blocks. You can use command
 sourced status 2>&1 | jq .SyncInfo
 ```
 
-## Snapshot 06.09.22 (0.1 GB) block height --> 2226618 from community member obajay
+## SnapShot 27.09.22 (0.1 GB) block height --> 2530401 from Obajay
 Source: https://github.com/obajay/StateSync-snapshots/blob/main/Source/README.md
 ```
 sudo systemctl stop sourced
 rm -rf $HOME/.source/data/
 mkdir $HOME/.source/data/
 cd $HOME
-wget http://116.202.236.115:8000/sourcedata.tar.gz
+wget http://116.202.236.115:7150/sourcedata.tar.gz
 tar -C $HOME/ -zxvf sourcedata.tar.gz --strip-components 1
 rm sourcedata.tar.gz
 sudo systemctl restart sourced && journalctl -u sourced -f -o cat
+```
+
+## Quick update (Impotant!)
+If the validator was created earlier. Need to reset priv_validator_state.json!, If you dont create validator before please skip this step!
+```
+wget -O $HOME/.source/data/priv_validator_state.json "https://raw.githubusercontent.com/obajay/StateSync-snapshots/main/priv_validator_state.json"
 ```
 
 ### Create wallet
