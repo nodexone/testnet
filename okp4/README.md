@@ -16,7 +16,7 @@ Guide Source :
 >- [Obajay](https://github.com/obajay/nodes-Guides/tree/main/OKP4)
 
 Explorer:
->-  [Explore](https://explorer.stavr.tech/okp4)
+>- https://explorer.stavr.tech/okp4
 
 
 ## Usefull tools and references
