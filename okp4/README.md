@@ -10,7 +10,7 @@
   <img src="https://user-images.githubusercontent.com/44331529/197152847-749c938c-c385-4698-bfa5-3f159297f391.png">
 </p>
 
-# nois node setup for testnet — Okp4 Nemeton
+# Okp4 node setup for testnet — Okp4 Nemeton
 
 Guide Source :
 >- [Obajay](https://github.com/obajay/nodes-Guides/tree/main/OKP4)
@@ -37,7 +37,7 @@ Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
  - 1TB of storage (SSD or NVME)
  - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
 
-## Set up your nois fullnode
+## Set up your Okp4 fullnode
 ### Option 1 (automatic)
 You can setup your nois fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
