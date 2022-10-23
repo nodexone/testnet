@@ -130,7 +130,7 @@ okp4d tx staking create-validator \
   --min-self-delegation "1" \
   --pubkey  $(okp4d tendermint show-validator) \
   --moniker $NODENAME \
-  --chain-id $OKP4D_CHAIN_ID
+  --chain-id okp4-nemeton
 ```
 
 ## Security
