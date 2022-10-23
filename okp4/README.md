@@ -234,7 +234,7 @@ okp4d query bank balances $OKP4D_WALLET_ADDRESS
 
 Transfer funds
 ```
-okp4d tx bank send $OKP4D_WALLET_ADDRESS <TO_OKP4D_WALLET_ADDRESS> 10000000unois
+okp4d tx bank send $OKP4D_WALLET_ADDRESS <TO_OKP4D_WALLET_ADDRESS> 10000000uknow
 ```
 
 ### Voting
@@ -245,12 +245,12 @@ okp4d tx gov vote 1 yes --from $WALLET --chain-id=$OKP4D_CHAIN_ID
 ### Staking, Delegation and Rewards
 Delegate stake
 ```
-okp4d tx staking delegate $OKP4D_VALOPER_ADDRESS 10000000unois --from=$WALLET --chain-id=$OKP4D_CHAIN_ID --gas=auto
+okp4d tx staking delegate $OKP4D_VALOPER_ADDRESS 10000000uknow --from=$WALLET --chain-id=$OKP4D_CHAIN_ID --gas=auto
 ```
 
 Redelegate stake from validator to another validator
 ```
-okp4d tx staking redelegate <srcValidatorAddress> <destValidatorAddress> 10000000unois --from=$WALLET --chain-id=$OKP4D_CHAIN_ID --gas=auto
+okp4d tx staking redelegate <srcValidatorAddress> <destValidatorAddress> 10000000uknow --from=$WALLET --chain-id=$OKP4D_CHAIN_ID --gas=auto
 ```
 
 Withdraw all rewards
