@@ -151,7 +151,7 @@ sudo ufw default allow outgoing
 sudo ufw default deny incoming
 sudo ufw allow ssh/tcp
 sudo ufw limit ssh/tcp
-sudo ufw allow ${NOIS_PORT}656,${NOIS_PORT}660/tcp
+sudo ufw allow ${OKP4_PORT}656,${OKP4_PORT}660/tcp
 sudo ufw enable
 ```
 
