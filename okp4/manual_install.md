@@ -26,7 +26,7 @@ echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export $OKP4D_CHAIN_ID=okp4-nemeton" >> $HOME/.bash_profile
+echo "export OKP4D_CHAIN_ID=okp4-nemeton" >> $HOME/.bash_profile
 echo "export OKP4_PORT=${OKP4_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
@@ -38,8 +38,7 @@ sudo apt update && sudo apt upgrade -y
 
 ## Install dependencies
 ```
-sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc
-git jq chrony liblz4-tool -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
 
 ## Install go
