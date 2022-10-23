@@ -7,7 +7,7 @@
 <hr>
 
 <p align="center">
-  <img height="100" height="auto" src="https://user-images.githubusercontent.com/44331529/197152847-749c938c-c385-4698-bfa5-3f159297f391.png">
+  <img src="https://user-images.githubusercontent.com/44331529/197152847-749c938c-c385-4698-bfa5-3f159297f391.png">
 </p>
 
 # Manual node setup
