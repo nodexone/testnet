@@ -18,15 +18,19 @@ if [ ! $NODENAME ]; then
 	read -p "Enter node name: " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
-
+OKP4_PORT=10
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
+echo "export OKP4D_CHAIN_ID=okp4-nemeton" >> $HOME/.bash_profile
+echo "export OKP4_PORT=${OKP4_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 echo '================================================='
 echo -e "Your node name: \e[1m\e[32m$NODENAME\e[0m"
 echo -e "Your wallet name: \e[1m\e[32m$WALLET\e[0m"
+echo -e "Your chain name: \e[1m\e[32m$OKP4D_CHAIN_ID\e[0m"
+echo -e "Your okp4 port: \e[1m\e[32m$OKP4_PORT\e[0m"
 echo '================================================='
 sleep 2
 
@@ -58,11 +62,12 @@ cd okp4d
 make install
 
 # config
-okp4d config chain-id $OKP4D_CHAIN_ID
+okp4d config chain-id okp4-nemeton
 okp4d config keyring-backend test
+okp4d config node tcp://localhost:${OKP4_PORT}657
 
 # init
-okp4d init $NODENAME --chain-id $OKP4D_CHAIN_ID
+okp4d init $NODENAME --chain-id okp4-nemeton
 
 # download genesis and addrbook
 wget -qO $HOME/.okp4d/config/genesis.json "https://raw.githubusercontent.com/okp4/networks/main/chains/nemeton/genesis.json"
@@ -93,6 +98,9 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $
 #set null indexer
 indexer="null" && \
 sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.okp4d/config/config.toml
+
+#reset
+okp4d tendermint unsafe-reset-all --home $HOME/.okp4d
 
 echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
 # create service
