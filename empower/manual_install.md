@@ -147,7 +147,7 @@ WantedBy=multi-user.target
 EOF
 ```
 
-## Register and start service
+## Register and start services
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable empowerd
