@@ -111,7 +111,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which okp4d) start
+ExecStart=$(which okp4d) start --home $HOME/.okp4d
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
