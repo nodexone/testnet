@@ -12,14 +12,12 @@
 
 # nois node setup for testnet — Okp4 Nemeton
 
-Official documentation:
->- [Validator setup instructions](links)
+Guide Source :
+>- [Obajay](https://github.com/obajay/nodes-Guides/tree/main/OKP4)
 
 Explorer:
->-  N/A
+>-  [Explore](https://explorer.stavr.tech/okp4)
 
-Guide Source :
->- Obajay
 
 ## Usefull tools and references
 > To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodesxploit/testnet/blob/main/okp4/migrate_validator.md)
