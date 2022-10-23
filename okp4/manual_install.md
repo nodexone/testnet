@@ -21,7 +21,7 @@ NODENAME=<YOUR_MONIKER_NAME_GOES_HERE>
 
 Save and import variables into system
 ```
-PALOMA_PORT=10
+OKP4_PORT=10
 echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
