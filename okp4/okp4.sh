@@ -22,7 +22,6 @@ fi
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export $OKP4D_CHAIN_ID=okp4-nemeton" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 echo '================================================='
