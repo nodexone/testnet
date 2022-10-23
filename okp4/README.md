@@ -108,10 +108,7 @@ source $HOME/.bash_profile
 ```
 
 ### Fund your wallet
-In order to create validator first you need to fund your wallet with testnet tokens.
-```
-> TBA
-```
+In order to create validator first you need to fund your wallet with testnet tokens here https://faucet.okp4.network/
 
 ### Create validator
 Before creating validator please make sure that you have at least 1 strd (1 strd is equal to 1000000 unois) and your node is synchronized
