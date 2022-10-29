@@ -11,7 +11,7 @@
   <img height="300" height="auto" src="https://user-images.githubusercontent.com/38981255/198820722-9f95bc3c-2963-4bda-8886-33c6ce89b13b.PNG">
 </p>
 
-# Deinfra Testnet phase 1 - [Manual Install]
+# Deinfra Testnet phase 1 - Manual Install
 
 ## Update package
 ```
