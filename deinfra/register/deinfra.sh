@@ -32,9 +32,6 @@ echo -e "\e[1m\e[32m1. Setting up... \e[0m" && sleep 1
 # Docker image
 docker run -d -p 44000:44000 --name tpnode thepowerio/tpnode
 
-# Sign IP
-echo -e "\e[1m\e[32m1. Sign Ip Address... \e[0m" && sleep 1
-curl http://$GET_IP:44000/api/node/status | jq
-
 echo '=============== SETUP FINISHED ==================='
-echo -e "To check sync status: \e[1m\e[32mcurl http://$GET_IP:44000/api/node/status | jq\e[0m"
+
+echo -e "To check node status : \e[1m\e[32mcurl http://$GET_IP:44000/api/node/status | jq\e[0m"
