@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -25,7 +23,7 @@ For the moment mixnode does not require beastly server with multiple cores. Curr
 - Support of IPv4 and IPv6
 
 ## BEFORE YOU BEGIN
-To start with Nym mixnode installation please create your Nym wallet first. If you have already generated your wallet you can skip next step and go straight to [INSTALATION](https://github.com/nodesxploit/testnet/tree/main/nym#installation)
+To start with Nym mixnode installation please create your Nym wallet first. If you have already generated your wallet you can skip next step and go straight to [INSTALATION](https://github.com/nodexcapital/testnet/tree/main/nym#installation)
 
 ### Generate nym wallet
 1. Go to [https://nymtech.net](https://nymtech.net/download/) and download the latest available version of Nym Wallet
@@ -49,7 +47,7 @@ To start with Nym mixnode installation please create your Nym wallet first. If y
 ## INSTALLATION
 1. Run one-liner below to install your nym mixnode and follow the on-screen instructions
 ```
-wget -O nym.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/nym/nym.sh && chmod +x nym.sh && ./nym.sh
+wget -O nym.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nym/nym.sh && chmod +x nym.sh && ./nym.sh
 ```
 
 <p align="center">
@@ -103,7 +101,7 @@ journalctl -u nym-mixnode -o cat | grep "Since startup mixed" | tail -1
 
 ## UPDATE YOUR MIXNODE
 ```
-wget -O update.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/nym/update.sh && chmod +x update.sh && ./update.sh
+wget -O update.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nym/update.sh && chmod +x update.sh && ./update.sh
 ```
 
 ## OTHER USEFUL COMMANDS

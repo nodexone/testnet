@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -21,17 +19,17 @@ Easy Node's updated findora.sh to create a **brand new server with a brand new w
 We made some modifications to add a restart on boot and to also install the current version of `fn` during the script instead of separately.  
 
 ### Manual Setup
-Install docker and configure your user by follow manual install. If you user isn't `servicefindora` update that to be your username in the following code before running it on your server, Follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/findora/manual_install.md) if you better prefer setting up node manually
+Install docker and configure your user by follow manual install. If you user isn't `servicefindora` update that to be your username in the following code before running it on your server, Follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/findora/manual_install.md) if you better prefer setting up node manually
 
 ### Automatic Install
 Restart your shell session after configure manual install above (disconnect and reconnect so your user account has docker group access), then grab the mainnet script and fire away! select 2 option that you wanna install below :
 
 Testnet Automatic
-```wget -O findora.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/empower/findora.sh && chmod +x findora.sh && bash -x findora.sh
+```wget -O findora.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/empower/findora.sh && chmod +x findora.sh && bash -x findora.sh
 ```
 Mainnet Automatic
 ```
-wget -O mainnet.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/empower/upgrade/mainnet.sh && chmod +x mainnet.sh && bash -x mainnet.sh
+wget -O mainnet.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/empower/upgrade/mainnet.sh && chmod +x mainnet.sh && bash -x mainnet.sh
 ```
 
 ### Update Version

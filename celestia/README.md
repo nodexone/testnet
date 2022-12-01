@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -13,16 +11,16 @@
 # Celestia node setup for testnet — mamaki
 
 Official documentation:
-- https://docs.celestia.org/nodes/overview
+>- https://docs.celestia.org/nodes/overview
 
 Explorer:
-- https://celestia.explorers.guru
+>- https://celestia.explorers.guru
 
 Manual guides:
-- [Run Validator and Bridge Node on same machine](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_install.md)
-- [Run Bridge Node seperately](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_bridge.md)
-- [Run Light Node seperately](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_light.md)
-- [Run Full Node seperately](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_full.md)
+>- [Run Validator and Bridge Node on same machine](https://github.com/nodexcapital/testnet/blob/main/celestia/manual_install.md)
+>- [Bridge Node ](https://github.com/nodexcapital/testnet/blob/main/celestia/manual_bridge.md)
+>- [Light Node  ](https://github.com/nodexcapital/testnet/blob/main/celestia/manual_light.md)
+>- [Full Node   ](https://github.com/nodexcapital/testnet/blob/main/celestia/manual_full.md)
 
 ## Hardware requirements
 - Memory: 8 GB RAM
@@ -34,11 +32,11 @@ Manual guides:
 ### Option 1 (automatic)
 You can setup your celestia fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O celestia.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/celestia/celestia.sh && chmod +x celestia.sh && ./celestia.sh
+wget -O celestia.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/celestia/celestia.sh && chmod +x celestia.sh && ./celestia.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/celestia/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/celestia/manual_install.md) if you better prefer setting up node manually
 
 ## Post installation
 
@@ -160,7 +158,7 @@ sudo ufw enable
 This script will help you to estimate how much time it will take to fully synchronize your node\
 It measures average blocks per minute that are being synchronized for period of 5 minutes and then gives you results
 ```
-wget -O synctime.py https://raw.githubusercontent.com/nodesxploit/testnet/main/celestia/tools/synctime.py && python3 ./synctime.py
+wget -O synctime.py https://raw.githubusercontent.com/nodexcapital/testnet/main/celestia/tools/synctime.py && python3 ./synctime.py
 ```
 
 ### Get list of validators

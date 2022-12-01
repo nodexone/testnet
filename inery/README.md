@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 # Inery Incentivized Testnet - Node Setup
@@ -16,7 +14,7 @@ Official Documentation:
 Explorer:
 >-  https://explorer.inery.io/blocks/
 
->- To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for inery validator](https://github.com/nodesxploit/testnet/blob/main/inery/monitoring/README.md)
+>- To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for inery validator](https://github.com/nodexcapital/testnet/blob/main/inery/monitoring/README.md)
 
 ### =================================
 Special thanks to my fren Pramono Utomo A.K.A NakedCat for provide this tutorial on publish0x! I just copy and modified :)
@@ -45,10 +43,10 @@ Note : Make sure you're ordering vps as specs needed for the requirement, otherw
 ### Option 1 (automatic)
 You can setup your inery fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O inery.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/inery/inery.sh && chmod +x inery.sh && ./inery.sh
+wget -O inery.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/inery/inery.sh && chmod +x inery.sh && ./inery.sh
 ```
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/inery/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/inery/manual_install.md) if you better prefer setting up node manually
 
 ## Setup
 >- Register Inery Testnet Dashboard on https://testnet.inery.io/

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-echo -e "\033[0;35m"
-echo " ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::  :::::::::: :::       ::::::::  ::: :::::::::::    ";
-echo " :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:   :+:    :+: :+:      :+:    :+: :+:     :+:        ";
-echo " :+:+:+  +:+ +:+    +:+ :+:    :+: +:+        +:+   +:+    :+:    :+: +:+      +:+    +:+ +:+     +:+        ";
-echo " +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#       +#++:+:+:+ +#+      +#+    +:+ +#+     +#+        ";
-echo " +#+  +#+#+# +#+    +#+ +#+    +:+ +#+        +#+   +#+    +#+        +#+      +#+    +#+ +#+     +#+        ";
-echo " #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#   #+#        #+#      #+#    #+# #+#     #+#        ";
-echo " ###    ####  ########  #########  ######## ###       ###  ###        ########  ########  ###     ###        ";
+echo -e "\033[0;31m"
+echo " ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::   ::::::::       ::::       :::::::::  ::: :::::::::::    ::::       :::        ";
+echo " :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:   :+:            :+::+:      :+:    :+: :+:     :+:       :+::+:      :+:        ";
+echo " :+:+:+  +:+ +:+    +:+ :+:    :+: +:+        +:+   +:+    :+:           +:+  +:+     +:+    +:+ +:+     +:+      +:+  +:+     +:+        ";
+echo " +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#       +#+          +#+    +#+    +#+ +: +#  +#+     +#+     +#+    +#+    +#+        ";
+echo " +#+  +#+#+# +#+    +#+ +#+    +:+ +#+        +#+   +#+    +#+         +#+ :+:+ +#+   +#+        +#+     +#+    +#+ :+:+ +#+   +#+        ";
+echo " #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#   #+#        #+#        #+#  #+#        #+#     #+#   #+#        #+#  #+#        ";
+echo " ###    ####  ########  #########  ######## ###       ###   ######## ###          ### ###        ###     ###  ###          ### #########  ";
 echo -e "\e[0m"
 
 sleep 2
@@ -56,10 +56,10 @@ fi
 echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
 # download binary
 cd $HOME
-git clone https://github.com/Stride-Labs/stride.git
-cd stride
-git checkout v1.0.2
-make build
+git clone https://github.com/Stride-Labs/stride
+cd stride && git checkout v3.0.0
+make install
+
 sudo cp $HOME/stride/build/strided /usr/local/bin
 
 # config
@@ -72,10 +72,11 @@ strided init $NODENAME --chain-id $STRIDE_CHAIN_ID
 
 # download genesis and addrbook
 wget -qO $HOME/.stride/config/genesis.json "https://raw.githubusercontent.com/Stride-Labs/testnet/infra-test/poolparty/infra/genesis.json"
+wget -O $HOME/.stride/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/Stride/addrbook.json"
 
 # set peers and seeds
-SEEDS="cb91a11588d66cfd9c01f99541df4978a08e0e39@seedv1.main.stridenet.co:26656"
-PEERS="a757fc9ea95a7f643d392ec9fdaa31cbf06e76d9@195.3.221.21:12256,076e97f47762a477f2ae3dd3e798a7970b6bb20d@52.52.110.228:26656,e821acdaf0c7a3c60ea3cd4eb4a98a62dad06f58@43.201.12.41:26656,04dbfff241762b9460b3e23148378fbc8e559a9e@116.203.17.177:26656,74b693b1b0745d250becfbdb550d36504e03bf92@93.115.25.15:26656,b5f9fa874781f975687018ae559f0d952d3a2e24@52.52.208.179:26656,cb0b38aa612e8ac05f704d9b2feb7526607afb77@159.203.191.62:26656,6a1087004245692128a6ad11b812bb3640955b86@162.55.235.69:25656,23180f90318d0003a4e8140a1e67407bf874d69d@78.107.234.44:25656,186b989136983db3ec3147f3e245943d6022e5d4@116.202.227.117:16656"
+SEEDS=""
+PEERS="3a6ea526f5f0857272c79448850abef71653d4df@83.136.249.85:26656,fbc05b4136a15b0b69a2b7f093731453f04ce2f4@192.168.50.57:26656,6795c4cd27d6132a547888ed5b7996aee454a025@172.25.0.2:26656,34c52450d2f107b7c164eb103641df9e45a322d4@65.21.192.108:26656,681803f48d5e9ef9870918e8330551513eccb31c@78.47.51.53:26656,0f2d7f17589e6e31691649ec04fe19561c0d12a6@10.138.0.7:26656,cb0b38aa612e8ac05f704d9b2feb7526607afb77@159.203.191.62:26656,55b446443f2bd68e06200c3f294c735c333722b0@162.251.235.252:26656,68fb634620e00a5a18f606360b6ca6d989da8ce6@65.108.106.131:26656,f56ddd6af02efaac4c47cc8053685d11c1065996@0.0.0.0:26656,f1721dd0324f29c108c1072b2e4fe9c64e63122d@192.168.86.25:26656"
 sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.stride/config/config.toml
 
 # set custom ports
@@ -91,6 +92,9 @@ sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.stride/config/app.tom
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.stride/config/app.toml
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.stride/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.stride/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"nothing\"/" $HOME/.stride/config/app.toml
+indexer="null" && \
+sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.stride/config/config.toml
 
 # set minimum gas price and timeout commit
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ustrd\"/" $HOME/.stride/config/app.toml

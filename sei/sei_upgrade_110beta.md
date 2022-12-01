@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -46,5 +44,5 @@ systemctl restart seid && journalctl -fu seid -o cat
 As an alternative we have prepared script that should update your binary when block height is reached
 Run this in a `screen` so it will not get stopped when session disconnected 😉
 ```
-wget -O sei_upgrade_110beta.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/sei/tools/sei_upgrade_110beta.sh && chmod +x sei_upgrade_110beta.sh && ./sei_upgrade_110beta.sh
+wget -O sei_upgrade_110beta.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/sei/tools/sei_upgrade_110beta.sh && chmod +x sei_upgrade_110beta.sh && ./sei_upgrade_110beta.sh
 ```

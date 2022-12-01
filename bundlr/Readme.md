@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 
@@ -24,7 +22,7 @@ Explorer:
 ## Installation steps:
 You can set up your Bundlr Node in minutes using the automated script below.
 ```
-wget -O bundlr.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/bundlr/bundlr.sh && chmod +x bundlr.sh && ./bundlr.sh
+wget -O bundlr.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/bundlr/bundlr.sh && chmod +x bundlr.sh && ./bundlr.sh
 ```
 
 ### Post-Installation Steps

@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 
@@ -32,15 +30,15 @@ Usefull tools:
 ### Option 1 (automatic)
 Use script below for a quick installation
 ```
-wget -qO aptos.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/aptos/aptos.sh && chmod +x aptos.sh && ./aptos.sh
+wget -qO aptos.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/aptos/aptos.sh && chmod +x aptos.sh && ./aptos.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/aptos/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/aptos/manual_install.md) if you better prefer setting up node manually
 
 ## Update Aptos Fullnode version
 ```
-wget -qO update.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/aptos/tools/update.sh && chmod +x update.sh && ./update.sh
+wget -qO update.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/aptos/tools/update.sh && chmod +x update.sh && ./update.sh
 ```
 
 ## Useful commands

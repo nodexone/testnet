@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 
@@ -28,7 +26,7 @@ The first task will involved being up immediately after genesis. Every block mis
 
 Please follow the instructions to prepare your validator before 09:00 UTC on Thursday 23rd June
 1) Install fresh Ubuntu 20.04 server
-2) Use our [guide](https://github.com/nodesxploit/testnet/tree/main/quicksilver) to setup your quicksilver fullnode 
+2) Use our [guide](https://github.com/nodexcapital/testnet/tree/main/quicksilver) to setup your quicksilver fullnode 
 3) Recover your wallet (24-word mnemonic phrase) that we used to create `gentx`
 ```
 quicksilverd keys add $WALLET --recover

@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 
@@ -20,7 +18,7 @@ Explorer:
 >-  https://stride.explorers.guru
 
 ## Usefull tools and references
-> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodesxploit/testnet/blob/main/stride/migrate_validator.md)
+> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodexcapital/testnet/blob/main/stride/migrate_validator.md)
 
 ## Hardware Requirements
 Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
@@ -41,11 +39,11 @@ Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
 ### Option 1 (automatic)
 You can setup your stride fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O stride.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/stride/stride.sh && chmod +x stride.sh && ./stride.sh
+wget -O stride.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/stride/stride.sh && chmod +x stride.sh && ./stride.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/stride/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/stride/manual_install.md) if you better prefer setting up node manually
 
 ## Post installation
 
@@ -62,7 +60,33 @@ strided status 2>&1 | jq .SyncInfo
 ### (OPTIONAL) State Sync
 You can state sync your node in minutes by running commands below
 ```
-N/A
+SNAP_RPC=http://stride.rpc.m.stavr.tech:21017
+peers="ce24406f4c7e149e52a75edb8e73dc4501d739b9@stride.rpc.m.stavr.tech:21016"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.stride/config/config.toml
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.stride/config/config.toml
+strided tendermint unsafe-reset-all --home $HOME/.stride --keep-addr-book
+sudo systemctl restart strided && journalctl -u strided -f -o cat
+```
+
+### Snapshot stride (Update every 0.5 hour)
+
+```
+cd $HOME
+sudo systemctl stop strided
+cp $HOME/.stride/data/priv_validator_state.json $HOME/.stride/priv_validator_state.json.backup
+rm -rf $HOME/.stride/data
+wget http://stride.snapshot.stavr.tech:5011/stride/stride-snap.tar.lz4 && lz4 -c -d $HOME/stride-snap.tar.lz4 | tar -x -C $HOME/.stride --strip-components 2
+rm -rf stride-snap.tar.lz4
+mv $HOME/.stride/priv_validator_state.json.backup $HOME/.stride/data/priv_validator_state.json
+sudo systemctl restart strided && journalctl -u strided -f -o cat
 ```
 
 ### Create wallet
@@ -138,7 +162,7 @@ If your record has the attribute `isClaimable=true`, they're ready to be claimed
 ### Claim tokens
 After your tokens have unbonded, they can be claimed by triggering the claim process. 
 ```
-wget -qO claim.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/stride/tools/claim.sh && chmod +x claim.sh
+wget -qO claim.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/stride/tools/claim.sh && chmod +x claim.sh
 ./claim.sh $STRIDE_WALLET_ADDRESS
 ```
 > Note: this function triggers claims in a FIFO queue, meaning if your claim is 20th in line, you'll have process other claims before seeing your tokens appear in your account.
@@ -169,7 +193,7 @@ sudo ufw enable
 This script will help you to estimate how much time it will take to fully synchronize your node\
 It measures average blocks per minute that are being synchronized for period of 5 minutes and then gives you results
 ```
-wget -O synctime.py https://raw.githubusercontent.com/nodesxploit/testnet/main/stride/tools/synctime.py && python3 ./synctime.py
+wget -O synctime.py https://raw.githubusercontent.com/nodexcapital/testnet/main/stride/tools/synctime.py && python3 ./synctime.py
 ```
 
 ### Check your validator key

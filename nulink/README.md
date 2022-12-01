@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -21,7 +19,7 @@ Official Documentation:
 Explorer:
 >-  N/A
 
->- To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for nulink validator](https://github.com/nodesxploit/testnet/blob/main/nulink/monitoring/README.md)
+>- To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for nulink validator](https://github.com/nodexcapital/testnet/blob/main/nulink/monitoring/README.md)
 
 ### Recommended Hardware Requirements 
 - 4 VCPU
@@ -40,10 +38,10 @@ sudo ufw allow 9151
 ### Option 1 (automatic)
 You can setup your nulink fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O nulink.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/nulink/nulink.sh && chmod +x nulink.sh && ./nulink.sh
+wget -O nulink.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nulink/nulink.sh && chmod +x nulink.sh && ./nulink.sh
 ```
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/nulink/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/nulink/manual_install.md) if you better prefer setting up node manually
 
 ### Post-Installation
 When installation is finished please load variables into system
@@ -166,7 +164,7 @@ sudo ufw enable
 
 ### Usefull Command
 ## Monitoring
-To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for nulik validator](https://github.com/nodesxploit/testnet/blob/main/nulink/monitoring/README.md)
+To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for nulik validator](https://github.com/nodexcapital/testnet/blob/main/nulink/monitoring/README.md)
 
 ### Check logs 
 To check logs we can use screen to constantly look at the log

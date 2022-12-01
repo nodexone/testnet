@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -25,11 +23,11 @@ Official documents:
 ### Option 1 (automatic)
 Use script below for a quick installation
 ```
-wget -qO aptos_validator.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/aptos/testnet/aptos_validator.sh && chmod +x aptos_validator.sh && ./aptos_validator.sh
+wget -qO aptos_validator.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/aptos/testnet/aptos_validator.sh && chmod +x aptos_validator.sh && ./aptos_validator.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/aptos/testnet/validator_manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/aptos/testnet/validator_manual_install.md) if you better prefer setting up node manually
 
 ## Post installation
 When installation is finished please load variables into system
@@ -84,7 +82,7 @@ unset NODENAME
 ```
 
 ## (OPTIONAL) You can install fullnode on a seperate machine but its optional
-Guide can be found [here](https://github.com/nodesxploit/testnet/blob/main/aptos/testnet/fullnode_manual_install.md)
+Guide can be found [here](https://github.com/nodexcapital/testnet/blob/main/aptos/testnet/fullnode_manual_install.md)
 
 # Issues with Aptos node
 ## If you experience this error when registering node
@@ -94,14 +92,14 @@ Guide can be found [here](https://github.com/nodesxploit/testnet/blob/main/aptos
 
 Please run following script to fix it (your validator node will have to resync from scratch)
 ```
-wget -qO fix_auth_error.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/aptos/testnet/fix_auth_error.sh && chmod +x fix_auth_error.sh && ./fix_auth_error.sh
+wget -qO fix_auth_error.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/aptos/testnet/fix_auth_error.sh && chmod +x fix_auth_error.sh && ./fix_auth_error.sh
 ```
 >PS: if you run a full node, don't forget to update the waypoint.txt and genesis.blob files there too.
 
 ## To change default API port from 80 to 8080
 ```
 cd ~/$WORKSPACE
-wget -qO docker-compose.yaml https://raw.githubusercontent.com/nodesxploit/testnet/main/aptos/testnet/docker-compose.yaml
+wget -qO docker-compose.yaml https://raw.githubusercontent.com/nodexcapital/testnet/main/aptos/testnet/docker-compose.yaml
 docker compose down
 docker compose up -d
 ```

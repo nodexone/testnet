@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -19,11 +17,11 @@ Explorer:
 >-  https://quicksilver.explorers.guru/
 
 ## Usefull tools and references
-> To generate gentx for killerqueen-1 testnet please navigate to [Generate gentx for killerqueen-1 testnet](https://github.com/nodesxploit/testnet/blob/main/quicksilver/gentx/README.md)
+> To generate gentx for killerqueen-1 testnet please navigate to [Generate gentx for killerqueen-1 testnet](https://github.com/nodexcapital/testnet/blob/main/quicksilver/gentx/README.md)
 >
-> To set up monitoring for your validator node navigate to [Set up monitoring and alerting for quicksilver validator](https://github.com/nodesxploit/testnet/blob/main/quicksilver/monitoring/README.md)
+> To set up monitoring for your validator node navigate to [Set up monitoring and alerting for quicksilver validator](https://github.com/nodexcapital/testnet/blob/main/quicksilver/monitoring/README.md)
 >
-> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodesxploit/testnet/blob/main/quicksilver/migrate_validator.md)
+> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodexcapital/testnet/blob/main/quicksilver/migrate_validator.md)
 
 ## Hardware Requirements
 Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
@@ -44,11 +42,11 @@ Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
 ### Option 1 (automatic)
 You can setup your quicksilver fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O quicksilver.sh https://raw.githubusercontent.com/nodesxploit/testnet/main/quicksilver/quicksilver.sh && chmod +x quicksilver.sh && ./quicksilver.sh
+wget -O quicksilver.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/quicksilver/quicksilver.sh && chmod +x quicksilver.sh && ./quicksilver.sh
 ```
 
 ### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodesxploit/testnet/blob/main/quicksilver/manual_install.md) if you better prefer setting up node manually
+You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/quicksilver/manual_install.md) if you better prefer setting up node manually
 
 ## Post installation
 
@@ -181,13 +179,13 @@ sudo ufw enable
 ```
 
 ## Monitoring
-To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for quicksilver validator](https://github.com/nodesxploit/testnet/blob/main/quicksilver/monitoring/README.md)
+To monitor and get alerted about your validator health status you can use my guide on [Set up monitoring and alerting for quicksilver validator](https://github.com/nodexcapital/testnet/blob/main/quicksilver/monitoring/README.md)
 
 ## Calculate synchronization time
 This script will help you to estimate how much time it will take to fully synchronize your node\
 It measures average blocks per minute that are being synchronized for period of 5 minutes and then gives you results
 ```
-wget -O synctime.py https://raw.githubusercontent.com/nodesxploit/testnet/main/quicksilver/tools/synctime.py && python3 ./synctime.py
+wget -O synctime.py https://raw.githubusercontent.com/nodexcapital/testnet/main/quicksilver/tools/synctime.py && python3 ./synctime.py
 ```
 
 ### Get list of validators

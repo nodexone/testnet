@@ -1,9 +1,7 @@
-<strong><p style="font-size:14px" align="left">Founder :
-<a href="https://discord.gg/JqQNcwff2e" target="_blank">NodeX Capital Discord</a></p></strong>
-<strong><p style="font-size:14px" align="left">Visit Our Website : 
-<a href="https://nodex.codes/" target="_blank">https://nodex.codes</a></p></strong>
-<strong><p style="font-size:14px" align="left">Follow Me :
-<a href="https://twitter.com/nodexploit/" target="_blank">NodeX Twitter</a></p></strong>
+<h3><p style="font-size:14px" align="right">Founder :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<h3><p style="font-size:14px" align="right">Visit Our Website :
+<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
 <hr>
 
 <p align="center">
@@ -77,7 +75,7 @@ empowerd init $NODENAME --chain-id $EMPOWER_CHAIN_ID
 ```
 rm -rf $HOME/.empowerchain/config/genesis.json && cd $HOME/.empowerchain/config && wget https://raw.githubusercontent.com/empowerchain/empowerchain/main/testnets/altruistic-1/genesis.json
 empowerd tendermint unsafe-reset-all --home $HOME/.empowerchain
-wget -qO $HOME/.empowerchain/config/genesis.json "https://raw.githubusercontent.com/nodesxploit/testnet/main/empower/addrbook.json"
+wget -qO $HOME/.empowerchain/config/genesis.json "https://raw.githubusercontent.com/nodexcapital/testnet/main/empower/addrbook.json"
 ```
 
 ## Set seeds and peers
