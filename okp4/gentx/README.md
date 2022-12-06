@@ -2,6 +2,8 @@
 <a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
 <a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<h3><p style="font-size:14px" align="right">Hetzner :
+<a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
 
 
@@ -17,7 +19,7 @@ Save and import variables into system
 ```
 echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
 echo "export WALLET=wallet" >> $HOME/.bash_profile
-echo "export CHAIN_ID=okp4-nemeton" >> $HOME/.bash_profile
+echo "export CHAIN_ID=okp4-nemeton-1" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
@@ -101,8 +103,8 @@ okp4d gentx $WALLET 1000000uknow \
 
 ## Submit PR with Gentx
 1. Copy the contents of ${HOME}/.okp4d/config/gentx/gentx-XXXXXXXX.json.
-2. Fork https://github.com/okp4/networks
-3. Create a file `gentx-<VALIDATOR_NAME>.json` under the `chains/nemeton/gentx/` folder in the forked repo, paste the copied text into the file.
-4. Create a Pull Request to the main branch of the repository
+2. Go to https://github.com/okp4/networks/issues
+3. Create new issue and follow instruction
+4. Submit & wait for some verification (you'll se PR link soon in the same page)
 
 ### Await further instructions!

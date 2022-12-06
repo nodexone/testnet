@@ -18,11 +18,11 @@ if [ ! $NODENAME ]; then
 	read -p "Enter node name: " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
-OKP4_PORT=10
+OKP4_PORT=24
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export OKP4D_CHAIN_ID=okp4-nemeton" >> $HOME/.bash_profile
+echo "export OKP4D_CHAIN_ID=okp4-nemeton-1" >> $HOME/.bash_profile
 echo "export OKP4_PORT=${OKP4_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 

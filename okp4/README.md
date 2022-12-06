@@ -2,6 +2,8 @@
 <a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
 <a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<h3><p style="font-size:14px" align="right">Hetzner :
+<a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
 
 <p align="center">
@@ -61,7 +63,7 @@ okp4d status 2>&1 | jq .SyncInfo
 You can state sync your node in minutes by running commands below
 ```
 SNAP_RPC=https://okp4-testnet-rpc.polkachu.com:443
-peers="https://okp4-testnet-rpc.polkachu.com:443"
+peers=""
 sed -i.bak -e  "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" ~/.okp4d/config/config.toml
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
@@ -128,7 +130,7 @@ okp4d tx staking create-validator \
   --min-self-delegation "1" \
   --pubkey  $(okp4d tendermint show-validator) \
   --moniker $NODENAME \
-  --chain-id okp4-nemeton
+  --chain-id okp4-nemeton-1
 ```
 
 ## Security
