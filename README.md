@@ -14,7 +14,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Celestia     | 20          | [click here](./celestia/README.md)    | [click here](./celestia/manual_install.md)    | [click here](./celestia/monitoring/README.md)    |
 | Rebus        | 21          | [click here](./rebus/README.md)       | [click here](./rebus/manual_install.md)       | [click here](./rebus/monitoring/README.md)       |
 | Juno         | 22          | [click here](./juno/README.md)        | [click here](./juno/manual_install.md)        | [click here](./juno/monitoring/README.md)        |
-| Nibiru       | 23          | [click here](./nibiru/README.md)      | [click here](./nibiru/manual_install.md)      | [click here (./nibiru/monitoring/README.md)        |
+| Nibiru       | 23          | [click here](./nibiru/README.md)      | [click here](./nibiru/manual_install.md)      | [click here](./nibiru/monitoring/README.md)        |
 | Okp4         | 24          | [click here](./okp4/README.md)        | [click here](./okp4/manual_install.md)        | [click here](./okp4/monitoring/README.md)          |
 | Nois         | 25          | [click here](./nois/README.md)        | [click here](./nois/manual_install.md)        | [click here](./nois/monitoring/README.md)          |
 
