@@ -18,6 +18,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Okp4         | 24          | [click here](./okp4/README.md)        | [click here](./okp4/manual_install.md)        | [click here](./okp4/monitoring/README.md)          |
 | Nois         | 25          | [click here](./nois/README.md)        | [click here](./nois/manual_install.md)        | [click here](./nois/monitoring/README.md)          |
 | Gitopia      | 27          | [click here](./gitopia/README.md)     | [click here](./gitopia/manual_install.md)     | [click here](./gitopia/monitoring/README.md)          |
+| Defund       | 28         | [click here](./defund/README.md)     | [click here](./defund/manual_install.md)     | [click here](./defund/monitoring/README.md)          |
 
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
