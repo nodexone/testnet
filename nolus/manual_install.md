@@ -68,7 +68,7 @@ make install
 ```
 nolusd config chain-id $NOLUS_CHAIN_ID
 nolusd config keyring-backend test
-nolusd config node tcp://localhost:$NOLUS_PORT}657
+nolusd config node tcp://localhost:${NOLUS_PORT}657
 ```
 
 ## Init app
