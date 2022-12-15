@@ -21,12 +21,12 @@ NODENAME=<YOUR_MONIKER_NAME_GOES_HERE>
 
 Save and import variables into system
 ```
-OKP4_PORT=10
+OKP4_PORT=24
 echo "export NODENAME=$NODENAME" >> $HOME/.bash_profile
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export OKP4D_CHAIN_ID=okp4-nemeton" >> $HOME/.bash_profile
+echo "export OKP4_CHAIN_ID=okp4-nemeton-1" >> $HOME/.bash_profile
 echo "export OKP4_PORT=${OKP4_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
@@ -44,7 +44,7 @@ sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bs
 ## Install go
 ```
 if ! [ -x "$(command -v go)" ]; then
-  ver="1.19"
+  ver="1.18.2"
   cd $HOME
   wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
   sudo rm -rf /usr/local/go
@@ -60,23 +60,25 @@ fi
 cd $HOME
 git clone https://github.com/okp4/okp4d.git
 cd okp4d
+git checkout v3.0.0
 make install
 ```
 
 ## Config app
 ```
-okp4d config chain-id $OKP4D_CHAIN_ID
+okp4d config chain-id $OKP4_CHAIN_ID
 okp4d config keyring-backend test
+okp4d config node tcp://localhost:${OKP4_PORT}657
 ```
 
 ## Init app
 ```
-okp4d init $NODENAME --chain-id $OKP4D_CHAIN_ID
+okp4d init $NODENAME --chain-id $OKP4_CHAIN_ID
 ```
 
 ## Download genesis and addrbook
 ```
-wget -qO $HOME/.okp4d/config/genesis.json "https://raw.githubusercontent.com/okp4/networks/main/chains/nemeton/genesis.json"
+wget -qO $HOME/.okp4d/config/genesis.json "https://raw.githubusercontent.com/okp4/networks/main/chains/nemeton-1/genesis.json"
 wget -O $HOME/.okp4d/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/OKP4/addrbook.json"
 ```
 
