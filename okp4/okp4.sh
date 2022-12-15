@@ -22,14 +22,14 @@ OKP4_PORT=24
 if [ ! $WALLET ]; then
 	echo "export WALLET=wallet" >> $HOME/.bash_profile
 fi
-echo "export OKP4D_CHAIN_ID=okp4-nemeton-1" >> $HOME/.bash_profile
+echo "export OKP4_CHAIN_ID=okp4-nemeton-1" >> $HOME/.bash_profile
 echo "export OKP4_PORT=${OKP4_PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
 echo '================================================='
 echo -e "Your node name: \e[1m\e[32m$NODENAME\e[0m"
 echo -e "Your wallet name: \e[1m\e[32m$WALLET\e[0m"
-echo -e "Your chain name: \e[1m\e[32m$OKP4D_CHAIN_ID\e[0m"
+echo -e "Your chain name: \e[1m\e[32m$OKP4_CHAIN_ID\e[0m"
 echo -e "Your okp4 port: \e[1m\e[32m$OKP4_PORT\e[0m"
 echo '================================================='
 sleep 2
@@ -43,7 +43,7 @@ echo -e "\e[1m\e[32m2. Installing dependencies... \e[0m" && sleep 1
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 
 # install go
-ver="1.19" && \
+ver="1.18.2" && \
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
 sudo rm -rf /usr/local/go && \
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
@@ -57,18 +57,19 @@ echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
 cd $HOME
 git clone https://github.com/okp4/okp4d.git
 cd okp4d
+git checkout v3.0.0
 make install
 
 # config
-okp4d config chain-id okp4-nemeton
+okp4d config chain-id $OKP4_CHAIN_ID
 okp4d config keyring-backend test
 okp4d config node tcp://localhost:${OKP4_PORT}657
 
 # init
-okp4d init $NODENAME --chain-id okp4-nemeton
+okp4d init $NODENAME --chain-id $OKP4_CHAIN_ID
 
 # download genesis and addrbook
-wget -qO $HOME/.okp4d/config/genesis.json "https://raw.githubusercontent.com/okp4/networks/main/chains/nemeton/genesis.json"
+wget -qO $HOME/.okp4d/config/genesis.json "https://raw.githubusercontent.com/okp4/networks/main/chains/nemeton-1/genesis.json"
 wget -O $HOME/.okp4d/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/OKP4/addrbook.json"
 
 # set peers, gas prices and seeds
