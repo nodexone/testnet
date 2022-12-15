@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/34649601/207593974-32d7cb69-eca9-4096-bc96-246fe7038c88.png">
 </p>
 
-# Okp4 node setup for testnet — Okp4 Nemeton
+# Nolus node setup for testnet — Nolus Lira
 
 Guide Source :
 >- [Elangrr](https://github.com/elangrr/testnet_guide/blob/main/nolus/README.md)
