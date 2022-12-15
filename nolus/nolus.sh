@@ -101,7 +101,6 @@ nolusd tendermint unsafe-reset-all --home $HOME/.nolus
 
 echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
 # create service
-sudo tee /etc/systemd/system/okp4d.service > /dev/null <<EOF
 sudo tee /etc/systemd/system/nolusd.service > /dev/null <<EOF
 [Unit]
 Description=nolusd
