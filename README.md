@@ -21,6 +21,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Defund       | 28          | [click here](./defund/README.md)       | [click here](./defund/manual_install.md)      | [click here](./defund/monitoring/README.md)          | 
 | Nolus        | 29          | [click here](./nolus/README.md)        | [click here](./nolus/manual_install.md)     | [click here](./nolus/monitoring/README.md)           |
 | Humans       | 30          | [click here](./humans/README.md)       | [click here](./humans/manual_install.md)     | [click here](./humans/monitoring/README.md)           |
+| Realio       | 31          | [click here](./realio/README.md)       | [click here](./realio/manual_install.md)     | [click here](./realio/monitoring/README.md)           |
 
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
