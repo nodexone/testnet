@@ -22,6 +22,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Nolus        | 29          | [click here](./nolus/README.md)        | [click here](./nolus/manual_install.md)     | [click here](./nolus/monitoring/README.md)           |
 | Humans       | 30          | [click here](./humans/README.md)       | [click here](./humans/manual_install.md)     | [click here](./humans/monitoring/README.md)           |
 | Realio       | 31          | [click here](./realio/README.md)       | [click here](./realio/manual_install.md)     | [click here](./realio/monitoring/README.md)           |
+| SGE          | 32          | [click here](./sge/README.md)       | [click here](./sge/manual_install.md)     | [click here](./sge/monitoring/README.md)           |
 
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
