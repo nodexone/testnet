@@ -13,10 +13,10 @@
 # Okp4 node setup for testnet — Okp4 Nemeton
 
 Guide Source :
->- [Obajay](https://github.com/obajay/nodes-Guides/tree/main/OKP4)
+>- [Obajay - STAVR](https://github.com/obajay/nodes-Guides/tree/main/OKP4)
 
 Explorer:
->- https://explorer.stavr.tech/okp4
+>- https://explorer.nodexcapital.com/okp4
 
 
 ## Usefull tools and references
@@ -100,10 +100,10 @@ okp4d keys list
 ### Save wallet info
 Add wallet and valoper address into variables 
 ```
-OKP4D_WALLET_ADDRESS=$(okp4d keys show $WALLET -a)
-OKP4D_VALOPER_ADDRESS=$(okp4d keys show $WALLET --bech val -a)
-echo 'export OKP4D_WALLET_ADDRESS='${OKP4D_WALLET_ADDRESS} >> $HOME/.bash_profile
-echo 'export OKP4D_VALOPER_ADDRESS='${OKP4D_VALOPER_ADDRESS} >> $HOME/.bash_profile
+OKP4_WALLET_ADDRESS=$(okp4d keys show $WALLET -a)
+OKP4_VALOPER_ADDRESS=$(okp4d keys show $WALLET --bech val -a)
+echo 'export OKP4_WALLET_ADDRESS='${OKP4_WALLET_ADDRESS} >> $HOME/.bash_profile
+echo 'export OKP4_VALOPER_ADDRESS='${OKP4_VALOPER_ADDRESS} >> $HOME/.bash_profile
 source $HOME/.bash_profile
 ```
 
@@ -226,38 +226,38 @@ okp4d keys delete $WALLET
 
 Get wallet balance
 ```
-okp4d query bank balances $OKP4D_WALLET_ADDRESS
+okp4d query bank balances $OKP4_WALLET_ADDRESS
 ```
 
 Transfer funds
 ```
-okp4d tx bank send $OKP4D_WALLET_ADDRESS <TO_OKP4D_WALLET_ADDRESS> 10000000uknow
+okp4d tx bank send $OKP4_WALLET_ADDRESS <TO_OKP4D_WALLET_ADDRESS> 10000000uknow
 ```
 
 ### Voting
 ```
-okp4d tx gov vote 1 yes --from $WALLET --chain-id=$OKP4D_CHAIN_ID
+okp4d tx gov vote 1 yes --from $WALLET --chain-id=$OKP4_CHAIN_ID
 ```
 
 ### Staking, Delegation and Rewards
 Delegate stake
 ```
-okp4d tx staking delegate $OKP4D_VALOPER_ADDRESS 10000000uknow --from=$WALLET --chain-id=$OKP4D_CHAIN_ID --gas=auto
+okp4d tx staking delegate $OKP4_VALOPER_ADDRESS 10000000uknow --from=$WALLET --chain-id=$OKP4_CHAIN_ID --gas=auto
 ```
 
 Redelegate stake from validator to another validator
 ```
-okp4d tx staking redelegate <srcValidatorAddress> <destValidatorAddress> 10000000uknow --from=$WALLET --chain-id=$OKP4D_CHAIN_ID --gas=auto
+okp4d tx staking redelegate <srcValidatorAddress> <destValidatorAddress> 10000000uknow --from=$WALLET --chain-id=$OKP4_CHAIN_ID --gas=auto
 ```
 
 Withdraw all rewards
 ```
-okp4d tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$OKP4D_CHAIN_ID --gas=auto
+okp4d tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$OKP4_CHAIN_ID --gas=auto
 ```
 
 Withdraw rewards with commision
 ```
-okp4d tx distribution withdraw-rewards $OKP4D_VALOPER_ADDRESS --from=$WALLET --commission --chain-id=$OKP4D_CHAIN_ID
+okp4d tx distribution withdraw-rewards $OKP4_VALOPER_ADDRESS --from=$WALLET --commission --chain-id=$OKP4_CHAIN_ID
 ```
 
 ### Validator management
@@ -268,7 +268,7 @@ okp4d tx staking edit-validator \
   --identity=<your_keybase_id> \
   --website="<your_website>" \
   --details="<your_validator_description>" \
-  --chain-id=$OKP4D_CHAIN_ID \
+  --chain-id=$OKP4_CHAIN_ID \
   --from=$WALLET
 ```
 
@@ -277,7 +277,7 @@ Unjail validator
 okp4d tx slashing unjail \
   --broadcast-mode=block \
   --from=$WALLET \
-  --chain-id=$OKP4D_CHAIN_ID \
+  --chain-id=$OKP4_CHAIN_ID \
   --gas=auto
 ```
 
