@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://raw.githubusercontent.com/nodexcapital/explorer/master/public/logos/planq.svg">
 </p>
 
-# Manual node setup
+# PlanQ Mainnet Manual node setup
 If you want to setup fullnode manually follow the steps below
 
 ## Setting up vars
