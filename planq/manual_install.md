@@ -125,6 +125,7 @@ sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.planqd/config/config.
 ## Reset chain data
 ```
 planqd tendermint unsafe-reset-all --home $HOME/.planqd --keep-addr-book
+```
 
 ## Create service
 ```
