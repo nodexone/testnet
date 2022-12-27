@@ -87,7 +87,7 @@ wget -O $HOME/.planqd/config/addrbook.json "https://raw.githubusercontent.com/no
 
 ## Set peers, gas prices and seeds
 ```
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0aplanq\"/;" ~/.planqd/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0aplanq\"/;" ~/.planqd/config/app.toml
 seeds=`curl -sL https://raw.githubusercontent.com/planq-network/networks/main/mainnet/seeds.txt | awk '{print $1}' | paste -s -d, -`
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" ~/.planqd/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 100/g' $HOME/.planqd/config/config.toml
@@ -116,6 +116,15 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $
 indexer="null" && \
 sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.planqd/config/config.toml
 ```
+
+## Enable prometheus
+```
+sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.planqd/config/config.toml
+```
+
+## Reset chain data
+```
+planqd tendermint unsafe-reset-all --home $HOME/.planqd --keep-addr-book
 
 ## Create service
 ```
