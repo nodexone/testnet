@@ -7,7 +7,7 @@
 <hr>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/nodexcapital/explorer/master/public/logos/planq.svg">
+  <img height="100" height="auto" src="https://raw.githubusercontent.com/nodexcapital/explorer/master/public/logos/planq.svg">
 </p>
 
 # Planq Node Setup for Mainnet planq_7070-2
