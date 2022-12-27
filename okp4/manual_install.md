@@ -67,6 +67,7 @@ make install
 ```
 okp4d config chain-id $OKP4D_CHAIN_ID
 okp4d config keyring-backend test
+okp4d config node tcp://localhost:${OKP4_PORT}657
 ```
 
 ## Init app
