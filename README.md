@@ -26,8 +26,5 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Planq        | 33          | [click here](./planq/README.md)       | [click here](./planq/manual_install.md)     | [click here](./planq/monitoring/README.md)                  |
 
 
-<<<<<<< HEAD
+
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
-=======
-Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
->>>>>>> main/main
