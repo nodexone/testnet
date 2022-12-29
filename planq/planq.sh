@@ -43,7 +43,7 @@ echo -e "\e[1m\e[32m2. Installing dependencies... \e[0m" && sleep 1
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 
 # install go
-ver="1.18.2" && \
+ver="1.19.3" && \
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
 sudo rm -rf /usr/local/go && \
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
@@ -74,7 +74,7 @@ wget -qO $HOME/.planqd/config/genesis.json "https://raw.githubusercontent.com/pl
 wget -O $HOME/.planqd/config/addrbook.json "https://raw.githubusercontent.com/nodexcapital/testnet/main/planq/addrbook.json"
 
 # set peers, gas prices and seeds
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0aplanq\"/;" ~/.planqd/config/app.toml
+sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025aplanq\"/;" ~/.planqd/config/app.toml
 seeds=`curl -sL https://raw.githubusercontent.com/planq-network/networks/main/mainnet/seeds.txt | awk '{print $1}' | paste -s -d, -`
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" ~/.planqd/config/config.toml
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 100/g' $HOME/.planqd/config/config.toml
