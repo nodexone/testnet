@@ -111,17 +111,18 @@ planqd query bank balances $PLANQD_WALLET_ADDRESS
 To create your validator run command below
 ```
 planqd tx staking create-validator \
-  --amount 1000000000000aplanq \
-  --from $WALLET \
-  --commission-max-change-rate "0.01" \
-  --commission-max-rate "0.2" \
-  --commission-rate "0.05" \
-  --min-self-delegation "1" \
-  --pubkey  $(planqd tendermint show-validator) \
-  --moniker $NODENAME \
-  --chain-id $PLANQ_CHAIN_ID \ 
+  --amount=499000000000000000000aplanq \
+  --from=$WALLET \
+  --pubkey=$(planqd tendermint show-validator) \
+  --moniker=$NODENAME \
+  --chain-id=planq_7070-2 \
+  --identity=<your-id>\
+  --commission-rate="0.10" \
+  --commission-max-rate="0.20" \
+  --commission-max-change-rate="0.01" \
+  --min-self-delegation="1000000" \
   --gas="1000000" \
-  --gas-prices="30000000000aplanq" \
+  --gas-prices="300000000aplanq" \
   --gas-adjustment="1.15"
 ```
 
