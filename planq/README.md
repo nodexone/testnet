@@ -65,7 +65,7 @@ You can state sync your node in minutes by running commands below
 N/A
 ```
 
-### Create wallet
+### Option (1) Create wallet
 To create new wallet you can use command below. Don’t forget to save the mnemonic
 ```
 planqd keys add $WALLET
@@ -79,6 +79,11 @@ planqd keys add $WALLET --recover
 To get current list of wallets
 ```
 planqd keys list
+```
+
+### Option (2) Import Metamask wallet
+```
+planqd keys unsafe-import-eth-key $WALLET <private-key-eth> --keyring-backend file
 ```
 
 ### Save wallet info
