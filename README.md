@@ -25,6 +25,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | SGE          | 32          | [click here](./sge/README.md)       | [click here](./sge/manual_install.md)     | [click here](./sge/monitoring/README.md)                     |
 | Planq        | 33          | [click here](./planq/README.md)       | [click here](./planq/manual_install.md)     | [click here](./planq/monitoring/README.md)                  |
 | Terp        | 34          | [click here](./terp/README.md)       | [click here](./terp/manual_install.md)     | [click here](./terp/monitoring/README.md)                  |
+| Source        | 35         | [click here](./source/README.md)       | [click here](./source/manual_install.md)     | [click here](./source/monitoring/README.md)                  |
 
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
