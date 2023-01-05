@@ -1,16 +1,13 @@
 #!/bin/bash
 
-#custom bash
-sed -i 's/\r$//' lava
-
 echo -e "\033[0;35m"
-echo " ::::    :::  ::::::::  :::::::::  :::::::: ::::     :::: ";
-echo " :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:  ";
-echo " :+:+:+  +:+ +:+    +:+ :+:    :+: +:+        +:+   +:+   ";
-echo " +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#      ";
-echo " +#+  +#+#+# +#+    +#+ +#+    +:+ +#+        +#+   +#+   ";
-echo " #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#  ";
-echo " ###    ####  ########  #########  ######## ###       ### ";
+echo " :::    ::: ::::::::::: ::::    :::  ::::::::  :::::::::  :::::::::: ::::::::  ";
+echo " :+:   :+:      :+:     :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:    :+: ";
+echo " +:+  +:+       +:+     :+:+:+  +:+ +:+    +:+ +:+    +:+ +:+       +:+        ";
+echo " +#++:++        +#+     +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#  +#++:++#++ ";
+echo " +#+  +#+       +#+     +#+  +#+#+# +#+    +#+ +#+    +#+ +#+              +#+ ";
+echo " #+#   #+#  #+# #+#     #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#    #+# ";
+echo " ###    ###  #####      ###    ####  ########  #########  ########## ########  ";
 echo -e "\e[0m"
 
 sleep 2
@@ -108,6 +105,9 @@ sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_rec
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.lava/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.lava/config/app.toml
 sed -i -e "s/^pruning *=.*/pruning = \"nothing\"/" $HOME/.lava/config/app.toml
+
+echo -e "\e[1m\e[32m3. Setting Indexer Null... \e[0m" && sleep 1
+#Indexer null
 indexer="null" && \
 sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.lava/config/config.toml
 
