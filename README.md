@@ -26,6 +26,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Planq        | 33          | [click here](./planq/README.md)       | [click here](./planq/manual_install.md)     | [click here](./planq/monitoring/README.md)                  |
 | Terp        | 34          | [click here](./terp/README.md)       | [click here](./terp/manual_install.md)     | [click here](./terp/monitoring/README.md)                  |
 | Source        | 35         | [click here](./source/README.md)       | [click here](./source/manual_install.md)     | [click here](./source/monitoring/README.md)                  |
-
+| Mises        | 36         | [click here](./mises/README.md)       | [click here](./mises/manual_install.md)     | [click here](./mises/monitoring/README.md)                  |
+| Lava        | 37        | [click here](./lava/README.md)       | [click here](./lava/manual_install.md)     | [click here](./lava/monitoring/README.md)                  |
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
