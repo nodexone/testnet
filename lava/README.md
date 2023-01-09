@@ -27,7 +27,7 @@ Explorer:
 ### Automatic Install
 You can setup your lava fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-N/A
+wget -O lava.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/lava/lava.sh && chmod +x lava.sh && ./lava.sh
 ```
 ### Create wallet
 ```
