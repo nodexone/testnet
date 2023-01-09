@@ -59,6 +59,7 @@ mv lavad $HOME/go/bin/
 lavad config chain-id $LAVA_CHAIN_ID
 lavad config keyring-backend test
 lavad config node tcp://localhost:${LAVA_PORT}657
+lavad init $MONIKER --chain-id $LAVA_CHAIN_ID
 ```
 ### Download Genesis & Addrbook
 ```
