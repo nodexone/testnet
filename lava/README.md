@@ -40,7 +40,7 @@ lavad keys add $WALLET --recover
 ### Save wallet info
 Add wallet and valoper address into variables 
 ```
-LAVA_WALLET_ADDRESS=$lavad keys show $WALLET -a)
+LAVA_WALLET_ADDRESS=$(lavad keys show $WALLET -a)
 LAVA_VALOPER_ADDRESS=$(lavad keys show $WALLET --bech val -a)
 echo 'export LAVA_WALLET_ADDRESS='${LAVA_WALLET_ADDRESS} >> $HOME/.bash_profile
 echo 'export LAVA_VALOPER_ADDRESS='${LAVA_VALOPER_ADDRESS} >> $HOME/.bash_profile
