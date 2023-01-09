@@ -27,7 +27,7 @@ Explorer:
 ### Automatic Install
 You can setup your lava fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
 ```
-wget -O lava.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/lava/lava.sh && chmod +x lava.sh && ./lava.sh
+N/A
 ```
 ### Create wallet
 ```
@@ -71,7 +71,8 @@ systemctl restart lavad && journalctl -u lavad -f -o cat
 
 ### Create Validator
 
-``` lavad tx staking create-validator \
+``` 
+lavad tx staking create-validator \
   --amount 1000000ulava \
   --from $WALLET \
   --commission-max-change-rate "0.1" \
