@@ -16,7 +16,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Nolus        | 29          | [click here](./nolus/README.md)        | [click here](./nolus/manual_install.md)     | [click here](./nolus/monitoring/README.md)           |
 | Humans       | 30          | [click here](./humans/README.md)       | [click here](./humans/manual_install.md)     | [click here](./humans/monitoring/README.md)           |
 | Realio       | 31          | [click here](./realio/README.md)       | [click here](./realio/manual_install.md)     | [click here](./realio/monitoring/README.md)           |
-| SGE          | 32          | [click here](./sge/README.md)       | [click here](./sge/manual_install.md)     | [click here](./sge/monitoring/README.md)                     |
+| Sigma          | 32          | [click here](./sge/README.md)       | [click here](./sge/manual_install.md)     | [click here](./sge/monitoring/README.md)                     |
 | Planq        | 33          | [click here](./planq/README.md)       | [click here](./planq/manual_install.md)     | [click here](./planq/monitoring/README.md)                  |
 | Terp        | 34          | [click here](./terp/README.md)       | [click here](./terp/manual_install.md)     | [click here](./terp/monitoring/README.md)                  |
 | Source        | 35         | [click here](./source/README.md)       | [click here](./source/manual_install.md)     | [click here](./source/monitoring/README.md)                  |
