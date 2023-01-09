@@ -2,13 +2,7 @@
 # // Copyright (C) 2023 sxlmnwb Recoded By NodeX Capital
 #
 
-echo -e "\033[0;31m"
-echo "\e[36mWebsite:\e[39m https://nodexcapital.com/";
-echo "\e[36mGithub:\e[39m  https://github.com/nodexcapital";
-echo "\e[36mDiscord:\e[39m https://discord.gg/nodexcapital";
-echo "     Auto Installer Lava | Chain ID : lava-testnet-1      ";
-echo -e "\e[0m"
-sleep 
+sleep 1
 
 # Variable
 LAVA_WALLET=wallet
