@@ -24,5 +24,6 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Lava         | 48           |   77         | [Click Here](./lava/manual_install.md)        | [Click Here](./lava/monitoring/README.md)        |   N/A    |
 | Blockx       | 49           |   78         | [Click Here](./blockx/manual_install.md)      | [Click Here](./blockx/monitoring/README.md)      |   N/A    |
 | Mars         | 50           |   79         | [Click Here](./mars/manual_install.md)        | [Click Here](./mars/monitoring/README.md)        |   N/A    |
+|Neutron         | 47           |   N/A         | [Click Here](./neutron/manual_install.md)        | [Click Here](./neutron/monitoring/README.md)        |   N/A    |
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)

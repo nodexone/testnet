@@ -1,256 +1,155 @@
-<<<<<<< HEAD
-#!/bin/bash
+#
+# // Copyright (C) 2022 Salman Wahib Recoded By NodeX Capital
+#
 
-echo -e "\033[0;31m"
-echo " ::::    :::  ::::::::  :::::::::  :::::::: ::::     :::: ";
-echo " :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:  ";
-echo " :+:+:+  +:+ +:+    +:+ :+:    :+: +:+        +:+   +:+   ";
-echo " +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#      ";
-echo " +#+  +#+#+# +#+    +#+ +#+    +:+ +#+        +#+   +#+   ";
-echo " #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#  ";
-echo " ###    ####  ########  #########  ######## ###       ### ";
+echo -e "\033[0;35m"
+echo " ███╗   ██╗ ██████╗ ██████╗ ███████╗██╗  ██╗     ██████╗ █████╗ ██████╗ ██╗████████╗ █████╗ ██╗     ";
+echo " ████╗  ██║██╔═══██╗██╔══██╗██╔════╝╚██╗██╔╝    ██╔════╝██╔══██╗██╔══██╗██║╚══██╔══╝██╔══██╗██║     ";
+echo " ██╔██╗ ██║██║   ██║██║  ██║█████╗   ╚███╔╝     ██║     ███████║██████╔╝██║   ██║   ███████║██║     ";
+echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
+echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
+echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
+echo ">>> Cosmovisor Automatic Installer for Nolus | Chain ID : nolus-rila <<<";
 echo -e "\e[0m"
 
+sleep 1
 
-sleep 2
+# Variable
+SOURCE=nolus-core
+WALLET=wallet
+BINARY=nolusd
+CHAIN=nolus-rila
+FOLDER=.nolus
+VERSION=v0.1.39
+DENOM=unls
+COSMOVISOR=cosmovisor
+REPO=https://github.com/Nolus-Protocol/nolus-core.git
+GENESIS=https://snapshots.kjnodes.com/nolus-testnet/genesis.json
+ADDRBOOK=https://snapshots.kjnodes.com/nolus-testnet/addrbook.json
+PORT=39
 
-# set vars
-if [ ! $NODENAME ]; then
-	read -p "Enter node name: " NODENAME
-	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
-fi
-NOLUS_PORT=29
-if [ ! $WALLET ]; then
-	echo "export WALLET=wallet" >> $HOME/.bash_profile
-fi
-echo "export NOLUS_CHAIN_ID=nolus-rila" >> $HOME/.bash_profile
-echo "export NOLUS_PORT=${NOLUS_PORT}" >> $HOME/.bash_profile
+echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
+echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
+echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
+echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
+echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
+echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
+echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
+echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
+echo "export REPO=${REPO}" >> $HOME/.bash_profile
+echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
+echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-echo '================================================='
-echo -e "Your node name: \e[1m\e[32m$NODENAME\e[0m"
-echo -e "Your wallet name: \e[1m\e[32m$WALLET\e[0m"
-echo -e "Your chain name: \e[1m\e[32m$OKP4D_CHAIN_ID\e[0m"
-echo -e "Your nolus port: \e[1m\e[32m$OKP4_PORT\e[0m"
-echo '================================================='
-sleep 2
+# Set Vars
+if [ ! $NODENAME ]; then
+        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
+        echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+fi
+echo ""
+echo -e "YOUR NODE NAME : \e[1m\e[31m$NODENAME\e[0m"
+echo -e "NODE CHAIN ID  : \e[1m\e[31m$CHAIN\e[0m"
+echo -e "NODE PORT      : \e[1m\e[31m$PORT\e[0m"
+echo ""
 
-echo -e "\e[1m\e[32m1. Updating packages... \e[0m" && sleep 1
-# update
-sudo apt update && sudo apt upgrade -y
+# Package
+sudo apt -q update
+sudo apt -qy install curl git jq lz4 build-essential
+sudo apt -qy upgrade
 
-echo -e "\e[1m\e[32m2. Installing dependencies... \e[0m" && sleep 1
-# packages
-sudo apt install curl tar wget tmux htop net-tools clang pkg-config libssl-dev jq build-essential git make ncdu -y
+# Install GO
+sudo rm -rf /usr/local/go
+curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
+eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# install go
-ver="1.18.2" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
-source $HOME/.bash_profile && \
-go version
-
-echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
-# download binary
+# Get testnet version of LAVA
 cd $HOME
-git clone https://github.com/Nolus-Protocol/nolus-core
-cd nolus-core
-git checkout v0.1.39
-make install
+rm -rf $SOURCE
+git clone $REPO
+cd $SOURCE
+git checkout $VERSION
+make build
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
-# config
-nolusd config chain-id $NOLUS_CHAIN_ID
-nolusd config keyring-backend test
-nolusd config node tcp://localhost:${NOLUS_PORT}657
+# Prepare binaries for Cosmovisor
+mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
+mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+rm -rf build
 
-# init
-nolusd init $NODENAME --chain-id $NOLUS_CHAIN_ID
+# Create application symlinks
+ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
+sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
 
-# download genesis and addrbook
-wget -O $HOME/.nolus/config/genesis.json "https://raw.githubusercontent.com/Nolus-Protocol/nolus-networks/main/testnet/nolus-rila/genesis.json"
-wget -O $HOME/.nolus/config/addrbook.json "https://raw.githubusercontent.com/elangrr/testnet_guide/main/nolus/addrbook.json"
+# Init generation
+$BINARY config chain-id $CHAIN
+$BINARY config keyring-backend test
+$BINARY config node tcp://localhost:${PORT}657
+$BINARY init $NODENAME --chain-id $CHAIN
 
-# set peers, gas prices and seeds
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025unls\"/" $HOME/.nolus/config/app.toml
-PEERS="$(curl -s "https://raw.githubusercontent.com/Nolus-Protocol/nolus-networks/main/testnet/nolus-rila/persistent_peers.txt")"
-sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.nolus/config/config.toml
+# Set peers and seeds
+PEERS=
+SEEDS="3f472746f46493309650e5a033076689996c8881@nolus-testnet.rpc.kjnodes.com:43659"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
-# set custom ports
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${NOLUS_PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${NOLUS_PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${NOLUS_PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${NOLUS_PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${NOLUS_PORT}660\"%" $HOME/.nolus/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${NOLUS_PORT}317\"%; s%^address = \":8080\"%address = \":${NOLUS_PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${NOLUS_PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${NOLUS_PORT}091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${NOLUS_PORT}545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${NOLUS_PORT}546\"%" $HOME/.nolus/config/app.toml
+# Download genesis and addrbook
+curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
+# Set Port
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}317\"%; s%^address = \":8080\"%address = \":${PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}091\"%" $HOME/$FOLDER/config/app.toml
 
-# config pruning
+# Set Config Pruning
 pruning="custom"
 pruning_keep_recent="100"
 pruning_keep_every="0"
 pruning_interval="10"
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.nolus/config/app.toml
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
 
-#set null indexer
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.nolus/config/config.toml
+# Set minimum gas price
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
-#reset
-nolusd tendermint unsafe-reset-all --home $HOME/.nolus
+# Enable snapshots
+sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
+$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
+curl -L https://snapshots.kjnodes.com/nolus-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
-echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
-# create service
-sudo tee /etc/systemd/system/okp4d.service > /dev/null <<EOF
-sudo tee /etc/systemd/system/nolusd.service > /dev/null <<EOF
+# Create Service
+sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
 [Unit]
-Description=nolusd
+Description=$BINARY
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which nolusd) start --home $HOME/.nolus
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
+RestartSec=10
 LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/$FOLDER"
+Environment="DAEMON_NAME=$BINARY"
+Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# start service
+# Register And Start Service
+sudo systemctl start $BINARY
 sudo systemctl daemon-reload
-sudo systemctl enable nolusd
-sudo systemctl restart nolusd && sudo journalctl -fu nolusd -o cat
+sudo systemctl enable $BINARY
 
-echo '=============== SETUP FINISHED ==================='
-echo -e 'To check logs: \e[1m\e[32mjournalctl -u nolusd -f -o cat\e[0m'
-=======
-#!/bin/bash
+echo -e "\e[1m\e[31mSETUP FINISHED\e[0m"
+echo ""
+echo -e "CHECK STATUS BINARY : \e[1m\e[31msystemctl status $BINARY\e[0m"
+echo -e "CHECK RUNNING LOGS : \e[1m\e[31mjournalctl -fu $BINARY -o cat\e[0m"
+echo -e "CHECK LOCAL STATUS : \e[1m\e[31mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
+echo ""
 
-echo -e "\033[0;31m"
-echo " ::::    :::  ::::::::  :::::::::  :::::::: ::::     ::::   ::::::::       ::::       :::::::::  ::: :::::::::::    ::::       :::        ";
-echo " :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:   :+:            :+::+:      :+:    :+: :+:     :+:       :+::+:      :+:        ";
-echo " :+:+:+  +:+ +:+    +:+ :+:    :+: +:+        +:+   +:+    :+:           +:+  +:+     +:+    +:+ +:+     +:+      +:+  +:+     +:+        ";
-echo " +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#       +#+          +#+    +#+    +#+ +: +#  +#+     +#+     +#+    +#+    +#+        ";
-echo " +#+  +#+#+# +#+    +#+ +#+    +:+ +#+        +#+   +#+    +#+         +#+ :+:+ +#+   +#+        +#+     +#+    +#+ :+:+ +#+   +#+        ";
-echo " #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#   #+#        #+#        #+#  #+#        #+#     #+#   #+#        #+#  #+#        ";
-echo " ###    ####  ########  #########  ######## ###       ###   ######## ###          ### ###        ###     ###  ###          ### #########  ";
-echo -e "\e[0m"
-
-
-sleep 2
-
-# set vars
-if [ ! $NODENAME ]; then
-	read -p "Enter node name: " NODENAME
-	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
-fi
-NOLUS_PORT=29
-if [ ! $WALLET ]; then
-	echo "export WALLET=wallet" >> $HOME/.bash_profile
-fi
-echo "export NOLUS_CHAIN_ID=nolus-rila" >> $HOME/.bash_profile
-echo "export NOLUS_PORT=${NOLUS_PORT}" >> $HOME/.bash_profile
-source $HOME/.bash_profile
-
-echo '================================================='
-echo -e "Your node name: \e[1m\e[32m$NODENAME\e[0m"
-echo -e "Your wallet name: \e[1m\e[32m$WALLET\e[0m"
-echo -e "Your chain name: \e[1m\e[32m$OKP4D_CHAIN_ID\e[0m"
-echo -e "Your nolus port: \e[1m\e[32m$OKP4_PORT\e[0m"
-echo '================================================='
-sleep 2
-
-echo -e "\e[1m\e[32m1. Updating packages... \e[0m" && sleep 1
-# update
-sudo apt update && sudo apt upgrade -y
-
-echo -e "\e[1m\e[32m2. Installing dependencies... \e[0m" && sleep 1
-# packages
-sudo apt install curl tar wget tmux htop net-tools clang pkg-config libssl-dev jq build-essential git make ncdu -y
-
-# install go
-ver="1.18.2" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
-source $HOME/.bash_profile && \
-go version
-
-echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
-# download binary
-cd $HOME
-git clone https://github.com/Nolus-Protocol/nolus-core
-cd nolus-core
-git checkout v0.1.39
-make install
-
-# config
-nolusd config chain-id $NOLUS_CHAIN_ID
-nolusd config keyring-backend test
-nolusd config node tcp://localhost:${NOLUS_PORT}657
-
-# init
-nolusd init $NODENAME --chain-id $NOLUS_CHAIN_ID
-
-# download genesis and addrbook
-wget -O $HOME/.nolus/config/genesis.json "https://raw.githubusercontent.com/Nolus-Protocol/nolus-networks/main/testnet/nolus-rila/genesis.json"
-wget -O $HOME/.nolus/config/addrbook.json "https://raw.githubusercontent.com/elangrr/testnet_guide/main/nolus/addrbook.json"
-
-# set peers, gas prices and seeds
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025unls\"/" $HOME/.nolus/config/app.toml
-PEERS="$(curl -s "https://raw.githubusercontent.com/Nolus-Protocol/nolus-networks/main/testnet/nolus-rila/persistent_peers.txt")"
-sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.nolus/config/config.toml
-
-# set custom ports
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${NOLUS_PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${NOLUS_PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${NOLUS_PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${NOLUS_PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${NOLUS_PORT}660\"%" $HOME/.nolus/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${NOLUS_PORT}317\"%; s%^address = \":8080\"%address = \":${NOLUS_PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${NOLUS_PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${NOLUS_PORT}091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${NOLUS_PORT}545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${NOLUS_PORT}546\"%" $HOME/.nolus/config/app.toml
-
-
-# config pruning
-pruning="custom"
-pruning_keep_recent="100"
-pruning_keep_every="0"
-pruning_interval="10"
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.nolus/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.nolus/config/app.toml
-
-#set null indexer
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.nolus/config/config.toml
-
-#reset
-nolusd tendermint unsafe-reset-all --home $HOME/.nolus
-
-echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
-# create service
-sudo tee /etc/systemd/system/nolusd.service > /dev/null <<EOF
-[Unit]
-Description=nolusd
-After=network-online.target
-
-[Service]
-User=$USER
-ExecStart=$(which nolusd) start --home $HOME/.nolus
-Restart=on-failure
-RestartSec=3
-LimitNOFILE=65535
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# start service
-sudo systemctl daemon-reload
-sudo systemctl enable nolusd
-sudo systemctl restart nolusd && sudo journalctl -fu nolusd -o cat
-
-echo '=============== SETUP FINISHED ==================='
-echo -e 'To check logs: \e[1m\e[32mjournalctl -u nolusd -f -o cat\e[0m'
->>>>>>> main/main
+# End

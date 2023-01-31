@@ -9,24 +9,24 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Planq Network | Chain CHAIN : planq_7070-2 <<<";
+echo ">>> Cosmovisor Automatic Installer for Networks Mars Protocol | Chain CHAIN : mars-1 <<<";
 echo -e "\e[0m"
 
 sleep 1
 
 # Variable
-SOURCE=planq
+SOURCE=hub
 WALLET=wallet
-BINARY=planqd
-FOLDER=.planqd
-CHAIN=planq_7070-2
-VERSION=v1.0.3
-DENOM=aplanq
+BINARY=marsd
+CHAIN=mars-1
+FOLDER=.mars
+VERSION=v1.0.0
+DENOM=umars
 COSMOVISOR=cosmovisor
-REPO=https://github.com/planq-network/planq
-GENESIS=https://snap.nodexcapital.com/planq/genesis.json
-ADDRBOOK=https://snap.nodexcapital.com/planq/addrbook.json
-PORT=44
+REPO=https://github.com/mars-protocol/hub
+GENESIS=https://snapshots.polkachu.com/genesis/mars/genesis.json
+ADDRBOOK=https://snapshots.polkachu.com/addrbook/mars/addrbook.json
+PORT=51
 
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
@@ -34,9 +34,9 @@ echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
 echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
 echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
 echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
-echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
 echo "export REPO=${REPO}" >> $HOME/.bash_profile
+echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
 echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
@@ -54,6 +54,9 @@ echo -e "NODE CHAIN CHAIN  : \e[1m\e[31m$CHAIN\e[0m"
 echo -e "NODE PORT      : \e[1m\e[31m$PORT\e[0m"
 echo ""
 
+# Update
+sudo apt update && sudo apt upgrade -y
+
 # Package
 sudo apt -q update
 sudo apt -qy install curl git jq lz4 build-essential
@@ -65,7 +68,8 @@ curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get mainnet version of planq
+# Get mainnet version of MARS
+
 cd $HOME
 rm -rf $SOURCE
 git clone $REPO
@@ -81,7 +85,7 @@ rm -rf build
 
 # Create application symlinks
 ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
-sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
+sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/bin/$BINARY
 
 # Init generation
 $BINARY config chain-id $CHAIN
@@ -90,7 +94,9 @@ $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-SEEDS=$(curl -sL https://raw.githubusercontent.com/planq-network/networks/main/mainnet/seeds.txt | awk '{print $1}' | paste -s -d, -)
+PEERS="9cb92702727bc5f3d40154e625b9553a04f4d649@65.109.104.72:18556"
+SEEDS="ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@seeds.polkachu.com:18556"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Download genesis and addrbook
@@ -111,16 +117,14 @@ sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_rec
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
 
-# Set Config prometheus
-sed -i -e "s/prometheus = false/prometheus = true/" $HOME/$FOLDER/config/config.toml
-
 # Set minimum gas price
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025$DENOM\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.001$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snap.nodexcapital.com/planq/planq-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+SNAP_NAME=$(curl -s https://snapshots.nodestake.top/mars/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
+curl -o - -L https://snapshots.nodestake.top/mars/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -143,12 +147,13 @@ WantedBy=multi-user.target
 EOF
 
 # Register And Start Service
+sudo systemctl start $BINARY
 sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
-sudo systemctl start $BINARY
 
 echo -e "\e[1m\e[31mSETUP FINISHED\e[0m"
 echo ""
+echo -e "CHECK STATUS BINARY : \e[1m\e[31msystemctl status $BINARY\e[0m"
 echo -e "CHECK RUNNING LOGS : \e[1m\e[31mjournalctl -fu $BINARY -o cat\e[0m"
 echo -e "CHECK LOCAL STATUS : \e[1m\e[31mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
 echo ""

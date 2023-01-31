@@ -9,34 +9,33 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Lava Networks | Chain ID : lava-testnet-1 <<<";
+echo ">>> Cosmovisor Automatic Installer for Celestia | Chain CHAIN : mocha <<<";
 echo -e "\e[0m"
 
 sleep 1
 
 # Variable
-SOURCE=lava
+SOURCE=celestia-app
 WALLET=wallet
-BINARY=lavad
-CHAIN=lava-testnet-1
-FOLDER=.lava
-VERSION=v0.4.4
-DENOM=ulava
+BINARY=celestia-appd
+FOLDER=.celestia-app
+CHAIN=mocha
+VERSION=v0.11.0
+DENOM=utia
 COSMOVISOR=cosmovisor
-REPO=https://github.com/lavanet/lava.git
-GENESIS=https://snapshots.nodeist.net/t/lava/genesis.json
-ADDRBOOK=https://snapshots.nodeist.net/t/lava/addrbook.json
-PORT=37
+REPO=https://github.com/celestiaorg/celestia-app.git
+GENESIS=https://snapshots.polkachu.com/testnet-genesis/celestia/genesis.json
+ADDRBOOK=https://snapshots.polkachu.com/testnet-addrbook/celestia/addrbook.json
+PORT=16
 
-echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
-echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
-echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
-echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
+echo "export BINARY=${binary}" >> $HOME/.bash_profile
 echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
 echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
+echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
 echo "export REPO=${REPO}" >> $HOME/.bash_profile
+echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
 echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
@@ -44,12 +43,12 @@ source $HOME/.bash_profile
 
 # Set Vars
 if [ ! $NODENAME ]; then
-        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
+        read -p "hello@nodexcapital:~# [ENTER YOUR NODE] > " NODENAME
         echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
 echo ""
 echo -e "YOUR NODE NAME : \e[1m\e[31m$NODENAME\e[0m"
-echo -e "NODE CHAIN ID  : \e[1m\e[31m$CHAIN\e[0m"
+echo -e "NODE CHAIN CHAIN  : \e[1m\e[31m$CHAIN\e[0m"
 echo -e "NODE PORT      : \e[1m\e[31m$PORT\e[0m"
 echo ""
 
@@ -57,13 +56,14 @@ echo ""
 sudo apt -q update
 sudo apt -qy install curl git jq lz4 build-essential
 sudo apt -qy upgrade
+
 # Install GO
 sudo rm -rf /usr/local/go
 curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get testnet version of LAVA
+# Get testnet VERSION of celestia
 cd $HOME
 rm -rf $SOURCE
 git clone $REPO
@@ -73,16 +73,16 @@ make build
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
-mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
-mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+mkdir -p $HOME/$FOLDER/cosmovisor/genesis/bin
+mv build/$BINARY $HOME/$FOLDER/cosmovisor/genesis/bin/
 rm -rf build
 
 # Create application symlinks
-ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
-sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
+ln -s $HOME/$FOLDER/cosmovisor/genesis $HOME/$FOLDER/cosmovisor/current
+sudo ln -s $HOME/$FOLDER/cosmovisor/current/bin/$BINARY /usr/local/bin/$BINARY
 
 # Init generation
-$BINARY config chain-id $CHAIN
+$BINARY config chain-CHAIN $CHAIN
 $BINARY config keyring-backend test
 $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
@@ -91,17 +91,10 @@ $BINARY init $NODENAME --chain-id $CHAIN
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
-# Add seeds,gas-prices & peers
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ulava\"/" $HOME/$FOLDER/config/app.toml
-sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/$FOLDER/config/config.toml
-external_address=$(wget -qO- eth0.me) 
-sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/$FOLDER/config/config.toml
-peers="3a445bfdbe2d0c8ee82461633aa3af31bc2b4dc0@prod-pnet-seed-node.lavanet.xyz:26656,e593c7a9ca61f5616119d6beb5bd8ef5dd28d62d@prod-pnet-seed-node2.lavanet.xyz:26656"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/$FOLDER/config/config.toml
-seeds=""
-sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/$FOLDER/config/config.toml
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 50/g' $HOME/$FOLDER/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 50/g' $HOME/$FOLDER/config/config.toml
+# Set Seers and Peers
+SEEDS=ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@testnet-seeds.polkachu.com:11656
+PEERS=3f4355f8c072b6ce3966af81af61ff1c8cf05cfa@65.108.158.250:26656,614e6d0aa9e7a19a9c848fb309cfb295a91b1add@95.216.102.235:26656,eb64c08c62219e55743cb9e395d73fe2ca8d486a@89.58.47.76:26656,858c45dd84f96631ed0ee1d0f717f8b51aaee19f@217.76.53.181:26656,1eaec90139d37c1beabdc1aa156125c22457dc6f@91.107.152.98:26656,078463a61c4298857ecb454a93f614d09eb6b1e4@5.78.61.11:26656,b03b9d03cf3f523b9cbbe08bf52ac97c648fbf37@109.205.183.222:26656,368dadf0a3b279fa40757b5839a61a61b16cbfd1@91.223.236.183:26656,ec0e55dc50b1747ad0df85b84b49016411194005@91.107.140.88:26656,3025feace255ba0e7aab053ab63a7a97d515efef@5.161.137.180:26656,ccf6fc804b9f615460758f6be476d39bce3375e7@5.161.147.249:26656,16908a5ac3cff7448d25a10a6f7028c523f7be26@185.135.137.224:26661
+sed -i 's|^seeds *=.*|seeds = "'$SEEDS'"|; s|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/$FOLDER/config/config.toml
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
@@ -118,10 +111,18 @@ sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
 
 
+# Set minimum gas price
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.001$DENOM\"/" $HOME/$FOLDER/config/app.toml
+
 # Set indexer
 indexer="null" && \
 sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/$FOLDER/config/config.toml
 
+# Enable snapshots
+cd $HOME
+rm -rf ~/$FOLDER/data
+mkdir -p ~/$FOLDER/data
+curl -L https://snapshots.kjnodes.com/celestia-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -142,7 +143,6 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
-
 
 # Register And Start Service
 sudo systemctl daemon-reload

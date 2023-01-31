@@ -1,131 +1,159 @@
-#!/bin/bash
+#
+# // Copyright (C) 2022 Salman Wahib Recoded By NodeX Capital
+#
 
-echo -e "\033[0;31m"
-echo " ::::    :::  ::::::::  :::::::::  :::::::: ::::     :::: ";
-echo " :+:+:   :+: :+:    :+: :+:    :+: :+:       :+:     :+:  ";
-echo " :+:+:+  +:+ +:+    +:+ :+:    :+: +:+        +:+   +:+   ";
-echo " +#+ +:+ +#+ +#+    +:+ +#+    +:+ +#++:++#      #+#      ";
-echo " +#+  +#+#+# +#+    +#+ +#+    +:+ +#+        +#+   +#+   ";
-echo " #+#   #+#+# #+#    #+# #+#    #+# #+#       #+#     #+#  ";
-echo " ###    ####  ########  #########  ######## ###       ### ";
+echo -e "\033[0;35m"
+echo " ███╗   ██╗ ██████╗ ██████╗ ███████╗██╗  ██╗     ██████╗ █████╗ ██████╗ ██╗████████╗ █████╗ ██╗     ";
+echo " ████╗  ██║██╔═══██╗██╔══██╗██╔════╝╚██╗██╔╝    ██╔════╝██╔══██╗██╔══██╗██║╚══██╔══╝██╔══██╗██║     ";
+echo " ██╔██╗ ██║██║   ██║██║  ██║█████╗   ╚███╔╝     ██║     ███████║██████╔╝██║   ██║   ███████║██║     ";
+echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
+echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
+echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
+echo ">>> Cosmovisor Automatic Installer for Uptick | Chain CHAIN : uptick_7000-2 <<<";
 echo -e "\e[0m"
 
-sleep 2
+sleep 1
 
-# set vars
-if [ ! $NODENAME ]; then
-	read -p "Enter Your Moniker: " NODENAME
-	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
-fi
-UPTICK_PORT=15
-if [ ! $WALLET ]; then
-	echo "export WALLET=wallet" >> $HOME/.bash_profile
-fi
-echo "export UPTICK_CHAIN_ID=uptick_7776-1" >> $HOME/.bash_profile
-echo "export UPTICK_PORT=${UPTICK_PORT}" >> $HOME/.bash_profile
+# Variable
+SOURCE=uptick
+WALLET=wallet
+BINARY=uptickd
+FOLDER=.uptickd
+CHAIN=uptick_7000-2
+VERSION=v0.2.4
+DENOM=auptick
+COSMOVISOR=cosmovisor
+REPO=https://github.com/UptickNetwork/uptick.git
+GENESIS=https://snapshots.kjnodes.com/uptick-testnet/genesis.json
+ADDRBOOK=https://snapshots.kjnodes.com/uptick-testnet/addrbook.json
+PORT=32
+
+echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
+echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
+echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
+echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
+echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
+echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
+echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
+echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
+echo "export REPO=${REPO}" >> $HOME/.bash_profile
+echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
+echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-echo '====================INFORMATION========================'
-echo -e "Your Moniker: \e[1m\e[32m$NODENAME\e[0m"
-echo -e "Your Wallet: \e[1m\e[32m$WALLET\e[0m"
-echo -e "Chain Name: \e[1m\e[32m$UPTICK_CHAIN_ID\e[0m"
-echo -e "Your Port: \e[1m\e[32m$UPTICK_PORT\e[0m"
-echo '====================INFORMATION========================'
-sleep 2
+# Set Vars
+if [ ! $NODENAME ]; then
+	read -p "hello@nodexcapital:~# [ENTER YOUR NODE] > " NODENAME
+	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+fi
+echo ""
+echo -e "YOUR NODE NAME : \e[1m\e[31m$NODENAME\e[0m"
+echo -e "NODE CHAIN CHAIN  : \e[1m\e[31m$CHAIN\e[0m"
+echo -e "NODE PORT      : \e[1m\e[31m$PORT\e[0m"
+echo ""
 
-echo -e "\e[1m\e[32m1. Updating packages... \e[0m" && sleep 1
-# update
+# Update
 sudo apt update && sudo apt upgrade -y
 
-echo -e "\e[1m\e[32m2. Installing dependencies... \e[0m" && sleep 1
-# packages
-sudo apt install curl build-essential git wget jq make gcc tmux -y
+# Package
+sudo apt -q update
+sudo apt -qy install curl git jq lz4 build-essential
+sudo apt -qy upgrade
 
-# install go
-ver="1.18.2"
-cd $HOME
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+# Install GO
 sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
-rm "go$ver.linux-amd64.tar.gz"
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
-source ~/.bash_profile
-go version
+curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
+eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
-# download binary
+# Get mainnet VERSIONsion of UPTICK
+
 cd $HOME
-git clone https://github.com/UptickNetwork/uptick.git && cd uptick
-git checkout v0.2.0
-make install
+rm -rf uptick
+git clone $REPO
+cd uptick
+git checkout $VERSION
+make build
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
-# config
-uptickd config chain-id $UPTICK_CHAIN_ID
-uptickd config keyring-backend test
-uptickd config node tcp://localhost:${UPTICK_PORT}657
+# Prepare binaries for Cosmovisor
+mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
+mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+rm -rf build
 
-# init
-uptickd init $NODENAME --chain-id $UPTICK_CHAIN_ID
+# Create application symlinks
+ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
+sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
 
-# download genesis and addrbook
-wget -qO $HOME/.uptickd/config/genesis.json "https://raw.githubusercontent.com/uptick-services/uptick/main/genesis.json"
-wget -qO $HOME/.uptickd/config/addrbook.json "https://raw.githubusercontent.com/kj89/testnet_manuals/main/dws/addrbook.json"
+# Init generation
+$BINARY config chain-id $CHAIN
+$BINARY config keyring-backend test
+$BINARY config node tcp://localhost:${PORT}657
+$BINARY init $NODENAME --chain-id $CHAIN
 
-# set peers and seeds
-SEEDS=$(curl -sL https://raw.githubusercontent.com/UptickNetwork/uptick-testnet/main/uptick_7776-1/seeds.txt | tr '\n' ',')
-PEERS=$(curl -sL https://raw.githubusercontent.com/UptickNetwork/uptick-testnet/main/uptick_7776-1/peers.txt | tr '\n' ',')
-sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.uptickd/config/config.toml
+# Set peers and seeds
+PEERS=
+SEEDS=3f472746f46493309650e5a033076689996c8881@uptick-testnet.rpc.kjnodes.com:15659
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
-# set custom ports
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${UPTICK_PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${UPTICK_PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${UPTICK_PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${UPTICK_PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${UPTICK_PORT}660\"%" $HOME/.uptickd/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${UPTICK_PORT}317\"%; s%^address = \":8080\"%address = \":${UPTICK_PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${UPTICK_PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${UPTICK_PORT}091\"%" $HOME/.uptickd/config/app.toml
+# Download genesis and addrbook
+curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
-# disable indexing
-indexer="null"
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.uptickd/config/config.toml
+# Set Port
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}317\"%; s%^address = \":8080\"%address = \":${PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}091\"%" $HOME/$FOLDER/config/app.toml
 
-# config pruning
+# Set Config Pruning
 pruning="custom"
 pruning_keep_recent="100"
 pruning_keep_every="0"
-pruning_interval="50"
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.uptickd/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.uptickd/config/app.toml
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.uptickd/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.uptickd/config/app.toml
+pruning_interval="10"
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
 
-# set minimum gas price
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0auptick\"/" $HOME/.uptickd/config/app.toml
+# Set minimum gas price
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
-# enable prometheus
-sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.uptickd/config/config.toml
+# Enable snapshots
+sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
+$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
+curl -L https://snapshots.kjnodes.com/uptick-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
-# reset
-uptickd tendermint unsafe-reset-all --home $HOME/.uptickd
-
-echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
-# create service
-sudo tee /etc/systemd/system/uptickd.service > /dev/null <<EOF
+# Create Service
+sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
 [Unit]
-Description=uptick
+Description=$BINARY
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which uptickd) start --home $HOME/.uptickd
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
+RestartSec=10
 LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/$FOLDER"
+Environment="DAEMON_NAME=$BINARY"
+Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# start service
+# Register And Start Service
 sudo systemctl daemon-reload
-sudo systemctl enable uptickd
-sudo systemctl restart uptickd
+sudo systemctl start $BINARY
+sudo systemctl enable $BINARY
 
-echo '=============== CONGRATS! SETUP FINISHED ==================='
-echo -e 'To check logs: \e[1m\e[32mjournalctl -u uptickd -f -o cat\e[0m'
-echo -e "To check sync status: \e[1m\e[32mcurl -s localhost:${UPTICK_PORT}657/status | jq .result.sync_info\e[0m"
+echo -e "\e[1m\e[31mSETUP FINISHED\e[0m"
+echo ""
+echo -e "CHECK STATUS BINARY : \e[1m\e[31msystemctl status $BINARY\e[0m"
+echo -e "CHECK RUNNING LOGS : \e[1m\e[31mjournalctl -fu $BINARY -o cat\e[0m"
+echo -e "CHECK LOCAL STATUS : \e[1m\e[31mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
+echo ""
+
+# End
