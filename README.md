@@ -2,27 +2,27 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 
 
 
-| Project name | Custom port | Full guide                            | Manual guide                                  | Validator monitoring guide                       |
-|--------------|-------------|---------------------------------------|-----------------------------------------------|--------------------------------------------------|
-| Sei          | 30          | [click here](./sei/README.md)         | [click here](./sei/manual_install.md)         | [click here](./sei/monitoring/README.md)              |
-| Deweb        | 31          | [click here](./deweb/README.md)       | [click here](./deweb/manual_install.md)       | [click here](./deweb/monitoring/README.md)       |
-| Stride       | 32          | [click here](./stride/README.md)      | [click here](./stride/manual_install.md)      | [click here](./stride/monitoring/README.md)      |
-| Celestia     | 33          | [click here](./celestia/README.md)    | [click here](./celestia/manual_install.md)    | [click here](./celestia/monitoring/README.md)    |
-| Nibiru       | 34          | [click here](./nibiru/README.md)      | [click here](./nibiru/manual_install.md)      | [click here](./nibiru/monitoring/README.md)        |
-| Okp4         | 35          | [click here](./okp4/README.md)        | [click here](./okp4/manual_install.md)        | [click here](./okp4/monitoring/README.md)          |
-| Nois         | 36          | [click here](./nois/README.md)        | [click here](./nois/manual_install.md)        | [click here](./nois/monitoring/README.md)          |
-| Gitopia      | 37          | [click here](./gitopia/README.md)     | [click here](./gitopia/manual_install.md)     | [click here](./gitopia/monitoring/README.md)          |
-| Defund       | 38          | [click here](./defund/README.md)       | [click here](./defund/manual_install.md)      | [click here](./defund/monitoring/README.md)          | 
-| Nolus        | 39          | [click here](./nolus/README.md)        | [click here](./nolus/manual_install.md)     | [click here](./nolus/monitoring/README.md)           |
-| Humans       | 40          | [click here](./humans/README.md)       | [click here](./humans/manual_install.md)     | [click here](./humans/monitoring/README.md)           |
-| Realio       | 42          | [click here](./realio/README.md)       | [click here](./realio/manual_install.md)     | [click here](./realio/monitoring/README.md)           |
-| Sigma          | 43          | [click here](./sge/README.md)       | [click here](./sge/manual_install.md)     | [click here](./sge/monitoring/README.md)                     |
-| Planq        | 44          | [click here](./planq/README.md)       | [click here](./planq/manual_install.md)     | [click here](./planq/monitoring/README.md)                  |
-| Terp        | 45          | [click here](./terp/README.md)       | [click here](./terp/manual_install.md)     | [click here](./terp/monitoring/README.md)                  |
-| Source        | 46         | [click here](./source/README.md)       | [click here](./source/manual_install.md)     | [click here](./source/monitoring/README.md)                  |
-| Mises        | 47         | [click here](./mises/README.md)       | [click here](./mises/manual_install.md)     | [click here](./mises/monitoring/README.md)                  |
-| Lava        | 48        | [click here](./lava/README.md)       | [click here](./lava/manual_install.md)     | [click here](./lava/monitoring/README.md)                  |
-| Blockx        | 49        | [click here](./blockx/README.md)       | [click here](./blockx/manual_install.md)     | [click here](./blockx/monitoring/README.md)                  |
-| Mars        | 50        | [click here](./mars/README.md)       | [click here](./mars/manual_install.md)     | [click here](./mars/monitoring/README.md)                  |
+| Project name | Port Testnet | Port Mainnet | Manual Guide                                  | Monitoring                                       | Snapshot |
+|--------------|--------------|--------------|-----------------------------------------------|--------------------------------------------------|----------|
+| Sei          | 30           |   60         | [Click Here](./sei/manual_install.md)         | [Click Here](./sei/monitoring/README.md)         |   N/A    |
+| Deweb        | 31           |   61         | [Click Here](./deweb/manual_install.md)       | [Click Here](./deweb/monitoring/README.md)       |   N/A    |
+| Stride       | N/A          |   62         | [Click Here](./stride/manual_install.md)      | [Click Here](./stride/monitoring/README.md)      |   N/A    |          
+| Celestia     | 33           |   63         | [Click Here](./celestia/manual_install.md)    | [Click Here](./celestia/monitoring/README.md)    |   N/A    |         
+| Nibiru       | 34           |   64         | [Click Here](./nibiru/manual_install.md)      | [Click Here](./nibiru/monitoring/README.md)      |   N/A    |
+| Okp4         | 35           |   65         | [Click Here](./okp4/manual_install.md)        | [Click Here](./okp4/monitoring/README.md)        |   N/A    |
+| Nois         | 36           |   66         | [Click Here](./nois/manual_install.md)        | [Click Here](./nois/monitoring/README.md)        |   N/A    |
+| Gitopia      | 37           |   67         | [Click Here](./gitopia/manual_install.md)     | [Click Here](./gitopia/monitoring/README.md)     |   N/A    |
+| Defund       | 38           |   68         | [Click Here](./defund/manual_install.md)      | [Click Here](./defund/monitoring/README.md)      |   N/A    |
+| Nolus        | 39           |   69         | [Click Here](./nolus/manual_install.md)       | [Click Here](./nolus/monitoring/README.md)       |   N/A    |
+| Humans       | 40           |   70         | [Click Here](./humans/manual_install.md)      | [Click Here](./humans/monitoring/README.md)      |   N/A    |
+| Realio       | 42           |   71         | [Click Here](./realio/manual_install.md)      | [Click Here](./realio/monitoring/README.md)      |   N/A    |
+| Sigma        | 43           |   72         | [Click Here](./sge/manual_install.md)         | [Click Here](./sge/monitoring/README.md)         |   N/A    |
+| Planq        | N/A          |   73         | [Click Here](./planq/manual_install.md)       | [Click Here](./planq/monitoring/README.md)       |   N/A    |
+| Terp         | 45           |   74         | [Click Here](./terp/manual_install.md)        | [Click Here](./terp/monitoring/README.md)        |   N/A    |
+| Source       | 46           |   75         | [Click Here](./source/manual_install.md)      | [Click Here](./source/monitoring/README.md)      |   N/A    |
+| Mises        | N/A          |   76         | [Click Here](./mises/manual_install.md)       | [Click Here](./mises/monitoring/README.md)       |   N/A    |
+| Lava         | 48           |   77         | [Click Here](./lava/manual_install.md)        | [Click Here](./lava/monitoring/README.md)        |   N/A    |
+| Blockx       | 49           |   78         | [Click Here](./blockx/manual_install.md)      | [Click Here](./blockx/monitoring/README.md)      |   N/A    |
+| Mars         | 50           |   79         | [Click Here](./mars/manual_install.md)        | [Click Here](./mars/monitoring/README.md)        |   N/A    |
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
