@@ -9,24 +9,24 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Neutron | Chain ID : quark-1 <<<";
+echo ">>> Cosmovisor Automatic Installer for Cosmos | Chain ID : provider <<<";
 echo -e "\e[0m"
 
 sleep 1
 
 # Variable
-SOURCE=neutron
+SOURCE=gaia
 WALLET=wallet
-BINARY=neutrond
-CHAIN=quark-1
-FOLDER=.neutrond
-VERSION=v0.1.0
-DENOM=untrn
+BINARY=gaiad
+CHAIN=provider
+FOLDER=.gaia
+VERSION=v9.0.0-rc2
+DENOM=uatom
 COSMOVISOR=cosmovisor
-REPO=https://github.com/neutron-org/neutron.git
-GENESIS=https://raw.githubusercontent.com/neutron-org/testnets/main/quark/genesis.json
-ADDRBOOK=https://raw.githubusercontent.com/obajay/nodes-Guides/main/Neutron/addrbook.json
-PORT=47
+REPO=https://github.com/cosmos/gaia.git
+GENESIS=https://github.com/cosmos/testnets/raw/master/replicated-security/provider/provider-genesis.json
+# ADDRBOOK=https://snap.nodexcapital.com/neutron/addrbook.json
+PORT=48
 
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
@@ -39,7 +39,7 @@ echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
-echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+# echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -64,7 +64,7 @@ sudo apt -qy upgrade
 
 # Install GO
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.18.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
@@ -94,12 +94,12 @@ $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-SEEDS="e2c07e8e6e808fb36cca0fc580e31216772841df@p2p.baryon.ntrn.info:26656"
+SEEDS="08ec17e86dac67b9da70deb20177655495a55407@provider-seed-01.rs-testnet.polypore.xyz:26656,4ea6e56300a2f37b90e58de5ee27d1c9065cf871@provider-seed-02.rs-testnet.polypore.xyz:26656"
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Download genesis and addrbook
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
-curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
+# curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml

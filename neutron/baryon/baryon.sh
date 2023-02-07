@@ -9,7 +9,7 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Neutron | Chain CHAIN : baryon-1 <<<";
+echo ">>> Cosmovisor Automatic Installer for Neutron | Chain ID : baryon-1 <<<";
 echo -e "\e[0m"
 
 sleep 1
@@ -39,7 +39,7 @@ echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
-# echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
