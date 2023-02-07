@@ -24,8 +24,8 @@ VERSION=v0.2.0
 DENOM=untrn
 COSMOVISOR=cosmovisor
 REPO=https://github.com/neutron-org/neutron.git
-GENESIS=https://raw.githubusercontent.com/nodexcapital/testnet/main/neutron/baryon/genesis.json
-# ADDRBOOK=https://snapshots.kjnodes.com/nibiru-testnet/addrbook.json
+GENESIS=https://snap.nodexcapital.com/neutron/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/neutron/addrbook.json
 PORT=47
 
 
@@ -76,7 +76,6 @@ git clone $REPO
 cd $SOURCE
 git checkout $VERSION
 make build
-
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
@@ -100,7 +99,7 @@ sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Download genesis and addrbook
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
-# curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
