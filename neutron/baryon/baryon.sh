@@ -28,7 +28,6 @@ GENESIS=https://snap.nodexcapital.com/neutron/genesis.json
 ADDRBOOK=https://snap.nodexcapital.com/neutron/addrbook.json
 PORT=47
 
-
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
 echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
