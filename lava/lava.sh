@@ -24,8 +24,8 @@ VERSION=v0.5.2
 DENOM=ulava
 COSMOVISOR=cosmovisor
 REPO=https://github.com/lavanet/lava.git
-GENESIS=https://snapshots.nodeist.net/t/lava/genesis.json
-ADDRBOOK=https://snapshots.nodeist.net/t/lava/addrbook.json
+GENESIS=https://snapshots.kjnodes.com/lava-testnet/genesis.json
+ADDRBOOK=https://snapshots.kjnodes.com/lava-testnet/addrbook.json
 PORT=37
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
