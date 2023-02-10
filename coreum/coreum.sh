@@ -25,8 +25,8 @@ DENOM=utestcore
 COSMOVISOR=cosmovisor
 REPO=https://github.com/CoreumFoundation/coreum/releases/download/v0.1.1/cored-linux-amd64
 BIN_NAME=cored-linux-amd64
-#GENESIS=https://snap.nodexcapital.com/neutron/genesis.json
-#ADDRBOOK=https://snap.nodexcapital.com/neutron/addrbook.json
+GENESIS=http://snapshot.nodexcapital.com/coreum/genesis.json
+ADDRBOOK=http://snapshot.nodexcapital.com/coreum/addrbook.json
 PORT=24
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
@@ -39,8 +39,8 @@ echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export BIN_NAME=${BIN_NAME}" >> $HOME/.bash_profile
-#echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
-#echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
+echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -92,12 +92,14 @@ $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-SEEDS=
+PEERS="69d7028b7b3c40f64ea43208ecdd43e88c797fd6@34.69.126.231:26656,b2978432c0126f28a6be7d62892f8ded1e48d227@34.70.241.13:26656,7c0d4ce5ad561c3453e2e837d85c9745b76f7972@35.238.77.191:26656,0aa5fa2507ada8a555d156920c0b09f0d633b0f9@34.173.227.148:26656,4b8d541efbb343effa1b5079de0b17d2566ac0fd@34.172.70.24:26656,27450dc5adcebc84ccd831b42fcd73cb69970881@35.239.146.40:26656,5add70ec357311d07d10a730b4ec25107399e83c@5.196.7.58:26656,1a3a573c53a4b90ab04eb47d160f4d3d6aa58000@35.233.117.165:26656,abbeb588ad88176a8d7592cd8706ebbf7ef20cfe@185.241.151.197:26656,39a34cd4f1e908a88a726b2444c6a407f67e4229@158.160.59.199:26656,051a07f1018cfdd6c24bebb3094179a6ceda2482@138.201.123.234:26656,cc6d4220633104885b89e2e0545e04b8162d69b5@75.119.134.20:26656"
+SEEDS="64391878009b8804d90fda13805e45041f492155@35.232.157.206:26656,53f2367d8f8291af8e3b6ca60efded0675ff6314@34.29.15.170:26656"
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/$CHAIN/config/config.toml
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/$CHAIN/config/config.toml
 
 # Download genesis and addrbook
-#curl -Ls $GENESIS > $HOME/$FOLDER/$CHAIN/config/genesis.json
-#curl -Ls $ADDRBOOK > $HOME/$FOLDER/$CHAIN/config/addrbook.json
+curl -Ls $GENESIS > $HOME/$FOLDER/$CHAIN/config/genesis.json
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/$CHAIN/config/addrbook.json
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/$CHAIN/config/config.toml
@@ -117,9 +119,9 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/$CHAIN/config/app.toml
 
 # Enable snapshots
-#sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/$CHAIN/config/app.toml
-#$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-#curl -L https://snap.nodexcapital.com/neutron/neutron-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/$CHAIN/config/app.toml
+$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER/$CHAIN --keep-addr-book
+curl -L http://snapshot.nodexcapital.com/coreum/coreum-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER/$CHAIN
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
