@@ -22,7 +22,8 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Blockx       | 49           | [Click Here](./blockx/README.md)      | [Click Here](./blockx/monitoring/README.md)      |   N/A    |
 | Mars         | 50           | [Click Here](./mars/README.md)        | [Click Here](./mars/monitoring/README.md)        |   N/A    |
 | Neutron      | 47           | [Click Here](./neutron/README.md)     | [Click Here](./neutron/monitoring/README.md)     |   N/A    |
-| Coreum       | 41           | [Click Here](./coreum/README.md)     | [Click Here](./neutron/monitoring/README.md)     |   N/A    |
-| Althea       | 52           | [Click Here](./atlhea/README.md)        | [Click Here](./mars/monitoring/README.md)        |   N/A    |
+| Coreum       | 41           | [Click Here](./coreum/README.md)     | [Click Here](./coreum/monitoring/README.md)     |   N/A    |
+| Althea       | 52           | [Click Here](./atlhea/README.md)        | [Click Here](./altea/monitoring/README.md)        |   N/A    |
+| Quasar       | 53           | [Click Here](./quasar/README.md)        | [Click Here](./quasar/monitoring/README.md)        |   N/A    |
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)

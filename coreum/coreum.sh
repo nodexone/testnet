@@ -25,8 +25,8 @@ DENOM=utestcore
 COSMOVISOR=cosmovisor
 REPO=https://github.com/CoreumFoundation/coreum/releases/download/v0.1.1/cored-linux-amd64
 BIN_NAME=cored-linux-amd64
-GENESIS=http://snapshot.nodexcapital.com/coreum/genesis.json
-ADDRBOOK=http://snapshot.nodexcapital.com/coreum/addrbook.json
+GENESIS=https://snap.nodexcapital.com/coreum/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/coreum/addrbook.json
 PORT=52
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
@@ -119,7 +119,7 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/$CHAIN/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER/$CHAIN --keep-addr-book
-curl -L http://snapshot.nodexcapital.com/coreum/coreum-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER/$CHAIN/
+curl -L https://snap.nodexcapital.com/coreum/coreum-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER/$CHAIN/
 
 #Delete Trash File
 cd $HOME/$FOLDER/$CHAIN/

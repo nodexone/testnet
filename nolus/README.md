@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <h3><p style="font-size:14px" align="right">Founder :
 <a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
@@ -11,585 +10,66 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/34649601/207593974-32d7cb69-eca9-4096-bc96-246fe7038c88.png">
 </p>
 
-# Okp4 node setup for testnet — Okp4 Nemeton
+# Nolus Testnet | Chain ID : nolus-rila
 
-Guide Source :
->- [Elangrr](https://github.com/elangrr/testnet_guide/blob/main/nolus/README.md)
+### Official documentation:
+>- [Validator setup instructions](https://docs-nolus-protocol.notion.site/Nolus-Protocol-Docs-a0ddfe091cc5456183417a68502705f8)
 
-Explorer:
->- https://explorer.nodexcapital.com/nolus
+### Explorer:
+>-  https://explorer.nodexcapital.com/nolus
 
-
-## Usefull tools and references
-> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodexcapital/testnet/blob/main/nolus/migrate_validator.md)
-
-## Hardware Requirements
-Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
-
-### Minimum Hardware Requirements
- - 4x CPUs; the faster clock speed the better
- - 8GB RAM
- - 160GB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
-
-### Recommended Hardware Requirements 
- - 8x CPUs; the faster clock speed the better
- - 64GB RAM
- - 1TB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
-
-## Set up your Nolus fullnode
-### Option 1 (automatic)
-You can setup your nois fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
+### Automatic Installer
+You can setup your planq fullnode in few minutes by using automated script below.
 ```
 wget -O nolus.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nolus/nolus.sh && chmod +x nolus.sh && ./nolus.sh
 ```
+### Public Endpoint
 
-### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/nolus/manual_install.md) if you better prefer setting up node manually
+>- API : https://api.nolus.nodexcapital.com
+>- RPC : https://api.nolus.nodexcapital.com
+>- gRPC : https://api.nolus.nodexcapital.com
+>- gRPC Web : https://api.nolus.nodexcapital.com
 
-## Post installation
-
-When installation is finished please load variables into system
-```
-source $HOME/.bash_profile
-```
-
-Next you have to make sure your validator is syncing blocks. You can use command below to check synchronization status
-```
-nolusd status 2>&1 | jq .SyncInfo
-```
-
-### (OPTIONAL) State Sync
-You can state sync your node in minutes by running commands below
-```
-cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
-nolusd tendermint unsafe-reset-all --home $HOME/.nolus
-STATE_SYNC_RPC=http://rpc.nolus.ppnv.space:34657
-STATE_SYNC_PEER=1a0bb6c35e2663202535d4b849ff06250762d299@rpc.nolus.ppnv.space:35656
-LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
-SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
-SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \
-  $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
-  $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
-  $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^persistent_peers *=.*|persistent_peers = \"$STATE_SYNC_PEER\"|" \
-  $HOME/.nolus/config/config.toml
-mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
-sudo systemctl restart nolusd && journalctl -u nolusd -f --no-hostname -o cat
-```
-
-### Create wallet
-To create new wallet you can use command below. Don’t forget to save the mnemonic
-```
-nolusd keys add $WALLET
-```
-
-(OPTIONAL) To recover your wallet using seed phrase
-```
-nolusd keys add $WALLET --recover
-```
-
-To get current list of wallets
-```
-nolusd keys list
-```
-
-### Save wallet info
-Add wallet and valoper address into variables 
-```
-NOLUS_WALLET_ADDRESS=$(nolusd keys show $WALLET -a)
-NOLUS_VALOPER_ADDRESS=$(nolusd keys show $WALLET --bech val -a)
-echo 'export NOLUS_WALLET_ADDRESS='${NOLUS_WALLET_ADDRESS} >> $HOME/.bash_profile
-echo 'export NOLUS_VALOPER_ADDRESS='${NOLUS_VALOPER_ADDRESS} >> $HOME/.bash_profile
-source $HOME/.bash_profile
-```
-
-### Fund your wallet
-In order to create validator first you need to fund your wallet with testnet tokens here https://faucet-rila.nolus.io/
-
-### Create validator
-Before creating validator please make sure that you have at least 1 NOLUS (1 NOLUS is equal to 1000000unls) and your node is synchronized
-
-To check your wallet balance:
-```
-nolusd query bank balances $NOLUS_WALLET_ADDRESS
-```
-> If your wallet does not show any balance than probably your node is still syncing. Please wait until it finish to synchronize and then continue 
-
-To create your validator run command below
-```
-nolusd tx staking create-validator \
-  --amount 100000000unls \
-  --from $WALLET \
-  --commission-max-change-rate "0.01" \
-  --commission-max-rate "0.2" \
-  --commission-rate "0.07" \
-  --min-self-delegation "1" \
-  --pubkey  $(nolusd tendermint show-validator) \
-  --moniker $NODENAME \
-  --chain-id nolus-rila
-```
-
-## Security
-To protect you keys please make sure you follow basic security rules
-
-### Set up ssh keys for authentication
-Good tutorial on how to set up ssh keys for authentication to your server can be found [here](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-20-04)
-
-### Basic Firewall security
-Start by checking the status of ufw.
-```
-sudo ufw status
-```
-
-Sets the default to allow outgoing connections, deny all incoming except ssh and 26656. Limit SSH login attempts
-```
-sudo ufw default allow outgoing
-sudo ufw default deny incoming
-sudo ufw allow ssh/tcp
-sudo ufw limit ssh/tcp
-sudo ufw allow ${NOLUS_PORT}656,${NOLUS_PORT}660/tcp
-sudo ufw enable
-```
-
-### Check your validator key
-```
-[[ $(nolusd q staking validator $NOLUS_VALOPER_ADDRESS -oj | jq -r .consensus_pubkey.key) = $(nolusd status | jq -r .ValidatorInfo.PubKey.value) ]] && echo -e "\n\e[1m\e[32mTrue\e[0m\n" || echo -e "\n\e[1m\e[31mFalse\e[0m\n"
-```
-
-### Get list of validators
-```
-nolusd q staking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_BONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
-```
-
-## Usefull commands
-### Service management
-Check logs
-```
-journalctl -fu nolusd -o cat
-```
-
-Start service
-```
-sudo systemctl start nolusd
-```
-
-Stop service
-```
-sudo systemctl stop nolusd
-```
-
-Restart service
-```
-sudo systemctl restart nolusd
-```
-
-### Node info
-Synchronization info
-```
-nolusd status 2>&1 | jq .SyncInfo
-```
-
-Validator info
-```
-nolusd status 2>&1 | jq .ValidatorInfo
-```
-
-Node info
-```
-nolusd status 2>&1 | jq .NodeInfo
-```
-
-Show node id
-```
-nolusd tendermint show-node-id
-```
-
-### Wallet operations
-List of wallets
-```
-nolusd keys list
-```
-
-Recover wallet
-```
-nolusd keys add $WALLET --recover
-```
-
-Delete wallet
-```
-nolusd keys delete $WALLET
-```
-
-Get wallet balance
-```
-nolusd query bank balances $NOLUS_WALLET_ADDRESS
-```
-
-Transfer funds
-```
-nolusd tx bank send $NOLUS_WALLET_ADDRESS <TO_NOLUS_WALLET_ADDRESS> 10000000unls
-```
-
-### Voting
-```
-nolusd tx gov vote 1 yes --from $WALLET --chain-id=$NOLUS_CHAIN_ID
-```
-
-### Staking, Delegation and Rewards
-Delegate stake
-```
-nolusd tx staking delegate $NOLUS_VALOPER_ADDRESS 10000000uknow --from=$WALLET --chain-id=$NOLUS_CHAIN_ID --gas=auto
-```
-
-Redelegate stake from validator to another validator
-```
-nolusd tx staking redelegate <srcValidatorAddress> <destValidatorAddress> 10000000unls --from=$WALLET --chain-id=$NOLUS_CHAIN_ID --gas=auto
-```
-
-Withdraw all rewards
-```
-nolusd tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$NOLUS_CHAIN_ID --gas=auto
-```
-
-Withdraw rewards with commision
-```
-nolusd tx distribution withdraw-rewards $NOLUS_VALOPER_ADDRESS --from=$WALLET --commission --chain-id=$NOLUS_CHAIN_ID
-```
-
-### Validator management
-Edit validator
-```
-nolusd tx staking edit-validator \
-  --moniker=$NODENAME \
-  --identity=<your_keybase_id> \
-  --website="<your_website>" \
-  --details="<your_validator_description>" \
-  --chain-id=$NOLUS_CHAIN_ID \
-  --from=$WALLET
-```
-
-Unjail validator
-```
-nolusd tx slashing unjail \
-  --broadcast-mode=block \
-  --from=$WALLET \
-  --chain-id=$NOLUS_CHAIN_ID \
-  --gas=auto
-```
-
-### Delete node
-This commands will completely remove node from server. Use at your own risk!
+### Snapshot (Update every 5 hours)
 ```
-sudo systemctl stop nolusd && \
-sudo systemctl disable nolusd && \
-rm /etc/systemd/system/nolusd.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf nolusd && \
-rm -rf .nolus && \
-rm -rf $(which nolusd)
-```
-=======
-<h3><p style="font-size:14px" align="right">Founder :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
-<h3><p style="font-size:14px" align="right">Visit Our Website :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
-<h3><p style="font-size:14px" align="right">Hetzner :
-<a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
-<hr>
-
-<p align="center">
-  <img height="100" height="auto" src="https://user-images.githubusercontent.com/34649601/207593974-32d7cb69-eca9-4096-bc96-246fe7038c88.png">
-</p>
-
-# Nolus node setup for testnet — Nolus Lira
-
-Guide Source :
->- [Elangrr](https://github.com/elangrr/testnet_guide/blob/main/nolus/README.md)
-
-Explorer:
->- https://explorer.nodexcapital.com/nolus
-
-
-## Usefull tools and references
-> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodexcapital/testnet/blob/main/nolus/migrate_validator.md)
-
-## Hardware Requirements
-Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
-
-### Minimum Hardware Requirements
- - 4x CPUs; the faster clock speed the better
- - 8GB RAM
- - 160GB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
-
-### Recommended Hardware Requirements 
- - 8x CPUs; the faster clock speed the better
- - 64GB RAM
- - 1TB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
-
-## Set up your Nolus fullnode
-### Option 1 (automatic)
-You can setup your nois fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
-```
-wget -O nolus.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nolus/nolus.sh && chmod +x nolus.sh && ./nolus.sh
-```
-
-### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/nolus/manual_install.md) if you better prefer setting up node manually
-
-## Post installation
-
-When installation is finished please load variables into system
-```
-source $HOME/.bash_profile
-```
-
-Next you have to make sure your validator is syncing blocks. You can use command below to check synchronization status
-```
-nolusd status 2>&1 | jq .SyncInfo
-```
-
-### (OPTIONAL) State Sync
-You can state sync your node in minutes by running commands below
-```
-cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
-nolusd tendermint unsafe-reset-all --home $HOME/.nolus
-STATE_SYNC_RPC=http://rpc.nolus.ppnv.space:34657
-STATE_SYNC_PEER=1a0bb6c35e2663202535d4b849ff06250762d299@rpc.nolus.ppnv.space:35656
-LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
-SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 1000))
-SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \
-  $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
-  $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
-  $HOME/.nolus/config/config.toml
-sed -i.bak -e "s|^persistent_peers *=.*|persistent_peers = \"$STATE_SYNC_PEER\"|" \
-  $HOME/.nolus/config/config.toml
-mv $HOME/.nolus/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
-sudo systemctl restart nolusd && journalctl -u nolusd -f --no-hostname -o cat
-```
-
-### Create wallet
-To create new wallet you can use command below. Don’t forget to save the mnemonic
-```
-nolusd keys add $WALLET
-```
-
-(OPTIONAL) To recover your wallet using seed phrase
-```
-nolusd keys add $WALLET --recover
-```
-
-To get current list of wallets
-```
-nolusd keys list
-```
-
-### Save wallet info
-Add wallet and valoper address into variables 
-```
-NOLUS_WALLET_ADDRESS=$(nolusd keys show $WALLET -a)
-NOLUS_VALOPER_ADDRESS=$(nolusd keys show $WALLET --bech val -a)
-echo 'export NOLUS_WALLET_ADDRESS='${NOLUS_WALLET_ADDRESS} >> $HOME/.bash_profile
-echo 'export NOLUS_VALOPER_ADDRESS='${NOLUS_VALOPER_ADDRESS} >> $HOME/.bash_profile
-source $HOME/.bash_profile
-```
-
-### Fund your wallet
-In order to create validator first you need to fund your wallet with testnet tokens here https://faucet-rila.nolus.io/
-
-### Create validator
-Before creating validator please make sure that you have at least 1 NOLUS (1 NOLUS is equal to 1000000unls) and your node is synchronized
-
-To check your wallet balance:
-```
-nolusd query bank balances $NOLUS_WALLET_ADDRESS
-```
-> If your wallet does not show any balance than probably your node is still syncing. Please wait until it finish to synchronize and then continue 
-
-To create your validator run command below
-```
-nolusd tx staking create-validator \
-  --amount 100000000unls \
-  --from $WALLET \
-  --commission-max-change-rate "0.01" \
-  --commission-max-rate "0.2" \
-  --commission-rate "0.07" \
-  --min-self-delegation "1" \
-  --pubkey  $(nolusd tendermint show-validator) \
-  --moniker $NODENAME \
-  --chain-id nolus-rila
-```
-
-## Security
-To protect you keys please make sure you follow basic security rules
-
-### Set up ssh keys for authentication
-Good tutorial on how to set up ssh keys for authentication to your server can be found [here](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-20-04)
-
-### Basic Firewall security
-Start by checking the status of ufw.
-```
-sudo ufw status
-```
-
-Sets the default to allow outgoing connections, deny all incoming except ssh and 26656. Limit SSH login attempts
-```
-sudo ufw default allow outgoing
-sudo ufw default deny incoming
-sudo ufw allow ssh/tcp
-sudo ufw limit ssh/tcp
-sudo ufw allow ${NOLUS_PORT}656,${NOLUS_PORT}660/tcp
-sudo ufw enable
-```
+sudo systemctl stop cored
+cp $HOME/.core/coreum-testnet-1/data/priv_validator_state.json $HOME/.nolus/priv_validator_state.json.backup
+rm -rf $HOME/.core/coreum-testnet-1/data
 
-### Check your validator key
-```
-[[ $(nolusd q staking validator $NOLUS_VALOPER_ADDRESS -oj | jq -r .consensus_pubkey.key) = $(nolusd status | jq -r .ValidatorInfo.PubKey.value) ]] && echo -e "\n\e[1m\e[32mTrue\e[0m\n" || echo -e "\n\e[1m\e[31mFalse\e[0m\n"
-```
-
-### Get list of validators
-```
-nolusd q staking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_BONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
-```
-
-## Usefull commands
-### Service management
-Check logs
-```
-journalctl -fu nolusd -o cat
-```
-
-Start service
-```
-sudo systemctl start nolusd
-```
-
-Stop service
-```
-sudo systemctl stop nolusd
-```
-
-Restart service
-```
-sudo systemctl restart nolusd
-```
-
-### Node info
-Synchronization info
-```
-nolusd status 2>&1 | jq .SyncInfo
-```
-
-Validator info
-```
-nolusd status 2>&1 | jq .ValidatorInfo
-```
-
-Node info
-```
-nolusd status 2>&1 | jq .NodeInfo
-```
+curl -L https://snap.nodexcapital.com/nolus/nolus-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
+mv $HOME/.core/coreum-testnet-1/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
 
-Show node id
+sudo systemctl start cored && sudo journalctl -fu cored -o cat
 ```
-nolusd tendermint show-node-id
-```
-
-### Wallet operations
-List of wallets
-```
-nolusd keys list
-```
-
-Recover wallet
-```
-nolusd keys add $WALLET --recover
-```
-
-Delete wallet
-```
-nolusd keys delete $WALLET
-```
-
-Get wallet balance
-```
-nolusd query bank balances $NOLUS_WALLET_ADDRESS
-```
 
-Transfer funds
+### State Sync
 ```
-nolusd tx bank send $NOLUS_WALLET_ADDRESS <TO_NOLUS_WALLET_ADDRESS> 10000000unls
-```
-
-### Voting
-```
-nolusd tx gov vote 1 yes --from $WALLET --chain-id=$NOLUS_CHAIN_ID
-```
+cored tendermint unsafe-reset-all --home $HOME/.nolus --keep-addr-book
 
-### Staking, Delegation and Rewards
-Delegate stake
-```
-nolusd tx staking delegate $NOLUS_VALOPER_ADDRESS 10000000uknow --from=$WALLET --chain-id=$NOLUS_CHAIN_ID --gas=auto
-```
+SNAP_RPC="https://rpc.nolus.nodexcapital.com:443"
 
-Redelegate stake from validator to another validator
-```
-nolusd tx staking redelegate <srcValidatorAddress> <destValidatorAddress> 10000000unls --from=$WALLET --chain-id=$NOLUS_CHAIN_ID --gas=auto
-```
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-Withdraw all rewards
-```
-nolusd tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$NOLUS_CHAIN_ID --gas=auto
-```
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.nolus/config/config.toml
 
-Withdraw rewards with commision
-```
-nolusd tx distribution withdraw-rewards $NOLUS_VALOPER_ADDRESS --from=$WALLET --commission --chain-id=$NOLUS_CHAIN_ID
+sudo systemctl start nolusd && sudo journalctl -fu nolusd -o cat
 ```
 
-### Validator management
-Edit validator
+### Live Peers
 ```
-nolusd tx staking edit-validator \
-  --moniker=$NODENAME \
-  --identity=<your_keybase_id> \
-  --website="<your_website>" \
-  --details="<your_validator_description>" \
-  --chain-id=$NOLUS_CHAIN_ID \
-  --from=$WALLET
+PEERS="69d7028b7b3c40f64ea43208ecdd43e88c797fd6@34.69.126.231:26656,b2978432c0126f28a6be7d62892f8ded1e48d227@34.70.241.13:26656,7c0d4ce5ad561c3453e2e837d85c9745b76f7972@35.238.77.191:26656,0aa5fa2507ada8a555d156920c0b09f0d633b0f9@34.173.227.148:26656,4b8d541efbb343effa1b5079de0b17d2566ac0fd@34.172.70.24:26656,27450dc5adcebc84ccd831b42fcd73cb69970881@35.239.146.40:26656,5add70ec357311d07d10a730b4ec25107399e83c@5.196.7.58:26656,1a3a573c53a4b90ab04eb47d160f4d3d6aa58000@35.233.117.165:26656,abbeb588ad88176a8d7592cd8706ebbf7ef20cfe@185.241.151.197:26656,39a34cd4f1e908a88a726b2444c6a407f67e4229@158.160.59.199:26656,051a07f1018cfdd6c24bebb3094179a6ceda2482@138.201.123.234:26656,cc6d4220633104885b89e2e0545e04b8162d69b5@75.119.134.20:26656"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.nolus/config/config.toml
 ```
-
-Unjail validator
+### Addrbook (Update every hour)
 ```
-nolusd tx slashing unjail \
-  --broadcast-mode=block \
-  --from=$WALLET \
-  --chain-id=$NOLUS_CHAIN_ID \
-  --gas=auto
+curl -Ls https://snap.nodexcapital.com/coreum/addrbook.json > $HOME/.nolus/config/addrbook.json
 ```
-
-### Delete node
-This commands will completely remove node from server. Use at your own risk!
+### Genesis
 ```
-sudo systemctl stop nolusd && \
-sudo systemctl disable nolusd && \
-rm /etc/systemd/system/nolusd.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf nolusd && \
-rm -rf .nolus && \
-rm -rf $(which nolusd)
+curl -Ls https://snap.nodexcapital.com/coreum/genesis.json > $HOME/.nolus/config/genesis.json
 ```
->>>>>>> main/main
