@@ -27,7 +27,7 @@ REPO=https://github.com/CoreumFoundation/coreum/releases/download/v0.1.1/cored-l
 BIN_NAME=cored-linux-amd64
 GENESIS=http://snapshot.nodexcapital.com/coreum/genesis.json
 ADDRBOOK=http://snapshot.nodexcapital.com/coreum/addrbook.json
-PORT=24
+PORT=52
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
@@ -55,9 +55,6 @@ echo -e "NODE CHAIN CHAIN  : \e[1m\e[35m$CHAIN\e[0m"
 echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
 echo ""
 
-# Update
-sudo apt update && sudo apt upgrade -y
-
 # Package
 sudo apt -q update
 sudo apt -qy install curl git jq lz4 build-essential
@@ -75,18 +72,19 @@ cd $HOME
 curl -LOf $REPO
 chmod +x $BIN_NAME
 mv $BIN_NAME $BINARY
-mv $BINARY $HOME/go/bin/
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
+
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$CHAIN/$COSMOVISOR/genesis/bin
-cp $HOME/go/bin/$BINARY $HOME/$FOLDER/$CHAIN/$COSMOVISOR/genesis/bin/
+cp $BINARY $HOME/$FOLDER/$CHAIN/$COSMOVISOR/genesis/bin/
 
 # Create application symlinks
 ln -s $HOME/$FOLDER/$CHAIN/$COSMOVISOR/genesis $HOME/$FOLDER/$CHAIN/$COSMOVISOR/current
 sudo ln -s $HOME/$FOLDER/$CHAIN/$COSMOVISOR/current/bin/$BINARY /usr/bin/$BINARY
 
 # Init generation
+$BINARY config chain-id $CHAIN
 $BINARY config keyring-backend test
 $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
@@ -121,7 +119,15 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/$CHAIN/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER/$CHAIN --keep-addr-book
-curl -L http://snapshot.nodexcapital.com/coreum/coreum-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER/$CHAIN
+curl -L http://snapshot.nodexcapital.com/coreum/coreum-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER/$CHAIN/
+
+#Delete Trash File
+cd $HOME/$FOLDER/$CHAIN/
+rm -rf data
+cd $HOME/$FOLDER/$CHAIN/$CHAIN
+mv data $HOME/$FOLDER/$CHAIN
+cd $HOME/$FOLDER/$CHAIN/
+rm -rf $HOME/$FOLDER/$CHAIN/$CHAIN
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -142,6 +148,7 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+
 
 # Register And Start Service
 sudo systemctl start $BINARY

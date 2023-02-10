@@ -7,7 +7,7 @@
 <hr>
 
 <p align="center">
-  <img height="100" height="auto" src="https://raw.githubusercontent.com/nodexcapital/testnet/main/cosmos-image/lava.svg">
+  <img height="100" height="auto" src="https://raw.githubusercontent.com/nodexcapital/testnet/main/cosmos-image/lava.png">
 </p>
 
 ## Lava node setup for testnet — lava-testnet-1
