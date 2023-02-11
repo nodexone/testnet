@@ -25,5 +25,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Coreum       | 41           | [Click Here](./coreum/README.md)     | [Click Here](./coreum/monitoring/README.md)     |   N/A    |
 | Althea       | 52           | [Click Here](./atlhea/README.md)        | [Click Here](./altea/monitoring/README.md)        |   N/A    |
 | Quasar       | 53           | [Click Here](./quasar/README.md)        | [Click Here](./quasar/monitoring/README.md)        |   N/A    |
+| Dymension       | 54           | [Click Here](./dymension/README.md)        | [Click Here](./dymension/monitoring/README.md)        |   N/A    |
+| Babylon       | 55           | [Click Here](./babylon/README.md)        | [Click Here](./babylon/monitoring/README.md)        |   N/A    |
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)

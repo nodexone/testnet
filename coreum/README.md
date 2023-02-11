@@ -26,9 +26,9 @@ wget -O coreum.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/co
 ### Public Endpoint
 
 >- API : https://api.coreum.nodexcapital.com
->- RPC : https://api.coreum.nodexcapital.com
->- gRPC : https://api.coreum.nodexcapital.com
->- gRPC Web : https://api.coreum.nodexcapital.com
+>- RPC : https://rpc.coreum.nodexcapital.com
+>- gRPC : https://grpc.coreum.nodexcapital.com
+>- gRPC Web : https://grpc-web.coreum.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```
