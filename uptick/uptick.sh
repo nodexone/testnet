@@ -67,12 +67,12 @@ curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get mainnet VERSIONsion of UPTICK
+# Get version of Uptic
 
 cd $HOME
-rm -rf uptick
+rm -rf $SOURCE
 git clone $REPO
-cd uptick
+cd $SOURCE
 git checkout $VERSION
 make build
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0

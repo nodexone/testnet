@@ -5,7 +5,8 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Project name | Port Testnet | Automatic Installer                           | Monitoring                                       | Snapshot |
 |--------------|--------------|-----------------------------------------------|--------------------------------------------------|----------|
 | Sei          | 30           | [Click Here](./sei/README.md)         | [Click Here](./sei/monitoring/README.md)         |   N/A    |
-| Deweb        | 31           | [Click Here](./deweb/README.md)       | [Click Here](./deweb/monitoring/README.md)       |   N/A    |     
+| Deweb        | 31           | [Click Here](./deweb/README.md)       | [Click Here](./deweb/monitoring/README.md)       |   N/A    |
+| Uptick       | 32           | [Click Here](./uptick/README.md)        | [Click Here](./uptick/monitoring/README.md)        |   N/A    |    
 | Celestia     | 33           | [Click Here](./celestia/README.md)    | [Click Here](./celestia/monitoring/README.md)    |   N/A    |         
 | Nibiru       | 34           | [Click Here](./nibiru/README.md)      | [Click Here](./nibiru/monitoring/README.md)      |   N/A    |
 | Okp4         | 35           | [Click Here](./okp4/README.md)        | [Click Here](./okp4/monitoring/README.md)        |   N/A    |
