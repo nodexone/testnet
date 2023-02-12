@@ -12,14 +12,14 @@
 
 # Babylon Testnet | Chain ID : bbn-test1
 
-### Community documentation:
+### Community Documentation:
 >- [Validator Setup Instructions](https://nodejumper.io/babylon-testnet)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/babylon
 
 ### Automatic Installer
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Babylon fullnode in few minutes by using automated script below.
 ```
 wget -O babylon.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/babylon/babylon.sh && chmod +x babylon.sh && ./babylon.sh
 ```

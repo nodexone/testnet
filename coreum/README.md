@@ -12,14 +12,14 @@
 
 # Coreum Testnet | Chain ID : coreum-testnet-1
 
-### Official documentation:
+### Official Documentation:
 >- [Validator setup instructions](https://docs.coreum.dev/validator/run-validator.html)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/coreum
 
 ### Automatic Installer
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Coreum fullnode in few minutes by using automated script below.
 ```
 wget -O coreum.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/coreum/coreum.sh && chmod +x coreum.sh && ./coreum.sh
 ```

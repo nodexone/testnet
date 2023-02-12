@@ -12,14 +12,14 @@
 
 # Humans Testnet | Chain ID : testnet-1
 
-### Community documentation:
+### Community Documentation:
 >- [Validator setup instructions](https://polkachu.com/testnets/humans)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/humans
 
 ### Automatic Installer
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Humans fullnode in few minutes by using automated script below.
 ```
 wget -O humans.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/humans/humans.sh && chmod +x humans.sh && ./humans.sh
 ```

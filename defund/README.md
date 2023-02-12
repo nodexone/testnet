@@ -10,9 +10,9 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/171904810-664af00a-e78a-4602-b66b-20bfd874fa82.png">
 </p>
 
-# defund node setup for Testnet — defund-private-4
+# Defund Testnet | Chain ID : defund-private-4
 
-### Official documentation:
+### Official Documentation:
 >- [Validator setup instructions](https://github.com/defund-labs/defund/blob/main/testnet/private/validators.md)
 
 
@@ -20,7 +20,7 @@
 >- https://explorer.nodexcapital.com/defund
 
 ### Automatic Installer
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Defund fullnode in few minutes by using automated script below.
 ```
 wget -O defund.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/defund/defund.sh && chmod +x defund.sh && ./defund.sh
 ```

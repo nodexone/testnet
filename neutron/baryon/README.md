@@ -19,13 +19,13 @@ Explorer:
 >-  https://explorer.nodexcapital.com/neutron
 
 ### Automatic Installer for baryon-1
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Baryon fullnode in few minutes by using automated script below.
 ```
 wget -O baryon.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/neutron/baryon/baryon.sh && chmod +x baryon.sh && ./baryon.sh
 ```
 
 ### Automatic Installer for provider
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Provider fullnode in few minutes by using automated script below.
 ```
 wget -O provider.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/neutron/baryon/provider.sh && chmod +x provider.sh && ./provider.sh
 ```

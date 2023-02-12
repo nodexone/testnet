@@ -12,14 +12,14 @@
 
 # Dymension Testnet | Chain ID : 35-C
 
-### Official documentation:
+### Official Documentation:
 >- [Validator setup instructions](https://docs.dymension.xyz/validators/full-node/run-a-node)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/dymension
 
 ### Automatic Installer
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Dymension fullnode in few minutes by using automated script below.
 ```
 wget -O dymension.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/dymension/dymension.sh && chmod +x dymension.sh && ./dymension.sh
 ```

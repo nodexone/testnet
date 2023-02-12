@@ -7,28 +7,28 @@
 <hr>
 
 <p align="center">
-  <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/192454529-b8070948-6592-4022-96d9-b2adf7169243.png">
+  <img height="100" height="auto" src="https://nodejumper.io/assets/img/chain/gitopia.webp">
 </p>
 
-## Nois Testnet | Chain ID : nois-testnet-003
+# Terp Network Testnet | Chain ID : athena-3
 
-### Official Documentation:
->- [Validator setup instructions](https://nodejumper.io/nois-testnet)
+### Community Documentation:
+>- [Validator Setup Instructions](https://nodejumper.io/terpnetwork-testnet/installation)
 
 ### Explorer:
->-  https://explorer.nodexcapital.com/nois
+>-  https://explorer.nodexcapital.com/terp
 
 ### Automatic Installer
-You can setup your Nois fullnode in few minutes by using automated script below.
+You can setup your Terp fullnode in few minutes by using automated script below.
 ```
-wget -O nois.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nois/nois.sh && chmod +x nois.sh && ./nois.sh
+wget -O terp.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/terp/terp.sh && chmod +x terp.sh && ./terp.sh
 ```
 ### Public Endpoint
 
->- API : https://api.nois.nodexcapital.com
->- RPC : https://rpc.nois.nodexcapital.com
->- gRPC : https://grpc.nois.nodexcapital.com
->- gRPC Web : https://grpc-web.nois.nodexcapital.com
+>- API : https://api.terp.nodexcapital.com
+>- RPC : https://rpc.terp.nodexcapital.com
+>- gRPC : https://grpc.terp.nodexcapital.com
+>- gRPC Web : https://grpc-web.terp.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```

@@ -12,7 +12,7 @@
 
 # Nibiru Testnet | Chain ID : nibiru-testnet-2
 
-### Community documentation:
+### Community Documentation:
 >- https://nibiru.fi/
 >- https://github.com/NibiruChain
 
@@ -20,7 +20,7 @@
 >-  https://explorer.nodexcapital.com/nibiru
 
 ### Automatic Installer
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Nibiru fullnode in few minutes by using automated script below.
 ```
 wget -O nibiru.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nibiru/nibiru.sh && chmod +x nibiru.sh && ./nibiru.sh
 ```

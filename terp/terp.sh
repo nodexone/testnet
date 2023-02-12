@@ -9,35 +9,34 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Nois Network | Chain ID : nois-testnet-003 <<<";
+echo ">>> Cosmovisor Automatic Installer for Terp Network | Chain ID : athena-3 <<<";
 echo -e "\e[0m"
 
 sleep 1
 
 # Variable
-SOURCE=full-node
+SOURCE=terp-core
 WALLET=wallet
-BINARY=noisd
-CHAIN=nois-testnet-003
-FOLDER=.noisd
-VERSION=nois-testnet-003
-DENOM=unois
+BINARY=terpd
+CHAIN=athena-3
+FOLDER=.terp
+VERSION=v0.2.0
+DENOM=upersyx
 COSMOVISOR=cosmovisor
-REPO=https://github.com/noislabs/full-node.git
-GENESIS=https://snapshots.polkachu.com/testnet-genesis/nois/genesis.json
-ADDRBOOK=https://snapshots.polkachu.com/testnet-addrbook/nois/addrbook.json
-PORT=36
-
+REPO=https://github.com/terpnetwork/terp-core.git
+GENESIS=https://raw.githubusercontent.com/terpnetwork/test-net/master/athena-3/genesis.json
+ADDRBOOK=https://snapshots-testnet.nodejumper.io/terpnetwork-testnet/addrbook.json
+PORT=39
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
 echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
+echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
 echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
 echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
-echo "export REPO=${REPO}" >> $HOME/.bash_profile
-echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
+echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
 echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
@@ -45,17 +44,14 @@ source $HOME/.bash_profile
 
 # Set Vars
 if [ ! $NODENAME ]; then
-	read -p "hello@nodexcapital:~# [ENTER YOUR NODE] > " NODENAME
-	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
+        echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
 echo ""
 echo -e "YOUR NODE NAME : \e[1m\e[31m$NODENAME\e[0m"
-echo -e "NODE CHAIN CHAIN  : \e[1m\e[31m$CHAIN\e[0m"
+echo -e "NODE CHAIN ID  : \e[1m\e[31m$CHAIN\e[0m"
 echo -e "NODE PORT      : \e[1m\e[31m$PORT\e[0m"
 echo ""
-
-# Update
-sudo apt update && sudo apt upgrade -y
 
 # Package
 sudo apt -q update
@@ -68,11 +64,11 @@ curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get Node Version from Nois
+# Get testnet version of LAVA
 cd $HOME
 rm -rf $SOURCE
 git clone $REPO
-cd $SOURCE/$SOURCE
+cd $SOURCE
 git checkout $VERSION
 make build
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
@@ -84,7 +80,7 @@ rm -rf build
 
 # Create application symlinks
 ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
-sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/bin/$BINARY
+sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
 
 # Init generation
 $BINARY config chain-id $CHAIN
@@ -93,9 +89,9 @@ $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-PEERS="ac9122b2c10577bfd52aa248c6344370aff164aa@nois-testnet.nodejumper.io:29656,102895b85acd8e154ac36ff5553ddafcb3cfa991@94.130.175.97:26656,430b67348feec80f37aef9d6e1e3f5914c54e0ed@65.109.106.91:10656,a86ec0f849dceac81fa812059c37bcf0d57ba80e@144.76.30.36:15648,221f759295e000ee288fd8cc99f42b5ae8a146c2@116.203.218.83:26656,a76edaf9f19604f66c6693ef6472a8847d4d83f4@167.235.130.12:26656,ada67bc5b22ad7c5c864d9fe75c8df963c4e3d5c@142.132.134.112:26756,10ae194a5f26cabb994db857097d436393415dfb@162.55.223.152:26656,d62d18c485150653d81dbb18cc53bfd7c252d9c7@45.135.92.85:46656,7e9493109df3a41a6f8668b8cb64199d708b05dd@65.21.122.171:46656,4a4aef33368f77998dfe5ea3f727abe2f8258f48@65.108.2.41:60656"
+PEERS="15f5bc75be9746fd1f712ca046502cae8a0f6ce7@terpnetwork-testnet.nodejumper.io:30656,b0167b898f42b763760cb43c3278a9997bf5a904@116.202.227.117:33656,f9d7b883594e651a45e91c49712151bf93322c08@141.95.65.26:29456,19566196191ca68c3688c14a73e47125bdebe352@62.171.171.91:26656,c2a177164098b317261d55fb1c946a97e5e35adb@75.119.134.69:30656,360c7c554ba16333b5901a2a341e466ad2c1db37@146.19.24.52:33656,e343bd1d153fe8aa97383b74f00d5de23768aad3@65.108.131.190:27456,8441f75ff50ccd2a892e5eafb65e4c2ea34aeac3@95.217.118.96:26757,aea62af2f5d457e35a79fbee295bdad3c85a9a8a@45.94.209.226:26656,133e71b574df8f54f9ff6ba0347db8aebfba09ed@154.53.62.88:26656,b5f7b8728e846be528c25606789e0e197fc88474@95.214.55.155:19656"
 sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/$FOLDER/config/config.toml
-SEEDS=""
+SEEDS="15f5bc75be9746fd1f712ca046502cae8a0f6ce7@terpnetwork-testnet.nodejumper.io:30656"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
@@ -118,13 +114,13 @@ sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
 
 # Set minimum gas price
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.05$DENOM\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-SNAP_NAME=$(curl -s https://snapshots.polkachu.com/testnet-snapshots/nois/ | egrep -o ">nois*.\.tar.lz4" | tr -d ">")
-curl -o - -L https://snapshots.polkachu.com/testnet-snapshots/nois/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/$FOLDER
+SNAP_NAME=$(curl -s https://snapshots-testnet.nodejumper.io/terpnetwork-testnet/ | egrep -o ">athena-3_.*\.tar.lz4" | tr -d ">")
+curl https://snapshots-testnet.nodejumper.io/terpnetwork-testnet/${SNAP_NAME} | lz4 -dc - | tar -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -151,11 +147,11 @@ sudo systemctl start $BINARY
 sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
 
-echo -e "\e[1m\e[31mSETUP FINISHED\e[0m"
+echo -e "\e[1m\e[35mSETUP FINISHED\e[0m"
 echo ""
-echo -e "CHECK STATUS BINARY : \e[1m\e[31msystemctl status $BINARY\e[0m"
-echo -e "CHECK RUNNING LOGS : \e[1m\e[31mjournalctl -fu $BINARY -o cat\e[0m"
-echo -e "CHECK LOCAL STATUS : \e[1m\e[31mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
+echo -e "CHECK STATUS BINARY : \e[1m\e[35msystemctl status $BINARY\e[0m"
+echo -e "CHECK RUNNING LOGS : \e[1m\e[35mjournalctl -fu $BINARY -o cat\e[0m"
+echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
 echo ""
 
 # End

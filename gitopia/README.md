@@ -12,14 +12,14 @@
 
 # Gtiopia Testnet | Chain ID : gitopia-janus-testnet-2
 
-### Community documentation:
+### Community Documentation:
 >- [Validator Setup Instructions](https://nodejumper.io/gitopia-testnet/installation)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/gitopia
 
 ### Automatic Installer
-You can setup your planq fullnode in few minutes by using automated script below.
+You can setup your Gitopia fullnode in few minutes by using automated script below.
 ```
 wget -O gitopia.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/gitopia/gitopia.sh && chmod +x gitopia.sh && ./gitopia.sh
 ```
