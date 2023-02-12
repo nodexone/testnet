@@ -26,7 +26,7 @@ COSMOVISOR=cosmovisor
 REPO=https://github.com/NibiruChain/nibiru.git
 GENESIS=https://snapshots.kjnodes.com/nibiru-testnet/genesis.json
 ADDRBOOK=https://snapshots.kjnodes.com/nibiru-testnet/addrbook.json
-PORT=23
+PORT=34
 
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
