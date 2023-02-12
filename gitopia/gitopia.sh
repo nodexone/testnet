@@ -1,5 +1,5 @@
 #
-# // Copyright (C) 2022 Salman Wahib Recoded By NodeX Capital
+# // Copyright (C) 2023 Salman Wahib Recoded By NodeX Capital
 #
 
 echo -e "\033[0;35m"
@@ -24,7 +24,6 @@ VERSION=v1.2.0
 DENOM=utlore
 COSMOVISOR=cosmovisor
 BASH=https://get.gitopia.com
-TEMP=/tmp/tmpinstalldir/git-remote-gitopia
 REPO=gitopia://Gitopia/gitopia
 GENESIS=https://snapshots.nodeist.net/t/gitopia/genesis.json
 ADDRBOOK=https://snapshots-testnet.nodejumper.io/gitopia-testnet/addrbook.json
@@ -42,7 +41,6 @@ echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
 echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export BASH=${BASH}" >> $HOME/.bash_profile
-echo "export TEMP=${TEMP}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -71,7 +69,6 @@ eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 # Get testnet version of LAVA
 cd $HOME
 curl $BASH | bash
-sudo mv $TEMP /usr/local/bin/
 cd || return
 rm -rf $SOURCE
 git clone $REPO
