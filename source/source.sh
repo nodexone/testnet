@@ -1,5 +1,5 @@
 #
-# // Copyright (C) 2022 Salman Wahib Recoded By NodeX Capital
+# // Copyright (C) 2023 Salman Wahib Recoded By NodeX Capital
 #
 
 echo -e "\033[0;35m"
