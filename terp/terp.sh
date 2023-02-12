@@ -26,7 +26,7 @@ COSMOVISOR=cosmovisor
 REPO=https://github.com/terpnetwork/terp-core.git
 GENESIS=https://raw.githubusercontent.com/terpnetwork/test-net/master/athena-3/genesis.json
 ADDRBOOK=https://snapshots-testnet.nodejumper.io/terpnetwork-testnet/addrbook.json
-PORT=39
+PORT=45
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
