@@ -10,14 +10,14 @@
 
 # Source Testnet | Chain ID : sourcechain-testnet
 
-### Official documentation:
+### Official Documentation:
 >- [Validator setup instructions](https://github.com/obajay/nodes-Guides/tree/main/Source)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/source
 
 ### Automatic Installer
-You can setup your Terp fullnode in few minutes by using automated script below.
+You can setup your Source fullnode in few minutes by using automated script below.
 ```
 wget -O source.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/source/source.sh && chmod +x source.sh && ./source.sh
 ```
