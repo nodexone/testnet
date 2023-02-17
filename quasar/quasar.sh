@@ -23,8 +23,8 @@ VERSION=0.0.2-alpha-11
 DENOM=uqsr
 BIN_REPO=https://github.com/quasar-finance/binary-release/raw/main/v0.0.2-alpha-11/quasarnoded-linux-amd64
 COSMOVISOR=cosmovisor
-GENESIS=https://snapshots.polkachu.com/testnet-genesis/quasar/genesis.json
-ADDRBOOK=https://snapshots.polkachu.com/testnet-addrbook/quasar/addrbook.json
+GENESIS=https://snap.nodexcapital.com/quasar/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/quasar/addrbook.json
 PORT=53
 
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
@@ -117,7 +117,7 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025$DENOM\"/" $H
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snapshots.kjnodes.com/quasar-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+curl -L https://snap.nodexcapital.com/quasar/quasar-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF

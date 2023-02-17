@@ -16,7 +16,7 @@
 >- [Validator setup instructions](https://services.kjnodes.com/home/testnet/quasar/installation)
 
 ### Explorer:
->-  https://explorer.nodexcapital.com/qusar
+>-  https://explorer.nodexcapital.com/quasar
 
 ### Automatic Installer
 You can setup your Quasar fullnode in few minutes by using automated script below.
