@@ -18,10 +18,12 @@ sleep 1
 SOURCE=nolus-core
 WALLET=wallet
 BINARY=quasard
-CHAIN=qsr-questnet-04
+CHAIN=qsr-questnet-04 
 FOLDER=.quasarnode
-VERSION=v0.1.39
+VERSION=0.0.2-alpha-11
 DENOM=uqsr
+REPO=https://github.com/nodexcapital/testnet//download/v0.1.1/cored-linux-amd64
+BIN_NAME=cored-linux-amd64
 COSMOVISOR=cosmovisor
 REPO=https://github.com/Nolus-Protocol/nolus-core.git
 GENESIS=https://snapshots.polkachu.com/testnet-genesis/quasar/genesis.json
