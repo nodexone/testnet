@@ -28,5 +28,6 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Quasar       | 53           | [Click Here](./quasar/README.md)        | [Click Here](./quasar/monitoring/README.md)        |   N/A    |
 | Dymension       | 54           | [Click Here](./dymension/README.md)        | [Click Here](./dymension/monitoring/README.md)        |   N/A    |
 | Babylon       | 55           | [Click Here](./babylon/README.md)        | [Click Here](./babylon/monitoring/README.md)        |   N/A    |
+| Andromeda       | 56           | [Click Here](./andromeda/README.md)        | [Click Here](./andromeda/monitoring/README.md)        |   N/A    |
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
