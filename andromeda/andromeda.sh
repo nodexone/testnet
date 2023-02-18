@@ -24,8 +24,8 @@ VERSION=galileo-3-v1.1.0-beta1
 DENOM=uandr
 COSMOVISOR=cosmovisor
 REPO=https://github.com/andromedaprotocol/andromedad.git
-GENESIS=https://snap.nodexcapital.com/andromeda/genesis.json
-ADDRBOOK=https://snap.nodexcapital.com/andromeda/addrbook.json
+GENESIS=https://snapshots.kjnodes.com/andromeda-testnet/genesis.json
+ADDRBOOK=https://snapshots.kjnodes.com/andromeda-testnet/addrbook.json
 PORT=56
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
@@ -93,9 +93,9 @@ $BINARY init $NODENAME --chain-id $CHAIN
 sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/$FOLDER/config/config.toml
 external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/$FOLDER/config/config.toml
-PEERS=06d4ab2369406136c00a839efc30ea5df9acaf11@10.128.0.44:26656,43d667323445c8f4d450d5d5352f499fa04839a8@192.168.0.237:26656,29a9c5bfb54343d25c89d7119fade8b18201c503@192.168.101.79:26656,6006190d5a3a9686bbcce26abc79c7f3f868f43a@37.252.184.230:26656
+PEERS=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.andromedad/config/config.toml
-SEEDS=""
+SEEDS="3f472746f46493309650e5a033076689996c8881@andromeda-testnet.rpc.kjnodes.com:47659"
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Download genesis and addrbook
@@ -125,7 +125,7 @@ sed -i -e 's|^indexer *=.*|indexer = "null"|' $HOME/$FOLDER/config/config.toml
 # Enable snapshots
  sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
  $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
- curl -L https://snap.nodexcapital.com/andromeda/andromeda-latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/$FOLDER --strip-components 2
+ curl -L https://snapshots.kjnodes.com/andromeda-testnet/snapshot_latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/$FOLDER --strip-components 2
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF

@@ -12,8 +12,8 @@
 
 # Andromeda Testnet | Chain ID : galileo-3
 
-### Community Documentation Nodeist :
->- [Validator Setup Instructions](https://nodeist.net/t/Andromeda/)
+### Community Documentation :
+>- [Validator Setup Instructions](https://services.kjnodes.com/home/testnet/andromeda)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/andromeda
