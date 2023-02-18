@@ -24,8 +24,8 @@ VERSION=v0.2.0-beta
 DENOM=udym
 COSMOVISOR=cosmovisor
 REPO=https://github.com/dymensionxyz/dymension.git
-GENESIS=https://raw.githubusercontent.com/obajay/nodes-Guides/main/Dymension/genesis.json
-# ADDRBOOK=https://snapshots.kjnodes.com/okp4-testnet/addrbook.json
+GENESIS=https://snapshots.kjnodes.com/dymension-testnet/genesis.json
+ADDRBOOK=https://snapshots.kjnodes.com/dymension-testnet/addrbook.json
 PORT=54
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
@@ -38,7 +38,7 @@ echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
-# echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
@@ -48,9 +48,9 @@ if [ ! $NODENAME ]; then
         echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
 echo ""
-echo -e "YOUR NODE NAME : \e[1m\e[31m$NODENAME\e[0m"
-echo -e "NODE CHAIN ID  : \e[1m\e[31m$CHAIN\e[0m"
-echo -e "NODE PORT      : \e[1m\e[31m$PORT\e[0m"
+echo -e "YOUR NODE NAME : \e[1m\e[35m$NODENAME\e[0m"
+echo -e "NODE CHAIN ID  : \e[1m\e[35m$CHAIN\e[0m"
+echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
 echo ""
 
 # Package
@@ -70,12 +70,12 @@ rm -rf $SOURCE
 git clone $REPO
 cd $SOURCE
 git checkout $VERSION
-make install
+make build
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
-mv $HOME/go/bin/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
 rm -rf build
 
 # Create application symlinks
@@ -92,14 +92,14 @@ $BINARY init $NODENAME --chain-id $CHAIN
 sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/$FOLDER/config/config.toml
 external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/$FOLDER/config/config.toml
-PEERS="dc237ba44f4f178f6a72b60d9dee2337d424bfce@65.109.85.226:26656,3515bc6054d3e71caf2e04effaad8c95ee4b6dc6@165.232.186.173:26656,e9a375501c0a2eab296a16753667c708ed64649e@95.214.53.46:26656,2d05753b4f5ac3bcd824afd96ea268d9c32ed84d@65.108.132.239:26656"
-SEEDS=""
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
+peers="d5519e378247dfb61dfe90652d1fe3e2b3005a5b@65.109.68.190:46656,77791ee9b1eb56682335c451c296f450ee649c01@44.209.89.17:26656,018cc15aa343bfc1054f83da520324ce84a4e537@88.99.161.162:19656,965694b051742c2da0ea66502dd9bfeea38de265@198.244.228.235:26656,8e667c0759bfb20ec42b939956706301a4f2a10d@65.109.92.8:26656,7fc44e2651006fb2ddb4a56132e738da2845715f@65.108.6.45:61256,ee2fa87279bc626f9c979093389bd1d6568d96ff@65.109.37.228:36656,1fa5bb085e8f52c21bc71c39afbba2851bee3e18@43.157.48.181:26656,3a8bb83d5c5afb13ae2c1c3b91c97928e277f6a5@142.132.205.94:15658,0d30a0790a216d01c9759ab48192d9154381e6c0@136.243.88.91:3240"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/$FOLDER/config/config.toml
+SEEDS="3f472746f46493309650e5a033076689996c8881@dymension-testnet.rpc.kjnodes.com:46659"
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Download genesis and addrbook
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
-# curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
@@ -118,10 +118,13 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $
 # Set minimum gas price
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
+#Disable Indexing
+sed -i -e 's|^indexer *=.*|indexer = "null"|' $HOME/$FOLDER/config/config.toml
+
 # Enable snapshots
-# sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
-# $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-# curl -L https://snapshots.kjnodes.com/okp4-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
+$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
+curl -L https://snapshots.kjnodes.com/dymension-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -142,6 +145,8 @@ Environment="UNSAFE_SKIP_BACKUP=true"
 [Install]
 WantedBy=multi-user.target
 EOF
+
+sleep 3
 
 # Register And Start Service
 sudo systemctl start $BINARY
