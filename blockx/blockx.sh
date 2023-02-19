@@ -65,14 +65,12 @@ eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
 # Get testnet version of LAVA
 cd $HOME
-curl -LO $BIN_REPO
-chmod +x $BINARY
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
-mv $BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
-rm -rf build
+wget -O $HOME/$FOLDER/$COSMOVISOR/genesis/bin/$BINARY $BIN_REPO
+chmod +x $HOME/$FOLDER/$COSMOVISOR/genesis/bin/*
 
 # Create application symlinks
 ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
@@ -111,22 +109,8 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $
 # Set minimum gas price
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
-# Enable snapshots
+# Set Interval
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
-$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-STATE_SYNC_RPC="https://rpc.blockx-t.indonode.net:443"
-LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
-SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
-SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-
-PEERS=2dc5fe97136b4a1f549b8da676f958f757ee2d1a@rpc.blockx-t.indonode.net:22656 
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/$FOLDER/config/config.toml
-
-sed -i.bak -e "s|^enable *=.*|enable = true|" $HOME/$FOLDER/config/config.toml
-sed -i.bak -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \ $HOME/$FOLDER/config/config.toml
-sed -i.bak -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \ $HOME/$FOLDER/config/config.toml
-sed -i.bak -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \ $HOME/$FOLDER/config/config.toml
-
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
