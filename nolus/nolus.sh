@@ -20,7 +20,7 @@ WALLET=wallet
 BINARY=nolusd
 CHAIN=nolus-rila
 FOLDER=.nolus
-VERSION=v0.1.39
+VERSION=v0.1.43
 DENOM=unls
 COSMOVISOR=cosmovisor
 REPO=https://github.com/Nolus-Protocol/nolus-core.git
@@ -75,7 +75,7 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
-mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+mv target/release/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
 rm -rf build
 
 # Create application symlinks
@@ -145,7 +145,7 @@ sudo systemctl start $BINARY
 sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
 
-echo -e "\e[1m\e[31mSETUP FINISHED\e[0m"
+echo -e "\e[1m\e[35mSETUP FINISHED\e[0m"
 echo ""
 echo -e "CHECK STATUS BINARY : \e[1m\e[35msystemctl status $BINARY\e[0m"
 echo -e "CHECK RUNNING LOGS : \e[1m\e[35mjournalctl -fu $BINARY -o cat\e[0m"
