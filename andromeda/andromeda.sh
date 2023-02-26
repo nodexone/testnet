@@ -90,9 +90,6 @@ $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/$FOLDER/config/config.toml
-external_address=$(wget -qO- eth0.me)
-sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/$FOLDER/config/config.toml
 PEERS=""
 sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.andromedad/config/config.toml
 SEEDS="3f472746f46493309650e5a033076689996c8881@andromeda-testnet.rpc.kjnodes.com:47659"
@@ -125,7 +122,7 @@ sed -i -e 's|^indexer *=.*|indexer = "null"|' $HOME/$FOLDER/config/config.toml
 # Enable snapshots
  sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
  $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
- curl -L https://snapshots.kjnodes.com/andromeda-testnet/snapshot_latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/$FOLDER --strip-components 2
+ curl -L https://snapshots.kjnodes.com/andromeda-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
