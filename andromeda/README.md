@@ -18,16 +18,16 @@
 ### Explorer:
 >-  https://explorer.nodexcapital.com/andromeda
 
-### Automatic Installer
+### Automatic Installer (Must Using Ubuntu 22.04)
 You can setup your Andromeda fullnode in few minutes by using automated script below.
 ```
 wget -O andromeda.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/andromeda/andromeda.sh && chmod +x andromeda.sh && ./andromeda.sh
 ```
 ### Public Endpoint
 
->- API : https://api.andromeda.nodexcapital.com
->- RPC : https://rpc.andromeda.nodexcapital.com
->- gRPC : https://grpc.andromeda.nodexcapital.com
+>- API : https://api.andromeda-t.nodexcapital.com
+>- RPC : https://rpc.andromeda-t.nodexcapital.com
+>- gRPC : https://grpc.andromeda-t.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```
@@ -48,7 +48,7 @@ sudo systemctl stop andromedad
 cp $HOME/.andromedad/data/priv_validator_state.json $HOME/.andromedad/priv_validator_state.json.backup
 andromedad tendermint unsafe-reset-all --home $HOME/.andromedad
 
-STATE_SYNC_RPC=https://andromeda-testnet.rpc.kjnodes.com:443
+STATE_SYNC_RPC=https://rpc.andromeda-t.nodexcapital.com:443
 STATE_SYNC_PEER=d5519e378247dfb61dfe90652d1fe3e2b3005a5b@andromeda-testnet.rpc.kjnodes.com:47656
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
@@ -69,15 +69,21 @@ curl -L https://snapshots.kjnodes.com/andromeda-testnet/wasm_latest.tar.lz4 | lz
 sudo systemctl start andromedad && sudo journalctl -u andromedad -f --no-hostname -o cat
 ```
 
+### Disable State Sync 
+After successful synchronization using state sync above, we advise you to disable synchronization with state sync and restart the node
+```
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.andromedad/config/config.toml
+sudo systemctl restart andromedad && journalctl -u andromedad -f -o cat
+
 ### Live Peers
 ```
 Coming Soon
 ```
 ### Addrbook (Update every hour)
 ```
-curl -Ls https://snapshots.kjnodes.com/andromeda-testnet/addrbook.json > $HOME/.andromedad/config/addrbook.json
+curl -Ls https://snap.nodexcapital.com/andromeda/addrbook.json > $HOME/.andromedad/config/addrbook.json
 ```
 ### Genesis
 ```
-curl -Ls https://snapshots.kjnodes.com/andromeda-testnet/genesis.json > $HOME/.andromedad/config/genesis.json
+curl -Ls https://snap.nodexcapital.com/andromeda/genesis.json > $HOME/.andromedad/config/genesis.json
 ```

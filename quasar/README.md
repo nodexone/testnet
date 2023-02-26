@@ -18,16 +18,16 @@
 ### Explorer:
 >-  https://explorer.nodexcapital.com/quasar
 
-### Automatic Installer
+### Automatic Installer (Must Using Ubuntu 22.04)
 You can setup your Quasar fullnode in few minutes by using automated script below.
 ```
 wget -O quasar.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/quasar/quasar.sh && chmod +x quasar.sh && ./quasar.sh
 ```
 ### Public Endpoint
 
->- API : https://api.quasar.nodexcapital.com
->- RPC : https://rpc.quasar.nodexcapital.com
->- gRPC : https://grpc.quasar.nodexcapital.com
+>- API : https://api.quasar-t.nodexcapital.com
+>- RPC : https://rpc.quasar-t.nodexcapital.com
+>- gRPC : https://grpc.quasar-t.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```
@@ -43,20 +43,36 @@ sudo systemctl start quasard && sudo journalctl -fu quasard -o cat
 
 ### State Sync
 ```
-quasard tendermint unsafe-reset-all --home $HOME/.quasarnode --keep-addr-book
+sudo systemctl stop quasard
+cp $HOME/.quasarnode/data/priv_validator_state.json $HOME/.quasarnode/priv_validator_state.json.backup
+quasard tendermint unsafe-reset-all --home $HOME/.quasarnode
 
-SNAP_RPC="https://rpc.quasar.nodexcapital.com:443"
+STATE_SYNC_RPC=https://rpc.quasar-t.nodexcapital.com:443
+STATE_SYNC_PEER=d5519e378247dfb61dfe90652d1fe3e2b3005a5b@quasar-testnet.rpc.kjnodes.com:48656
+LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
+SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
+SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
 
-LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
-TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+sed -i \
+  -e "s|^enable *=.*|enable = true|" \
+  -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \
+  -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
+  -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
+  -e "s|^persistent_peers *=.*|persistent_peers = \"$STATE_SYNC_PEER\"|" \
+  $HOME/.quasarnode/config/config.toml
 
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.quasarnode/config/config.toml
+mv $HOME/.quasarnode/priv_validator_state.json.backup $HOME/.quasarnode/data/priv_validator_state.json
 
-sudo systemctl start quasard && sudo journalctl -fu quasard -o cat
+curl -L https://snapshots.kjnodes.com/quasar-testnet/wasm_latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.quasarnode
+
+sudo systemctl start quasard && sudo journalctl -u quasard -f --no-hostname -o cat
+```
+
+### Disable Sync with State Sync
+After successful synchronization, we advise you to disable synchronization with state sync and restart the node
+```
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.quasarnode/config/config.toml
+sudo systemctl restart quasard && journalctl -u quasard -f -o cat
 ```
 
 ### Live Peers
