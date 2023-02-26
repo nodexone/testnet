@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://raw.githubusercontent.com/kj89/testnet_manuals/main/pingpub/logos/quasar.png">
 </p>
 
-# Quasar Testnet | Chain ID : qsr-questnet-04
+# Quasar Testnet | Chain ID : qsr-questnet-04 | Custom Port : 241
 
 ### Community Documentation:
 >- [Validator setup instructions](https://services.kjnodes.com/home/testnet/quasar/installation)

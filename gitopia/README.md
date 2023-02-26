@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://nodejumper.io/assets/img/chain/gitopia.webp">
 </p>
 
-# Gtiopia Testnet | Chain ID : gitopia-janus-testnet-2
+# Gtiopia Testnet | Chain ID : gitopia-janus-testnet-2 | Custom Port : 227
 
 ### Community Documentation:
 >- [Validator Setup Instructions](https://nodejumper.io/gitopia-testnet/installation)

@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://raw.githubusercontent.com/Nodeist/Kurulumlar/main/logos/andromeda.png">
 </p>
 
-# Andromeda Testnet | Chain ID : galileo-3
+# Andromeda Testnet | Chain ID : galileo-3 | Custom Port : 244
 
 ### Community Documentation :
 >- [Validator Setup Instructions](https://services.kjnodes.com/home/testnet/andromeda)

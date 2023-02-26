@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://avatars.githubusercontent.com/u/108229184?s=200&v=4">
 </p>
 
-# Dymension Testnet | Chain ID : 35-C
+# Dymension Testnet | Chain ID : 35-C | Custom Port : 242
 
 ### Official Documentation:
 >- [Validator setup instructions](https://docs.dymension.xyz/validators/full-node/run-a-node)
