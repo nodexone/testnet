@@ -28,7 +28,6 @@ wget -O quasar.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/qu
 >- API : https://api.quasar.nodexcapital.com
 >- RPC : https://rpc.quasar.nodexcapital.com
 >- gRPC : https://grpc.quasar.nodexcapital.com
->- gRPC Web : https://grpc-web.quasar.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```
