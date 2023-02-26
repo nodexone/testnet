@@ -77,7 +77,8 @@ sudo systemctl restart andromedad && journalctl -u andromedad -f -o cat
 
 ### Live Peers
 ```
-Coming Soon
+PEERS="8083dd301a7189284bf5b8d40c4cf239360d653a@5.9.122.49:26656,749114faeb62649d94b8ed496efbdcd4a08b2e3e@136.243.93.134:20095,d5519e378247dfb61dfe90652d1fe3e2b3005a5b@65.109.68.190:47656,ef6ec2cf74e157e3c6056c0469f3ede08b418ec7@144.76.164.139:15656,c5f6021d8da08ff53e90725c0c2a77f8d65f5e03@195.201.195.40:26656,f1d30c5f2d5882823317718eb4455f87ae846d0a@85.239.235.235:30656,334a842f175c2c24c6b11e8bce39c9d3443471ae@38.242.213.79:26656,d78df88bc4a487c140e466a23f549ed90e7ebfb6@161.97.152.157:27656"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.andromedad/config/config.toml
 ```
 ### Addrbook (Update every hour)
 ```
