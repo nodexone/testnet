@@ -9,7 +9,7 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Terp Network | Chain ID : athena-3 <<<";
+echo ">>> Cosmovisor Automatic Installer for Terp Network | Chain ID : athena-4 <<<";
 echo -e "\e[0m"
 
 sleep 1
@@ -18,15 +18,15 @@ sleep 1
 SOURCE=terp-core
 WALLET=wallet
 BINARY=terpd
-CHAIN=athena-3
+CHAIN=athena-4
 FOLDER=.terp
-VERSION=v0.2.0
+VERSION=v0.4.0
 DENOM=upersyx
 COSMOVISOR=cosmovisor
 REPO=https://github.com/terpnetwork/terp-core.git
-GENESIS=https://raw.githubusercontent.com/terpnetwork/test-net/master/athena-3/genesis.json
-ADDRBOOK=https://snapshots-testnet.nodejumper.io/terpnetwork-testnet/addrbook.json
-PORT=45
+GENESIS=https://raw.githubusercontent.com/terpnetwork/test-net/master/athena-4/genesis.json
+ADDRBOOK=https://snapshots1-testnet.nodejumper.io/terpnetwork-testnet/addrbook.json
+PORT=233
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
@@ -48,9 +48,9 @@ if [ ! $NODENAME ]; then
         echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
 echo ""
-echo -e "YOUR NODE NAME : \e[1m\e[31m$NODENAME\e[0m"
-echo -e "NODE CHAIN ID  : \e[1m\e[31m$CHAIN\e[0m"
-echo -e "NODE PORT      : \e[1m\e[31m$PORT\e[0m"
+echo -e "YOUR NODE NAME : \e[1m\e[35m$NODENAME\e[0m"
+echo -e "NODE CHAIN ID  : \e[1m\e[35m$CHAIN\e[0m"
+echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
 echo ""
 
 # Package
@@ -64,7 +64,7 @@ curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get testnet version of LAVA
+# Get testnet version of Terp
 cd $HOME
 rm -rf $SOURCE
 git clone $REPO
@@ -85,7 +85,7 @@ sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
 # Init generation
 $BINARY config chain-id $CHAIN
 $BINARY config keyring-backend test
-$BINARY config node tcp://localhost:${PORT}657
+$BINARY config node tcp://localhost:${PORT}57
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
@@ -100,8 +100,8 @@ curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Set Port
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}317\"%; s%^address = \":8080\"%address = \":${PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}091\"%" $HOME/$FOLDER/config/app.toml
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}60\"%" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}17\"%; s%^address = \":8080\"%address = \":${PORT}80\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}90\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}91\"%" $HOME/$FOLDER/config/app.toml
 
 # Set Config Pruning
 pruning="custom"
@@ -119,8 +119,7 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0$DENOM\"/" $HOME
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-SNAP_NAME=$(curl -s https://snapshots-testnet.nodejumper.io/terpnetwork-testnet/ | egrep -o ">athena-3_.*\.tar.lz4" | tr -d ">")
-curl https://snapshots-testnet.nodejumper.io/terpnetwork-testnet/${SNAP_NAME} | lz4 -dc - | tar -xf - -C $HOME/$FOLDER
+curl https://snapshots1-testnet.nodejumper.io/terpnetwork-testnet/athena-4_2023-02-28.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -151,7 +150,7 @@ echo -e "\e[1m\e[35mSETUP FINISHED\e[0m"
 echo ""
 echo -e "CHECK STATUS BINARY : \e[1m\e[35msystemctl status $BINARY\e[0m"
 echo -e "CHECK RUNNING LOGS : \e[1m\e[35mjournalctl -fu $BINARY -o cat\e[0m"
-echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
+echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\e[0m"
 echo ""
 
 # End
