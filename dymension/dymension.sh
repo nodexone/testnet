@@ -22,7 +22,6 @@ CHAIN=35-C
 FOLDER=.dymension
 VERSION=v0.2.0-beta
 DENOM_DYMD=udym
-DENOM_ATOM=uatom
 COSMOVISOR=cosmovisor
 REPO=https://github.com/dymensionxyz/dymension.git
 GENESIS=https://snapshots.kjnodes.com/dymension-testnet/genesis.json
