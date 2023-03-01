@@ -36,7 +36,7 @@ sudo systemctl stop nolusd
 cp $HOME/.nolus/data/priv_validator_state.json $HOME/.nolus/data/priv_validator_state.json.backup
 rm -rf $HOME/.nolus/data
 
-curl -L https://snapshots.kjnodes.com/nolus-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
+curl -L https://snap.nodexcapital.com/nolus/nolus-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
 
 mv $HOME/.nolus/data/priv_validator_state.json.backup $HOME/.nolus/data/priv_validator_state.json
 
@@ -67,9 +67,9 @@ sed -i -e "s|^seeds *=.*|seeds = \"3f472746f46493309650e5a033076689996c8881@nolu
 ```
 ### Addrbook (Update every hour)
 ```
-curl -Ls https://snapshots.kjnodes.com/nolus-testnet/addrbook.json > $HOME/.nolus/config/addrbook.json
+curl -Ls https://snap.nodexcapital.com/nolus/addrbook.json > $HOME/.nolus/config/addrbook.json
 ```
 ### Genesis
 ```
-curl -Ls hhttps://snapshots.kjnodes.com/nolus-testnet/genesis.json > $HOME/.nolus/config/genesis.json
+curl -Ls https://snap.nodexcapital.com/nolus/genesis.json > $HOME/.nolus/config/genesis.json
 ```
