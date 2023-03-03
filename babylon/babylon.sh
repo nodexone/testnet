@@ -19,14 +19,14 @@ SOURCE=babylon
 WALLET=wallet
 BINARY=babylond 
 CHAIN=bbn-test1
-FOLDER=.babylond
+FOLDER=$FOLDER
 VERSION=v0.5.0
 DENOM=ubaby
 COSMOVISOR=cosmovisor
 REPO=https://github.com/babylonchain/babylon.git
-GENESIS=https://snapshots.polkachu.com/testnet-genesis/babylon/genesis.json
-ADDRBOOK=https://snapshots.polkachu.com/testnet-addrbook/babylon/addrbook.json
-PORT=55
+#GENESIS=https://snapshots.polkachu.com/testnet-genesis/babylon/genesis.json
+ADDRBOOK=https://snapshots1-testnet.nodejumper.io/babylon-testnet/addrbook.json
+PORT=243
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
@@ -37,7 +37,7 @@ echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
 echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export REPO=${REPO}" >> $HOME/.bash_profile
-echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
+#echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
 echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
@@ -64,7 +64,7 @@ curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get testnet version of LAVA
+# Get testnet version of Babylon
 cd $HOME
 rm -rf $SOURCE
 git clone $REPO
@@ -85,7 +85,7 @@ sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
 # Init generation
 $BINARY config chain-id $CHAIN
 $BINARY config keyring-backend test
-$BINARY config node tcp://localhost:${PORT}657
+$BINARY config node tcp://localhost:${PORT}57
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
@@ -98,12 +98,17 @@ SEEDS="88bed747abef320552d84d02947d0dd2b6d9c71c@babylon-testnet.nodejumper.io:44
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Download genesis and addrbook
-curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
+#curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
+curl -L https://github.com/babylonchain/networks/blob/main/bbn-test1/genesis.tar.bz2?raw=true > genesis.tar.bz2
+tar -xjf genesis.tar.bz2
+rm -rf genesis.tar.bz2
+mv genesis.json ~/.babylond/config/genesis.json
+
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Set Port
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}317\"%; s%^address = \":8080\"%address = \":${PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}091\"%" $HOME/$FOLDER/config/app.toml
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}60\"%" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}17\"%; s%^address = \":8080\"%address = \":${PORT}80\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}90\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}91\"%" $HOME/$FOLDER/config/app.toml
 
 # Set Config Pruning
 pruning="custom"
@@ -120,9 +125,27 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$
 
 # Enable snapshots
  sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
- $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
- SNAP_NAME=$(curl -s https://snapshots-testnet.nodejumper.io/babylon-testnet/ | egrep -o ">bbn-test1_.*\.tar.lz4" | tr -d ">")
- curl https://snapshots-testnet.nodejumper.io/babylon-testnet/${SNAP_NAME} | lz4 -dc - | tar -xf - -C $HOME/$FOLDER
+ 
+# State Sync
+cp $HOME/$FOLDER/data/priv_validator_state.json $HOME/$FOLDER/priv_validator_state.json.backup
+$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
+
+SNAP_RPC="https://babylon-testnet.nodejumper.io:443"
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height)
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000))
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+PEERS="88bed747abef320552d84d02947d0dd2b6d9c71c@babylon-testnet.nodejumper.io:44656"
+sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/$FOLDER/config/config.toml
+
+sed -i 's|^enable *=.*|enable = true|' $HOME/$FOLDER/config/config.toml
+sed -i 's|^rpc_servers *=.*|rpc_servers = "'$SNAP_RPC,$SNAP_RPC'"|' $HOME/$FOLDER/config/config.toml
+sed -i 's|^trust_height *=.*|trust_height = '$BLOCK_HEIGHT'|' $HOME/$FOLDER/config/config.toml
+sed -i 's|^trust_hash *=.*|trust_hash = "'$TRUST_HASH'"|' $HOME/$FOLDER/config/config.toml
+
+mv $HOME/$FOLDER/priv_validator_state.json.backup $HOME/$FOLDER/data/priv_validator_state.json
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -153,7 +176,7 @@ echo -e "\e[1m\e[35mSETUP FINISHED\e[0m"
 echo ""
 echo -e "CHECK STATUS BINARY : \e[1m\e[35msystemctl status $BINARY\e[0m"
 echo -e "CHECK RUNNING LOGS : \e[1m\e[35mjournalctl -fu $BINARY -o cat\e[0m"
-echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
+echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\e[0m"
 echo ""
 
 # End
