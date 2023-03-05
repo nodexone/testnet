@@ -1,5 +1,5 @@
 #
-# // Copyright (C) 2023 Osmosis Labs
+# // Copyright (C) 2023 Osmosis Labs Installer
 #
 
 import subprocess
@@ -261,6 +261,7 @@ class bcolors:
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
     OKGREEN = '\033[92m'
+    OKPINK = '\033[0;35m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
@@ -277,7 +278,7 @@ def rlinput(prompt, prefill=''):
 
 
 def colorprint(prompt: str):
-    print(bcolors.OKGREEN + prompt + bcolors.ENDC)
+    print(bcolors.OKPINK + prompt + bcolors.ENDC)
 
 
 def get_key_case_insensitive(dict, candidate_value):
@@ -291,47 +292,47 @@ def get_key_case_insensitive(dict, candidate_value):
 
 
 def completeCosmovisor():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! You have successfully completed setting up an Osmosis full node!")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "The cosmovisor service is currently running in the background")
-    print(bcolors.OKGREEN + "To see the status of cosmovisor, run the following command: 'sudo systemctl status cosmovisor'")
+    print(bcolors.OKPINK + "To see the status of cosmovisor, run the following command: 'sudo systemctl status cosmovisor'")
     colorprint(
         "To see the live logs from cosmovisor, run the following command: 'journalctl -u cosmovisor -f'")
     quit()
 
 
 def completeOsmosisd():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! You have successfully completed setting up an Osmosis full node!")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "The osmosisd service is currently running in the background")
-    print(bcolors.OKGREEN + "To see the status of the osmosis daemon, run the following command: 'sudo systemctl status osmosisd'")
+    print(bcolors.OKPINK + "To see the status of the osmosis daemon, run the following command: 'sudo systemctl status osmosisd'")
     colorprint(
         "To see the live logs from the osmosis daemon, run the following command: 'journalctl -u osmosisd -f'")
     quit()
 
 
 def complete():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! You have successfully completed setting up an Osmosis full node!")
-    print(bcolors.OKGREEN + "The osmosisd service is NOT running in the background")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK + "The osmosisd service is NOT running in the background")
+    print(bcolors.OKPINK +
           "You can start osmosisd with the following command: 'osmosisd start'" + bcolors.ENDC)
     quit()
 
 
 def partComplete():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! You have successfully completed setting up the Osmosis daemon!")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "The osmosisd service is NOT running in the background, and your data directory is empty")
-    print(bcolors.OKGREEN + "If you intend to use osmosisd without syncing, you must include the '--node' flag after cli commands with the address of a public RPC node" + bcolors.ENDC)
+    print(bcolors.OKPINK + "If you intend to use osmosisd without syncing, you must include the '--node' flag after cli commands with the address of a public RPC node" + bcolors.ENDC)
     quit()
 
 
 def clientComplete():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! You have successfully completed setting up an Osmosis client node!")
     colorprint(
         "DO NOT start the osmosis daemon. You can query directly from the command line without starting the daemon!")
@@ -339,43 +340,43 @@ def clientComplete():
 
 
 def replayComplete():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! You are currently replaying from genesis in a background service!")
-    print(bcolors.OKGREEN + "To see the status of cosmovisor, run the following command: 'sudo systemctl status cosmovisor'")
+    print(bcolors.OKPINK + "To see the status of cosmovisor, run the following command: 'sudo systemctl status cosmovisor'")
     colorprint(
         "To see the live logs from cosmovisor, run the following command: 'journalctl -u cosmovisor -f'")
     quit()
 
 
 def replayDelay():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! Osmosis is ready to replay from genesis on your command!")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "YOU MUST MANUALLY INCREASE ULIMIT FILE SIZE BEFORE STARTING WITH `ulimit -n 200000`")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Use the command `cosmovisor start` to start the replay from genesis process")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "It is recommended to run this in a tmux session if not running as a background service")
-    print(bcolors.OKGREEN + "You must use `cosmovisor start` and not `osmosisd start` in order to upgrade automatically" + bcolors.ENDC)
+    print(bcolors.OKPINK + "You must use `cosmovisor start` and not `osmosisd start` in order to upgrade automatically" + bcolors.ENDC)
     quit()
 
 
 def localOsmosisComplete():
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Congratulations! You have successfully completed setting up a LocalOsmosis node!")
-    print(bcolors.OKGREEN + "To start the local network:")
-    print(bcolors.OKGREEN + "Ensure docker is running in the background if on linux or start the Docker application if on Mac")
-    print(bcolors.OKGREEN + "Run 'cd $HOME/osmosis'")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK + "To start the local network:")
+    print(bcolors.OKPINK + "Ensure docker is running in the background if on linux or start the Docker application if on Mac")
+    print(bcolors.OKPINK + "Run 'cd $HOME/osmosis'")
+    print(bcolors.OKPINK +
           "First, you MUST clean your env, run 'make localnet-clean' and select 'yes'")
-    print(bcolors.OKGREEN + "To start the node, run 'make localnet-start'")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK + "To start the node, run 'make localnet-start'")
+    print(bcolors.OKPINK +
           "Run 'osmosisd status' to check that you are now creating blocks")
-    print(bcolors.OKGREEN + "To stop the node and retain data, run 'make localnet-stop'")
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK + "To stop the node and retain data, run 'make localnet-stop'")
+    print(bcolors.OKPINK +
           "To stop the node and remove data, run 'make localnet-remove'")
-    print(bcolors.OKGREEN + "To run LocalOsmosis on a different version, git checkout the desired branch, run 'make localnet-build', then follow the above instructions")
-    print(bcolors.OKGREEN + "For more in depth information, see https://github.com/osmosis-labs/osmosis/blob/main/tests/localosmosis/README.md" + bcolors.ENDC)
+    print(bcolors.OKPINK + "To run LocalOsmosis on a different version, git checkout the desired branch, run 'make localnet-build', then follow the above instructions")
+    print(bcolors.OKPINK + "For more in depth information, see https://github.com/osmosis-labs/osmosis/blob/main/tests/localosmosis/README.md" + bcolors.ENDC)
     quit()
 
 
@@ -452,7 +453,7 @@ WantedBy=multi-user.target
 
 
 def cosmovisorInit():
-    print(bcolors.OKGREEN + """Do you want to use Cosmovisor to automate future upgrades?
+    print(bcolors.OKPINK + """Do you want to use Cosmovisor to automate future upgrades?
 1) Yes, install cosmovisor and set up background service
 2) No, just set up an osmosisd background service (recommended)
 3) Don't install cosmovisor and don't set up a background service
@@ -465,7 +466,7 @@ def cosmovisorInit():
         useCosmovisor = '3'
     else:
         useCosmovisor = input(
-            bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+            bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if useCosmovisor == "1":
         subprocess.run(["clear"], shell=True)
@@ -512,7 +513,7 @@ def cosmovisorInit():
 
 
 def startReplayNow():
-    print(bcolors.OKGREEN + """Do you want to start cosmovisor as a background service?
+    print(bcolors.OKPINK + """Do you want to start cosmovisor as a background service?
 1) Yes, start cosmovisor as a background service and begin replay
 2) No, exit and start on my own (will still auto update at upgrade heights)
     """ + bcolors.ENDC)
@@ -521,7 +522,7 @@ def startReplayNow():
     elif args.startReplay == False:
         startNow = '2'
     else:
-        startNow = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        startNow = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if startNow == "1":
         subprocess.run(["clear"], shell=True)
@@ -748,7 +749,7 @@ def replayFromGenesisRocksDb():
 
 
 def replayFromGenesisDb():
-    print(bcolors.OKGREEN + """Please choose which database you want to use:
+    print(bcolors.OKPINK + """Please choose which database you want to use:
 1) goleveldb (Default)
 2) rocksdb (faster but less support)
     """ + bcolors.ENDC)
@@ -757,7 +758,7 @@ def replayFromGenesisDb():
     elif args.replayDbBackend == "rocksdb":
         databaseType = '2'
     else:
-        databaseType = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        databaseType = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if databaseType == "1":
         subprocess.run(["clear"], shell=True)
@@ -787,7 +788,7 @@ Would you like to overwrite any previous swap file and instead set a """+str(swa
         elif args.extraSwap == False:
             swapAns = '2'
         else:
-            swapAns = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+            swapAns = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
         if swapAns == "1":
             colorprint("Setting up " + str(swapNeeded) + "GB swap file...")
@@ -832,7 +833,7 @@ Would you like to overwrite any previous swap file and instead set a """+str(swa
 #     subprocess.run(["sed -i -E 's/rpc_servers = \"\"/rpc_servers = \""+RPCs+"\"/g' "+osmo_home+"/config/config.toml"], shell=True)
 #     subprocess.run(["sed -i -E 's/trust_height = 0/trust_height = "+TRUST_HEIGHT+"/g' "+osmo_home+"/config/config.toml"], shell=True)
 #     subprocess.run(["sed -i -E 's/trust_hash = \"\"/trust_hash = \""+TRUST_HASH.stdout.strip()+"\"/g' "+osmo_home+"/config/config.toml"], shell=True)
-#     print(bcolors.OKGREEN + """
+#     print(bcolors.OKPINK + """
 # Osmosis is about to statesync. This process can take anywhere from 5-30 minutes.
 # During this process, you will see many logs (to include many errors)
 # As long as it continues to find/apply snapshot chunks, it is working.
@@ -842,7 +843,7 @@ Would you like to overwrite any previous swap file and instead set a """+str(swa
 # 1) Yes
 # 2) No
 #     """+ bcolors.ENDC)
-#     stateSyncAns = input(bcolors.OKGREEN + 'Enter Choice: '+ bcolors.ENDC)
+#     stateSyncAns = input(bcolors.OKPINK + 'Enter Choice: '+ bcolors.ENDC)
 #     if stateSyncAns == "1":
 #         subprocess.run(["osmosisd start"], shell=True, env=my_env)
 #         colorprint("Statesync finished. Installing required patches for state sync fix")
@@ -933,7 +934,7 @@ def mainNetLocation():
         location_map, args.snapshotLocation)
     if nodeLocationAns == None:
         nodeLocationAns = input(
-            bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+            bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     subprocess.run(["clear"], shell=True)
     if nodeLocationAns in location_map:
@@ -947,7 +948,7 @@ def testNetType():
     global fileName
     global location
     testnet_type_map = {"1": "pruned", "2": "archive"}
-    print(bcolors.OKGREEN + """Please choose the node snapshot type:
+    print(bcolors.OKPINK + """Please choose the node snapshot type:
 1) Pruned (recommended)
 2) Archive
     """ + bcolors.ENDC)
@@ -956,7 +957,7 @@ def testNetType():
     elif args.snapshotTypeTestnet == "archive":
         nodeTypeAns = "2"
     else:
-        nodeTypeAns = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        nodeTypeAns = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if nodeTypeAns == "1":
         subprocess.run(["clear"], shell=True)
@@ -976,7 +977,7 @@ def testNetType():
 def mainNetType():
     global fileName
     global location
-    print(bcolors.OKGREEN + """Please choose the node snapshot type:
+    print(bcolors.OKPINK + """Please choose the node snapshot type:
 1) Pruned (recommended)
 2) Default
 3) Archive
@@ -991,7 +992,7 @@ def mainNetType():
         subprocess.run(["clear"], shell=True)
         infraSnapshotInstall()
     else:
-        nodeTypeAns = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        nodeTypeAns = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if nodeTypeAns == "1":
         subprocess.run(["clear"], shell=True)
@@ -1012,7 +1013,7 @@ def mainNetType():
 
 
 def dataSyncSelection():
-    print(bcolors.OKGREEN + """Please choose from the following options:
+    print(bcolors.OKPINK + """Please choose from the following options:
 1) Download a snapshot from ChainLayer (recommended)
 2) Start at block 1 and automatically upgrade at upgrade heights (replay from genesis, can also select rocksdb here)
 3) Exit now, I only wanted to install the daemon
@@ -1024,7 +1025,7 @@ def dataSyncSelection():
     elif args.dataSync == "exit":
         dataTypeAns = "3"
     else:
-        dataTypeAns = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        dataTypeAns = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if dataTypeAns == "1":
         subprocess.run(["clear"], shell=True)
@@ -1044,7 +1045,7 @@ def dataSyncSelection():
 
 
 def dataSyncSelectionTest():
-    print(bcolors.OKGREEN + """Please choose from the following options:
+    print(bcolors.OKPINK + """Please choose from the following options:
 1) Download a snapshot from ChainLayer (recommended)
 2) Exit now, I only wanted to install the daemon
     """ + bcolors.ENDC)
@@ -1053,7 +1054,7 @@ def dataSyncSelectionTest():
     elif args.dataSyncTestnet == "exit":
         dataTypeAns = "2"
     else:
-        dataTypeAns = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        dataTypeAns = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if dataTypeAns == "1":
         subprocess.run(["clear"], shell=True)
@@ -1071,7 +1072,7 @@ def dataSyncSelectionTest():
 
 def pruningSettings():
 
-    print(bcolors.OKGREEN + """Please choose your desired pruning settings:
+    print(bcolors.OKPINK + """Please choose your desired pruning settings:
 1) Default: (keep last 100,000 states to query the last week worth of data and prune at 100 block intervals)
 2) Nothing: (keep everything, select this if running an archive node)
 3) Everything: (modified prune everything due to bug, keep last 10,000 states and prune at a random prime block interval)
@@ -1084,7 +1085,7 @@ def pruningSettings():
     elif args.pruning == "everything":
         pruneAns = '3'
     else:
-        pruneAns = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        pruneAns = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if pruneAns == "1" and networkType == NetworkType.MAINNET:
         subprocess.run(["clear"], shell=True)
@@ -1130,7 +1131,7 @@ def pruningSettings():
 
 
 def customPortSelection():
-    print(bcolors.OKGREEN + """Do you want to run Osmosis on default ports?:
+    print(bcolors.OKPINK + """Do you want to run Osmosis on default ports?:
 1) Yes, use default ports (recommended)
 2) No, specify custom ports
     """ + bcolors.ENDC)
@@ -1143,7 +1144,7 @@ def customPortSelection():
         p2p_laddr = args.ports[5]
         pprof_laddr = args.ports[6]
     else:
-        portChoice = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        portChoice = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
         if portChoice == "1":
             subprocess.run(["clear"], shell=True)
@@ -1162,19 +1163,19 @@ def customPortSelection():
             pprof_laddr_def = "localhost:6060"
             # user input
             api_server = rlinput(
-                bcolors.OKGREEN + "(1/7) API Server: " + bcolors.ENDC, api_server_def)
+                bcolors.OKPINK + "(1/7) API Server: " + bcolors.ENDC, api_server_def)
             grpc_server = rlinput(
-                bcolors.OKGREEN + "(2/7) gRPC Server: " + bcolors.ENDC, grpc_server_def)
-            grpc_web = rlinput(bcolors.OKGREEN +
+                bcolors.OKPINK + "(2/7) gRPC Server: " + bcolors.ENDC, grpc_server_def)
+            grpc_web = rlinput(bcolors.OKPINK +
                                "(3/7) gRPC Web: " + bcolors.ENDC, grpc_web_def)
             abci_app_addr = rlinput(
-                bcolors.OKGREEN + "(4/7) ABCI Application Address: " + bcolors.ENDC, abci_app_addr_def)
+                bcolors.OKPINK + "(4/7) ABCI Application Address: " + bcolors.ENDC, abci_app_addr_def)
             rpc_laddr = rlinput(
-                bcolors.OKGREEN + "(5/7) RPC Listening Address: " + bcolors.ENDC, rpc_laddr_def)
+                bcolors.OKPINK + "(5/7) RPC Listening Address: " + bcolors.ENDC, rpc_laddr_def)
             p2p_laddr = rlinput(
-                bcolors.OKGREEN + "(6/7) P2P Listening Address: " + bcolors.ENDC, p2p_laddr_def)
+                bcolors.OKPINK + "(6/7) P2P Listening Address: " + bcolors.ENDC, p2p_laddr_def)
             pprof_laddr = rlinput(
-                bcolors.OKGREEN + "(7/7) pprof Listening Address: " + bcolors.ENDC, pprof_laddr_def)
+                bcolors.OKPINK + "(7/7) pprof Listening Address: " + bcolors.ENDC, pprof_laddr_def)
         elif portChoice and portChoice != "1" or portChoice != "2":
             subprocess.run(["clear"], shell=True)
             customPortSelection()
@@ -1203,9 +1204,9 @@ def customPortSelection():
 
 def setupLocalnet():
     global version
-    print(bcolors.OKGREEN + "Initializing LocalOsmosis " + nodeName + bcolors.ENDC)
+    print(bcolors.OKPINK + "Initializing LocalOsmosis " + nodeName + bcolors.ENDC)
     os.chdir(os.path.expanduser(HOME+"/osmosis"))
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           "Building LocalOsmosis docker image {v}...".format(v=version) + bcolors.ENDC)
     subprocess.run(["make localnet-build"], stdout=subprocess.DEVNULL,
                    stderr=subprocess.DEVNULL, shell=True)
@@ -1214,7 +1215,7 @@ def setupLocalnet():
 
 
 def setupMainnet():
-    print(bcolors.OKGREEN + "Initializing Osmosis Node " + nodeName + bcolors.ENDC)
+    print(bcolors.OKPINK + "Initializing Osmosis Node " + nodeName + bcolors.ENDC)
     #subprocess.run(["osmosisd unsafe-reset-all"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True, env=my_env)
     subprocess.run(["rm "+osmo_home+"/config/app.toml"], stdout=subprocess.DEVNULL,
                    stderr=subprocess.DEVNULL, shell=True, env=my_env)
@@ -1235,7 +1236,7 @@ def setupMainnet():
 
 
 def setupTestnet():
-    print(bcolors.OKGREEN + "Initializing Osmosis Node " + nodeName + bcolors.ENDC)
+    print(bcolors.OKPINK + "Initializing Osmosis Node " + nodeName + bcolors.ENDC)
     #subprocess.run(["osmosisd unsafe-reset-all"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True, env=my_env)
     subprocess.run(["rm "+osmo_home+"/config/config.toml"],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True, env=my_env)
@@ -1265,7 +1266,7 @@ def setupTestnet():
 
 def clientSettings():
     if networkType == NetworkType.MAINNET:
-        print(bcolors.OKGREEN + "Initializing Osmosis Client Node " +
+        print(bcolors.OKPINK + "Initializing Osmosis Client Node " +
               nodeName + bcolors.ENDC)
         #subprocess.run(["osmosisd unsafe-reset-all"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True, env=my_env)
         subprocess.run(["rm "+osmo_home+"/config/client.toml"],
@@ -1282,7 +1283,7 @@ def clientSettings():
         clientComplete()
 
     elif networkType == NetworkType.TESTNET:
-        print(bcolors.OKGREEN + "Initializing Osmosis Client Node " +
+        print(bcolors.OKPINK + "Initializing Osmosis Client Node " +
               nodeName + bcolors.ENDC)
         #subprocess.run(["osmosisd unsafe-reset-all"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True, env=my_env)
         subprocess.run(["rm "+osmo_home+"/config/client.toml"],
@@ -1298,7 +1299,7 @@ def clientSettings():
         clientComplete()
 
     elif networkType == NetworkType.LOCALOSMOSIS:
-        print(bcolors.OKGREEN + "Initializing LocalOsmosis Node " +
+        print(bcolors.OKPINK + "Initializing LocalOsmosis Node " +
               nodeName + bcolors.ENDC)
         subprocess.run(["rm "+osmo_home+"/config/client.toml"],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True, env=my_env)
@@ -1322,7 +1323,7 @@ def initNodeName():
         nodeName = args.nodeName
     else:
         nodeName = input(
-            bcolors.OKGREEN + "Input desired node name (no quotes, cant be blank): " + bcolors.ENDC)
+            bcolors.OKPINK + "Input desired node name (no quotes, cant be blank): " + bcolors.ENDC)
 
     if nodeName and networkType == NetworkType.MAINNET and node == NodeType.FULL:
         subprocess.run(["clear"], shell=True)
@@ -1362,7 +1363,7 @@ def installLocationHandler():
         osmo_home = args.installHome
     else:
         osmo_home = rlinput(
-            bcolors.OKGREEN + "Installation Location: " + bcolors.ENDC, location_def)
+            bcolors.OKPINK + "Installation Location: " + bcolors.ENDC, location_def)
 
     if osmo_home.endswith("/"):
         print(bcolors.FAIL +
@@ -1383,7 +1384,7 @@ def installLocationHandler():
 
 def installLocation():
     global osmo_home
-    print(bcolors.OKGREEN + """Do you want to install Osmosis in the default location?:
+    print(bcolors.OKPINK + """Do you want to install Osmosis in the default location?:
 1) Yes, use default location (recommended)
 2) No, specify custom location
     """ + bcolors.ENDC)
@@ -1392,7 +1393,7 @@ def installLocation():
         locationChoice = '2'
     else:
         locationChoice = input(
-            bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+            bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if locationChoice == "1":
         subprocess.run(["clear"], shell=True)
@@ -1411,12 +1412,12 @@ def setupContactEnvironment():
     my_env = os.environ.copy()
     my_env["PATH"] = "/"+HOME+"/go/bin:/"+HOME+"/go/bin:/" + \
         HOME+"/.go/bin:"+HOME+"/.cargo/bin:" + my_env["PATH"]
-    print(bcolors.OKGREEN + """Do you want to set up a basic contract environment?:
+    print(bcolors.OKPINK + """Do you want to set up a basic contract environment?:
 1) Yes, setup a basic contract environment
 2) No, continue with the rest of the setup
     """ + bcolors.ENDC)
 
-    setupContractEnv = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+    setupContractEnv = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if setupContractEnv == "1":
         subprocess.run(["clear"], shell=True)
@@ -1444,12 +1445,12 @@ def installRust():
         ["rustc --version"], capture_output=True, shell=True, text=True).stderr.strip()
     if "not found" not in isRustInstalled:
         return
-    print(bcolors.OKGREEN + """Rust not found on your device. Do you want to install Rust?:
+    print(bcolors.OKPINK + """Rust not found on your device. Do you want to install Rust?:
 1) Yes, install Rust
 2) No, do not install Rust
     """ + bcolors.ENDC)
 
-    installRust = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+    installRust = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if installRust == "1":
         subprocess.run(["clear"], shell=True)
@@ -1487,7 +1488,7 @@ def initSetup():
             ["git clone "+repo], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, shell=True)
         if "Repository not found" in gitClone.communicate()[1]:
             subprocess.run(["clear"], shell=True)
-            print(bcolors.OKGREEN + repo + """ repo provided by user does not exist, try another URL
+            print(bcolors.OKPINK + repo + """ repo provided by user does not exist, try another URL
             """ + bcolors.ENDC)
             brachSelection()
         os.chdir(os.path.expanduser(HOME+"/osmosis"))
@@ -1496,13 +1497,13 @@ def initSetup():
         subprocess.run(["git pull"], stdout=subprocess.DEVNULL,
                        stderr=subprocess.DEVNULL, shell=True)
 
-        print(bcolors.OKGREEN +
+        print(bcolors.OKPINK +
               "(4/4) Installing Osmosis {v} Binary...".format(v=version) + bcolors.ENDC)
         gitCheckout = subprocess.Popen(["git checkout {v}".format(
             v=version)], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, shell=True)
         if "did not match any file(s) known to git" in gitCheckout.communicate()[1]:
             subprocess.run(["clear"], shell=True)
-            print(bcolors.OKGREEN + version + """ branch provided by user does not exist, try another branch
+            print(bcolors.OKPINK + version + """ branch provided by user does not exist, try another branch
             """ + bcolors.ENDC)
             brachSelection()
 
@@ -1565,7 +1566,7 @@ def initSetup():
             ["git clone "+repo], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, shell=True)
         if "Repository not found" in gitClone.communicate()[1]:
             subprocess.run(["clear"], shell=True)
-            print(bcolors.OKGREEN + repo + """ repo provided by user does not exist, try another URL
+            print(bcolors.OKPINK + repo + """ repo provided by user does not exist, try another URL
             """ + bcolors.ENDC)
             brachSelection()
         os.chdir(os.path.expanduser(HOME+"/osmosis"))
@@ -1574,13 +1575,13 @@ def initSetup():
         subprocess.run(["git pull"], stdout=subprocess.DEVNULL,
                        stderr=subprocess.DEVNULL, shell=True)
 
-        print(bcolors.OKGREEN +
+        print(bcolors.OKPINK +
               "(4/4) Installing Osmosis {v} Binary...".format(v=version) + bcolors.ENDC)
         gitCheckout = subprocess.Popen(["git checkout {v}".format(
             v=version)], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, shell=True)
         if "did not match any file(s) known to git" in gitCheckout.communicate()[1]:
             subprocess.run(["clear"], shell=True)
-            print(bcolors.OKGREEN + version + """ branch provided by user does not exist, try another branch
+            print(bcolors.OKPINK + version + """ branch provided by user does not exist, try another branch
             """ + bcolors.ENDC)
             brachSelection()
 
@@ -1614,7 +1615,7 @@ def branchHandler():
     branch_def = subprocess.run(["echo {v}".format(
         v=version)], capture_output=True, shell=True, text=True).stdout.strip()
 
-    version = rlinput(bcolors.OKGREEN + "Branch: " + bcolors.ENDC, branch_def)
+    version = rlinput(bcolors.OKPINK + "Branch: " + bcolors.ENDC, branch_def)
 
     if version == "":
         print(bcolors.FAIL + "Please ensure your branch is not blank" + bcolors.FAIL)
@@ -1633,7 +1634,7 @@ def repoHandler():
     repo_def = subprocess.run(
         ["echo "+repo], capture_output=True, shell=True, text=True).stdout.strip()
 
-    repo = rlinput(bcolors.OKGREEN + "Repo URL: " + bcolors.ENDC, repo_def)
+    repo = rlinput(bcolors.OKPINK + "Repo URL: " + bcolors.ENDC, repo_def)
 
     if repo.endswith("/"):
         print(bcolors.FAIL +
@@ -1658,7 +1659,7 @@ def brachSelection():
     global repo
     repo = "https://github.com/osmosis-labs/osmosis"
     version = NetworkVersion.LOCALOSMOSIS.value
-    print(bcolors.OKGREEN + """
+    print(bcolors.OKPINK + """
 Would you like to run LocalOsmosis on the most recent release of Osmosis: {v} ?
 1) Yes, use {v} (recommended)
 2) No, I want to use a different version of Osmosis for LocalOsmosis from a branch on the osmosis repo
@@ -1666,7 +1667,7 @@ Would you like to run LocalOsmosis on the most recent release of Osmosis: {v} ?
     """.format(
         v=version) + bcolors.ENDC)
 
-    branchSelect = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+    branchSelect = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if branchSelect == "1":
         subprocess.run(["clear"], shell=True)
@@ -1692,13 +1693,13 @@ def initEnvironment():
         version = NetworkVersion.TESTNET.value
 
     if os_name == "Linux":
-        print(bcolors.OKGREEN + "System Detected: Linux" + bcolors.ENDC)
+        print(bcolors.OKPINK + "System Detected: Linux" + bcolors.ENDC)
         mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
         mem_gib = mem_bytes/(1024.**3)
-        print(bcolors.OKGREEN + "RAM Detected: " +
+        print(bcolors.OKPINK + "RAM Detected: " +
               str(round(mem_gib))+"GB" + bcolors.ENDC)
         if round(mem_gib) < 32:
-            print(bcolors.OKGREEN + """
+            print(bcolors.OKPINK + """
 You have less than the recommended 32GB of RAM. Would you like to set up a swap file?
 1) Yes, set up swap file
 2) No, do not set up swap file
@@ -1708,12 +1709,12 @@ You have less than the recommended 32GB of RAM. Would you like to set up a swap 
             elif args.swapOn == False:
                 swapAns = '2'
             else:
-                swapAns = input(bcolors.OKGREEN +
+                swapAns = input(bcolors.OKPINK +
                                 'Enter Choice: ' + bcolors.ENDC)
 
             if swapAns == "1":
                 swapNeeded = 32 - round(mem_gib)
-                print(bcolors.OKGREEN + "Setting up " +
+                print(bcolors.OKPINK + "Setting up " +
                       str(swapNeeded) + "GB swap file..." + bcolors.ENDC)
                 subprocess.run(["sudo swapoff -a"], stdout=subprocess.DEVNULL,
                                stderr=subprocess.DEVNULL, shell=True)
@@ -1730,7 +1731,7 @@ You have less than the recommended 32GB of RAM. Would you like to set up a swap 
                 subprocess.run(["echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab"],
                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
                 subprocess.run(["clear"], shell=True)
-                print(bcolors.OKGREEN + str(swapNeeded) +
+                print(bcolors.OKPINK + str(swapNeeded) +
                       "GB swap file set" + bcolors.ENDC)
                 initSetup()
             elif swapAns == "2":
@@ -1740,22 +1741,22 @@ You have less than the recommended 32GB of RAM. Would you like to set up a swap 
                 subprocess.run(["clear"], shell=True)
                 initEnvironment()
         else:
-            print(bcolors.OKGREEN + "You have enough RAM to meet the 32GB minimum requirement, moving on to system setup..." + bcolors.ENDC)
+            print(bcolors.OKPINK + "You have enough RAM to meet the 32GB minimum requirement, moving on to system setup..." + bcolors.ENDC)
             time.sleep(3)
             subprocess.run(["clear"], shell=True)
             initSetup()
 
     elif os_name == "Darwin":
-        print(bcolors.OKGREEN + "System Detected: Mac" + bcolors.ENDC)
+        print(bcolors.OKPINK + "System Detected: Mac" + bcolors.ENDC)
         mem_bytes = subprocess.run(
             ["sysctl hw.memsize"], capture_output=True, shell=True, text=True)
         mem_bytes = str(mem_bytes.stdout.strip())
         mem_bytes = mem_bytes[11:]
         mem_gib = int(mem_bytes)/(1024.**3)
-        print(bcolors.OKGREEN + "RAM Detected: " +
+        print(bcolors.OKPINK + "RAM Detected: " +
               str(round(mem_gib))+"GB" + bcolors.ENDC)
         if round(mem_gib) < 32:
-            print(bcolors.OKGREEN + """
+            print(bcolors.OKPINK + """
 You have less than the recommended 32GB of RAM. Would you still like to continue?
 1) Yes, continue
 2) No, quit
@@ -1765,7 +1766,7 @@ You have less than the recommended 32GB of RAM. Would you still like to continue
             elif args.swapOn == False:
                 warnAns = '1'
             else:
-                warnAns = input(bcolors.OKGREEN +
+                warnAns = input(bcolors.OKPINK +
                                 'Enter Choice: ' + bcolors.ENDC)
 
             if warnAns == "1":
@@ -1778,12 +1779,12 @@ You have less than the recommended 32GB of RAM. Would you still like to continue
                 subprocess.run(["clear"], shell=True)
                 initEnvironment()
         else:
-            print(bcolors.OKGREEN + "You have enough RAM to meet the 32GB minimum requirement, moving on to system setup..." + bcolors.ENDC)
+            print(bcolors.OKPINK + "You have enough RAM to meet the 32GB minimum requirement, moving on to system setup..." + bcolors.ENDC)
             time.sleep(3)
             subprocess.run(["clear"], shell=True)
             initSetup()
     else:
-        print(bcolors.OKGREEN + "System OS not detected...Will continue with Linux environment assumption..." + bcolors.ENDC)
+        print(bcolors.OKPINK + "System OS not detected...Will continue with Linux environment assumption..." + bcolors.ENDC)
         time.sleep(3)
         initSetup()
 
@@ -1791,7 +1792,7 @@ You have less than the recommended 32GB of RAM. Would you still like to continue
 def selectNetwork():
     global networkType
     global version
-    print(bcolors.OKGREEN +
+    print(bcolors.OKPINK +
           """
 Please choose a network to join:
 1) Mainnet (osmosis-1)
@@ -1803,7 +1804,7 @@ Please choose a network to join:
     elif args.network == "osmo-test-4":
         networkType = NetworkType.TESTNET
     else:
-        networkType = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+        networkType = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
     if networkType == NetworkType.MAINNET and node == NodeType.FULL:
         subprocess.run(["clear"], shell=True)
@@ -1844,7 +1845,7 @@ def start():
         USER = subprocess.run(
             ["echo $USER"], capture_output=True, shell=True, text=True).stdout.strip()
         GOPATH = HOME+"/go"
-        print(bcolors.OKGREEN + """
+        print(bcolors.OKPINK + """
 
 ███╗   ██╗ ██████╗ ██████╗ ███████╗██╗  ██╗     ██████╗ █████╗ ██████╗ ██╗████████╗ █████╗ ██╗
 ████╗  ██║██╔═══██╗██╔══██╗██╔════╝╚██╗██╔╝    ██╔════╝██╔══██╗██╔══██╗██║╚══██╔══╝██╔══██╗██║
@@ -1852,7 +1853,6 @@ def start():
 ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║
 ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗
 ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝
-echo ">>> Automatic Installer for Osmosis Testnet | Chain ID : osmo-test-4 <<<";
 
 Welcome to the Osmosis node installer!
 
@@ -1879,7 +1879,7 @@ Please choose a node type:
         elif args.nodeType == 'local':
             node = NodeType.LOCALOSMOSIS
         else:
-            node = input(bcolors.OKGREEN + 'Enter Choice: ' + bcolors.ENDC)
+            node = input(bcolors.OKPINK + 'Enter Choice: ' + bcolors.ENDC)
 
         if node == NodeType.FULL:
             subprocess.run(["clear"], shell=True)
