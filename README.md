@@ -30,5 +30,6 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Babylon       | 243           | [Click Here](./babylon/README.md)        | [Click Here](./babylon/monitoring/README.md)        |   N/A    |
 | Andromeda       | 244           | [Click Here](./andromeda/README.md)        | [Click Here](./andromeda/monitoring/README.md)        |   N/A    |
 | Sao Network       | 245           | [Click Here](./saonetwork/README.md)        | [Click Here](./saonetwork/monitoring/README.md)        |   N/A    |
+| Ojo Network       | 246           | [Click Here](./ojonetwork/README.md)        | [Click Here](./ojonetwork/monitoring/README.md)        |   N/A    |
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)
