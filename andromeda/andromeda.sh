@@ -139,10 +139,8 @@ sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml >
 animate "Setting Up Peers & Seeds"
 
 # Download genesis and addrbook
-curl -s $GENESIS > $HOME/$FOLDER/config/genesis.json &
-animate "Update Genesis"
-curl -s $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json &
-animate "Update Addrbook"
+curl -s $GENESIS > $HOME/$FOLDER/config/genesis.json >/dev/null 2>&1 &
+curl -s $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json >/dev/null 2>&1 &
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}60\"%" $HOME/$FOLDER/config/config.toml >/dev/null 2>&1 &
