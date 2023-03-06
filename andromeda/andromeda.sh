@@ -103,11 +103,11 @@ animate "Install Golang"
 
 # Get testnet version of Andromeda
 cd $HOME 
-rm -rf $SOURCE
+rm -rf $SOURCE 
 git clone $REPO >/dev/null 2>&1 &
 cd $SOURCE >/dev/null 2>&1 &
 git checkout $VERSION >/dev/null 2>&1 &
-make build >/dev/null 2>&1 &
+make install >/dev/null 2>&1 &
 animate "Building Binary"
 
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0 >/dev/null 2>&1 &
@@ -115,7 +115,7 @@ animate "Install Cosmovisor"
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin >/dev/null 2>&1 &
-mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/ >/dev/null 2>&1 &
+mv $HOME/go/bin/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/ >/dev/null 2>&1 &
 rm -rf build
 animate "Preparing Binary"
 
@@ -124,9 +124,9 @@ ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current >/dev/
 sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY >/dev/null 2>&1 &
 
 # Init generation
-$BINARY config chain-id $CHAIN
-$BINARY config keyring-backend test
-$BINARY config node tcp://localhost:${PORT}57
+$BINARY config chain-id $CHAIN >/dev/null 2>&1 &
+$BINARY config keyring-backend test >/dev/null 2>&1 &
+$BINARY config node tcp://localhost:${PORT}57 >/dev/null 2>&1 &
 $BINARY init $NODENAME --chain-id $CHAIN >/dev/null 2>&1 &
 animate "Initialization"
 
@@ -139,9 +139,9 @@ sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml >
 animate "Setting Up Peers & Seeds"
 
 # Download genesis and addrbook
-curl -s $GENESIS > $HOME/$FOLDER/config/genesis.json >/dev/null 2>&1 &
+curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json >/dev/null 2>&1 &
 animate "Update Genesis"
-curl -s $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json >/dev/null 2>&1 &
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json >/dev/null 2>&1 &
 animate "Update Addrbook"
 
 # Set Port
