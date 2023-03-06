@@ -124,9 +124,9 @@ ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current >/dev/
 sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY >/dev/null 2>&1 &
 
 # Init generation
-$BINARY config chain-id $CHAIN >/dev/null 2>&1 &
-$BINARY config keyring-backend test >/dev/null 2>&1 &
-$BINARY config node tcp://localhost:${PORT}57 >/dev/null 2>&1 &
+$BINARY config chain-id $CHAIN
+$BINARY config keyring-backend test
+$BINARY config node tcp://localhost:${PORT}57
 $BINARY init $NODENAME --chain-id $CHAIN >/dev/null 2>&1 &
 animate "Initialization"
 
@@ -140,7 +140,9 @@ animate "Setting Up Peers & Seeds"
 
 # Download genesis and addrbook
 curl -s $GENESIS > $HOME/$FOLDER/config/genesis.json >/dev/null 2>&1 &
+animate "Update Genesis"
 curl -s $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json >/dev/null 2>&1 &
+animate "Update Addrbook"
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}60\"%" $HOME/$FOLDER/config/config.toml >/dev/null 2>&1 &
