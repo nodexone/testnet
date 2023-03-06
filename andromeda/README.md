@@ -74,6 +74,7 @@ After successful synchronization using state sync above, we advise you to disabl
 ```
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.andromedad/config/config.toml
 sudo systemctl restart andromedad && journalctl -u andromedad -f -o cat
+```
 
 ### Live Peers
 ```
