@@ -12,9 +12,6 @@
 
 # Ojo Testnet | Chain ID : ojo-devnet | Custom Port : 246
 
-### Community Documentation :
->- [Validator Setup Instructions](https://polkachu.com/testnets/ojo)
-
 ### Explorer:
 >-  https://explorer.nodexcapital.com/ojo
 
@@ -22,13 +19,4 @@
 You can setup your Ojo Price Feeder in few minutes by using automated script below.
 ```
 wget -O ojopf.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/ojonetwork/price-feeder/ojopf.sh && chmod +x ojopf.sh && ./ojopf.sh
-```
-
-### Ojo Price Feeder Add Wallet
-```
-ojod keys add $OJO_PF_WALLET --keyring-backend os
-```
-### Ojo Price Feeder Show Wallet
-```
-OJO_PF_ADDRESS=$(echo -e $OJO_PF_PASS | ojod keys show $OJO_PF_WALLET --keyring-backend os -a)
 ```
