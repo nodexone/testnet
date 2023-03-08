@@ -15,7 +15,7 @@
 ### Explorer:
 >-  https://explorer.nodexcapital.com/ojo
 
-### Ojo Price Feeder Automatic Installer
+### Ojo Price Feeder Automatic Installer (Make sure you're in active set Validator!)
 You can setup your Ojo Price Feeder in few minutes by using automated script below.
 ```
 wget -O ojopf.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/ojonetwork/price-feeder/ojopf.sh && chmod +x ojopf.sh && ./ojopf.sh
