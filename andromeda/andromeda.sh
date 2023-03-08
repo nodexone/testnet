@@ -81,7 +81,7 @@ function animate {
     printf "\r[${spin:$i:1}] $1..."
     sleep 0.1
   done
-  printf "\r[✓] $1 Complete\n"
+  printf "\r[✓] $1 Complete!\n"
 }
 
 # Package
@@ -105,7 +105,7 @@ animate "Install Golang"
 cd $HOME 
 rm -rf $SOURCE 
 git clone $REPO >/dev/null 2>&1 &
-cd $SOURCE >/dev/null 2>&1 &
+cd $SOURCE
 git checkout $VERSION >/dev/null 2>&1 &
 make install >/dev/null 2>&1 &
 animate "Building Binary"
@@ -114,8 +114,8 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0 >/dev/null 2>&1 &
 animate "Install Cosmovisor"
 
 # Prepare binaries for Cosmovisor
-mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin >/dev/null 2>&1 &
-mv $HOME/go/bin/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/ >/dev/null 2>&1 &
+mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
+mv $HOME/go/bin/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
 rm -rf build
 animate "Preparing Binary"
 
@@ -124,8 +124,8 @@ ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current >/dev/
 sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY >/dev/null 2>&1 &
 
 # Init generation
-$BINARY config chain-id $CHAIN >/dev/null 2>&1 &
-$BINARY config keyring-backend test >/dev/null 2>&1 &
+$BINARY config chain-id $CHAIN
+$BINARY config keyring-backend test
 $BINARY config node tcp://localhost:${PORT}57 >/dev/null 2>&1 &
 $BINARY init $NODENAME --chain-id $CHAIN >/dev/null 2>&1 &
 animate "Initialization"
