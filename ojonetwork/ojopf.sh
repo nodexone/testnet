@@ -18,8 +18,6 @@ OJO_PF_VERSION=v0.1.1
 OJO_PF_REPO=https://github.com/ojo-network/price-feeder
 OJO_PF_FOLDER=.ojo-price-feeder
 OJO_PF_KEYRING="os"
-RPC_PORT=echo $(grep -A 9 "# TCP or UNIX socket address for the RPC server to listen on" ~/.ojo/config/config.toml | grep -oP '(?<=:)[0-9]+')
-GRPC_PORT=echo $(grep -A 9 "# Address defines the gRPC server address to bind to." ~/.ojo/config/app.toml | grep -oP '(?<=:)[0-9]+')
 OJO_PF_ADDRESS=$(echo -e $PFPASS | ojod keys show $OJO_PF_WALLET --keyring-backend os -a)
 OJO_VALOPER=$(ojod keys show wallet --bech val -a)
 OJO_WALLET=$(ojod keys show wallet -a)
@@ -38,12 +36,18 @@ if [ ! $OJO_PF_PASS ]; then
         echo 'export OJO_PF_PASS='$OJO_PF_PASS >> $HOME/.bash_profile
 fi
 
+# grab rpc & grpc port
+export RPC_PORT=echo $(grep -A 9 "# TCP or UNIX socket address for the RPC server to listen on" ~/.ojo/config/config.toml | grep -oP '(?<=:)[0-9]+')
+export GRPC_PORT=echo $(grep -A 9 "# Address defines the gRPC server address to bind to." ~/.ojo/config/app.toml | grep -oP '(?<=:)[0-9]+')
+
 echo "Verify the information below before proceeding with the installation!"
 echo ""
 echo -e "OJO PRICE FEEDER WALLET NAME      : \e[1m\e[35m$OJO_PF_WALLET\e[0m"
 echo -e "OJO PRICE FEEDER WALLET PASSWORD  : \e[1m\e[35m$OJO_PF_PASS\e[0m"
 echo -e "OJO PRICE FEEDER VERSION          : \e[1m\e[35m$OJO_PF_VERSION\e[0m"
-echo -e "OJO PRICE FEEDER PORT             : \e[1m\e[35m$OJO_PF_PORT\e[0m"
+echo -e "OJO PRICE RPC PORT                : \e[1m\e[35m$OJO_PF_VERSION\e[0m"
+echo -e "OJO PRICE gRPC PORT               : \e[1m\e[35m$RPC_PORT\e[0m"
+echo -e "OJO PRICE FEEDER PORT             : \e[1m\e[35m$GRPC_PORT\e[0m"
 echo ""
 
 read -p "Is the above information correct? (y/n) " choice
