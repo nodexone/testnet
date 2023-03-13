@@ -24,8 +24,8 @@ VERSION=testnet0
 DENOM=sao
 COSMOVISOR=cosmovisor
 REPO=https://github.com/SaoNetwork/sao-consensus
-GENESIS=https://raw.githubusercontent.com/sxlzptprjkt/resource/master/testnet/sao/genesis.json
-ADDRBOOK=https://raw.githubusercontent.com/sxlzptprjkt/resource/master/testnet/sao/addrbook.json
+GENESIS=https://snapshots.kjnodes.com/sao-testnet/genesis.json
+ADDRBOOK=https://snapshots.kjnodes.com/sao-testnet/addrbook.json
 PORT=245
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
@@ -75,7 +75,7 @@ go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
-mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+mv build/linux/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
 rm -rf build
 
 # Create application symlinks
@@ -89,8 +89,8 @@ $BINARY config node tcp://localhost:${PORT}57
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-PEERS="2aad459c0dd3a81b1d5eb297986c8d8309ad20e3@peers-sao.sxlzptprjkt.xyz:27656"
-SEEDS=""
+PEERS=""
+SEEDS="3f472746f46493309650e5a033076689996c8881@sao-testnet.rpc.kjnodes.com:49659"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
@@ -113,13 +113,13 @@ sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
 
 # Set minimum gas price
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025$DENOM\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0001$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-SNAP_NAME=$(curl -s https://ss-t.sao.nodestake.top/ | egrep -o ">20.*\.tar.lz4" | tr -d ">")
-curl -o - -L https://ss-t.sao.nodestake.top/${SNAP_NAME}  | lz4 -c -d - | tar -x -C $HOME/$FOLDER
+curl -L https://snapshots.kjnodes.com/sao-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.sao
+[[ -f $HOME/.sao/data/upgrade-info.json ]] && cp $HOME/.sao/data/upgrade-info.json $HOME/.sao/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -136,6 +136,7 @@ LimitNOFILE=65535
 Environment="DAEMON_HOME=$HOME/$FOLDER"
 Environment="DAEMON_NAME=$BINARY"
 Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.sao/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
