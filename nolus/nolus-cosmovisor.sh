@@ -9,7 +9,7 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Non Cosmovisor Automatic Installer for Nolus | Chain ID : nolus-rila <<<";
+echo ">>> Cosmovisor Automatic Installer for Nolus | Chain ID : nolus-rila <<<";
 echo -e "\e[0m"
 
 sleep 1
@@ -21,10 +21,11 @@ BINARY=nolusd
 CHAIN=nolus-rila
 FOLDER=.nolus
 VERSION=v0.2.1-testnet
-REPO=https://github.com/Nolus-Protocol/nolus-core
+DENOM=unls
+COSMOVISOR=cosmovisor
+REPO=https://github.com/Nolus-Protocol/nolus-core.git
 GENESIS=https://snapshots.kjnodes.com/nolus-testnet/genesis.json
 ADDRBOOK=https://snapshots.kjnodes.com/nolus-testnet/addrbook.json
-DENOM=unls
 PORT=229
 
 # Set Vars
@@ -56,6 +57,7 @@ echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
 echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
 echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
+echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
 echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
@@ -76,7 +78,7 @@ sudo apt -qy upgrade
 
 # Install GO
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.19.7.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.19.6.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
@@ -86,8 +88,17 @@ rm -rf $SOURCE
 git clone $REPO
 cd $SOURCE
 git checkout $VERSION
-make install
-sudo mv $HOME/go/bin/$BINARY /usr/bin/
+make build
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
+
+# Prepare binaries for Cosmovisor
+mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
+mv target/release/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+rm -rf build
+
+# Create application symlinks
+ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
+sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
 
 # Init generation
 $BINARY config chain-id $CHAIN
@@ -126,26 +137,33 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.0025$DENOM\"/" $H
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
 curl -L https://snapshots.kjnodes.com/nolus-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nolus
+[[ -f $HOME/.nolus/data/upgrade-info.json ]] && cp $HOME/.nolus/data/upgrade-info.json $HOME/.nolus/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
-sudo tee /etc/systemd/system/$BINARY.service > /dev/null <<EOF
+sudo tee /etc/systemd/system/nolusd.service > /dev/null << EOF
 [Unit]
-Description=$BINARY
+Description=nolus-testnet node service
 After=network-online.target
+
 [Service]
 User=$USER
-ExecStart=$(which $BINARY) start --home $HOME/$FOLDER
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
-LimitNOFILE=4096
+RestartSec=10
+LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/.nolus"
+Environment="DAEMON_NAME=nolusd"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.nolus/cosmovisor/current/bin"
+
 [Install]
 WantedBy=multi-user.target
 EOF
 
 # Register And Start Service
+sudo systemctl start $BINARY
 sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
-sudo systemctl start $BINARY
 
 echo -e "\033[0;35m=============================================================\033[0m"
 echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"

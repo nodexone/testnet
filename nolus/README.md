@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/34649601/207593974-32d7cb69-eca9-4096-bc96-246fe7038c88.png">
 </p>
 
-# Nolus Testnet | Chain ID : nolus-rila
+# Nolus Testnet | Chain ID : nolus-rila | Custom Port : 229
 
 ### Official documentation:
 >- [Validator setup instructions](https://docs-nolus-protocol.notion.site/Nolus-Protocol-Docs-a0ddfe091cc5456183417a68502705f8)
@@ -18,10 +18,17 @@
 ### Explorer:
 >-  https://explorer.nodexcapital.com/nolus
 
-### Automatic Installer
+
+### Automatic Installer (Non Cosmovisor)
 You can setup your Nolus fullnode in few minutes by using automated script below.
 ```
 wget -O nolus.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nolus/nolus.sh && chmod +x nolus.sh && ./nolus.sh
+```
+
+### Automatic Installer (Cosmovisor)
+You can setup your Nolus fullnode in few minutes by using automated script below.
+```
+wget -O nolus-cosmovisor.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nolus/nolus-cosmovisor.sh && chmod +x nolus-cosmovisor.sh && ./nolus-cosmovisor.sh
 ```
 ### Public Endpoint
 
