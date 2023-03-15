@@ -9,115 +9,166 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Haqq Islam Coin | Chain ID : haqq_54211-3 <<<";
+echo ">>> Cosmovisor Automatic Installer for Dymension | Chain ID : haqq_54211-3 <<<";
 echo -e "\e[0m"
 
-sleep 2
+sleep 1
 
-# set vars
+# Variable
+SOURCE=haqq
+WALLET=wallet
+BINARY=haqqd 
+CHAIN=haqq_54211-3
+FOLDER=.haqqd
+VERSION=v1.3.1
+DENOM=aISLM
+COSMOVISOR=cosmovisor
+REPO=https://github.com/haqq-network/haqq.git
+GENESIS=https://snapshots.kjnodes.com/haqq-testnet/genesis.json
+ADDRBOOK=https://snapshots.kjnodes.com/haqq-testnet/addrbook.json
+PORT=247
+
+# Set Vars
 if [ ! $NODENAME ]; then
-	read -p "Enter node name: " NODENAME
-	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
+        echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
-if [ ! $WALLET ]; then
-	echo "export WALLET=wallet" >> $HOME/.bash_profile
-fi
-echo "export HAQQ_CHAIN_ID=haqq_53211-1" >> $HOME/.bash_profile
+
+echo "Verify the information below before proceeding with the installation!"
+echo ""
+echo -e "NODE NAME      : \e[1m\e[35m$NODENAME\e[0m"
+echo -e "WALLET NAME    : \e[1m\e[35m$WALLET\e[0m"
+echo -e "CHAIN NAME     : \e[1m\e[35m$CHAIN\e[0m"
+echo -e "NODE VERSION   : \e[1m\e[35m$VERSION\e[0m"
+echo -e "NODE FOLDER    : \e[1m\e[35m$FOLDER\e[0m"
+echo -e "NODE DENOM     : \e[1m\e[35m$DENOM\e[0m"
+echo -e "NODE ENGINE    : \e[1m\e[35m$COSMOVISOR\e[0m"
+echo -e "SOURCE CODE    : \e[1m\e[35m$REPO\e[0m"
+echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
+echo ""
+
+read -p "Is the above information correct? (y/n) " choice
+if [[ $choice == [Yy]* ]]; then
+
+echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
+echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
+echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
+echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
+echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
+echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
+echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
+echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
+echo "export REPO=${REPO}" >> $HOME/.bash_profile
+echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
+echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-echo '================================================='
-echo -e "Moniker: \e[1m\e[32m$NODENAME\e[0m"
-echo -e "Wallet Name: \e[1m\e[32m$WALLET\e[0m"
-  echo -e "Chain Name: \e[1m\e[32m$HAQQ_CHAIN_ID\e[0m"
-echo '================================================='
-sleep 2
-
-echo -e "\e[1m\e[32m1. Updating packages... \e[0m" && sleep 1
-# update
-sudo apt update && sudo apt upgrade -y
-
-echo -e "\e[1m\e[32m2. Installing dependencies... \e[0m" && sleep 1
-# packages
-sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
-
-# install go
-if ! [ -x "$(command -v go)" ]; then
-  ver="1.18.3"
-  cd $HOME
-  wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
-  sudo rm -rf /usr/local/go
-  sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
-  rm "go$ver.linux-amd64.tar.gz"
-  echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
-  source ~/.bash_profile
+else
+    echo "Installation cancelled!"
+    exit 1
 fi
 
-echo -e "\e[1m\e[32m3. Downloading and building binaries... \e[0m" && sleep 1
-# download binary
+# Package
+sudo apt -q update
+sudo apt -qy install curl git jq lz4 build-essential
+sudo apt -qy upgrade
+
+# Install GO
+sudo rm -rf /usr/local/go
+curl -Ls https://go.dev/dl/go1.19.7.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
+eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
+
+# Get testnet version of LAVA
 cd $HOME
-git clone -b v1.0.3 https://github.com/haqq-network/haqq && \
-cd haqq && \
-make install
+rm -rf $SOURCE
+git clone $REPO
+cd $SOURCE
+git checkout $VERSION
+make build
+go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
-# config
-haqqd config chain-id $HAQQ_CHAIN_ID
-haqqd config keyring-backend file
+# Prepare binaries for Cosmovisor
+mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
+mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
 
-# init
-haqqd init $NODENAME --chain-id $HAQQ_CHAIN_ID
 
-# download genesis and addrbook
-curl -OL https://storage.googleapis.com/haqq-testedge-snapshots/genesis.json
-mv genesis.json $HOME/.haqqd/config/genesis.json
-wget -O $HOME/.haqqd/config/addrbook.json "https://raw.githubusercontent.com/obajay/nodes-Guides/main/haqq/addrbook.json"
+# Create application symlinks
+ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
+sudo ln -s $HOME/$FOLDER/$COSMOVISOR/current/bin/$BINARY /usr/local/bin/$BINARY
 
-# set peers and seeds
-seeds=""
-sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.haqqd/config/config.toml
-peers="e15e1867f68011f80f2763e6691c89c923bf2f24@78.46.16.236:41656"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.haqqd/config/config.toml
+# Init generation
+$BINARY config chain-id $CHAIN
+$BINARY config keyring-backend test
+$BINARY config node tcp://localhost:${PORT}57
+$BINARY init $NODENAME --chain-id $CHAIN
 
-sed -i.bak -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0stake\"/;" ~/.haqqd/config/app.toml
-sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.haqqd/config/config.toml
-external_address=$(wget -qO- eth0.me) 
-sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.haqqd/config/config.toml
-sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 100/g' $HOME/.haqqd/config/config.toml
-sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 100/g' $HOME/.haqqd/config/config.toml
+# Set peers and seeds
+SEEDS="3f472746f46493309650e5a033076689996c8881@haqq-testnet.rpc.kjnodes.com:35659"
+PEERS=""
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
-# config pruning and indexer
-pruning="custom" && \
-pruning_keep_recent="100" && \
-pruning_keep_every="0" && \
-pruning_interval="10" && \
-sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.haqqd/config/app.toml && \
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.haqqd/config/app.toml && \
-sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.haqqd/config/app.toml && \
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.haqqd/config/app.toml
-indexer="null" && \
-sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.haqqd/config/config.toml
+# Download genesis and addrbook
+curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
-echo -e "\e[1m\e[32m4. Starting service... \e[0m" && sleep 1
-# create service
-sudo tee /etc/systemd/system/haqqd.service > /dev/null <<EOF
+# Set Port
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}60\"%" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}17\"%; s%^address = \":8080\"%address = \":${PORT}80\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}90\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}91\"%" $HOME/$FOLDER/config/app.toml
+
+# Set Config Pruning
+pruning="custom"
+pruning_keep_recent="100"
+pruning_keep_every="0"
+pruning_interval="10"
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
+
+# Set minimum gas price
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.025$DENOM_DYMD,0.025$DENOM_ATOM\"/" $HOME/$FOLDER/config/app.toml
+
+# Enable snapshots
+sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
+$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
+curl -L https://snapshots.kjnodes.com/haqq-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+[[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
+
+# Create Service
+sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
 [Unit]
-Description=haqqd
+Description=$BINARY
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which haqqd) start
+ExecStart=$(which cosmovisor) run start
 Restart=on-failure
-RestartSec=3
+RestartSec=10
 LimitNOFILE=65535
+Environment="DAEMON_HOME=$HOME/$FOLDER"
+Environment="DAEMON_NAME=$BINARY"
+Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.dymension/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# start service
+# Register And Start Service
+sudo systemctl start $BINARY
 sudo systemctl daemon-reload
-sudo systemctl enable haqqd
-sudo systemctl restart haqqd
+sudo systemctl enable $BINARY
 
-echo '=============== CONGRATZ! SETUP FINISHED ==================='
-echo -e 'To check logs: \e[1m\e[32mjournalctl -u haqqd -f -o cat\e[0m'
+echo -e "\033[0;35m=============================================================\033[0m"
+echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"
+echo ""
+echo -e "CHECK STATUS BINARY : \033[1m\033[35msystemctl status $BINARY\033[0m"
+echo -e "CHECK RUNNING LOGS : \033[1m\033[35mjournalctl -fu $BINARY -o cat\033[0m"
+echo -e "CHECK LOCAL STATUS : \033[1m\033[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\033[0m"
+echo -e "\033[0;35m=============================================================\033[0m"
+
+# End

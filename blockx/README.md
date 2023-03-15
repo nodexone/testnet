@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://raw.githubusercontent.com/Nodeist/Kurulumlar/main/logos/blockx.png">
 </p>
 
-# BlockX Testnet | Chain ID : blockx_12345-2
+# BlockX Testnet | Chain ID : blockx_12345-2 | Custom Port : 236
 
 ### Community Documentation:
 >- [Validator setup instructions](https://github.com/nodexcapital/testnet/tree/main/blockx)
@@ -25,10 +25,9 @@ wget -O blockx.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/bl
 ```
 ### Public Endpoint
 
->- API : https://api.blockx.nodexcapital.com
->- RPC : https://rpc.blockx.nodexcapital.com
->- gRPC : https://grpc.blockx.nodexcapital.com
->- gRPC Web : https://grpc-web.blockx.nodexcapital.com
+>- API : https://rest.blockx-t.nodexcapital.com
+>- RPC : https://rpc.blockx-t.nodexcapital.com
+>- gRPC : https://grpc.blockx-t.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```

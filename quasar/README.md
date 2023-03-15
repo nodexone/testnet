@@ -25,7 +25,7 @@ wget -O quasar.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/qu
 ```
 ### Public Endpoint
 
->- API : https://api.quasar-t.nodexcapital.com
+>- API : https://rest.quasar-t.nodexcapital.com
 >- RPC : https://rpc.quasar-t.nodexcapital.com
 >- gRPC : https://grpc.quasar-t.nodexcapital.com
 

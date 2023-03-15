@@ -8,7 +8,7 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Deweb        | 221           | [Click Here](./deweb/README.md)       | [Click Here](./deweb/monitoring/README.md)       |   N/A    |
 | Uptick       | 222           | [Click Here](./uptick/README.md)        | [Click Here](./uptick/monitoring/README.md)        |   N/A    |    
 | Celestia     | 223           | [Click Here](./celestia/README.md)    | [Click Here](./celestia/monitoring/README.md)    |   N/A    |         
-| Nibiru       | 224           | [Click Here](./nibiru/README.md)      | [Click Here](./nibiru/monitoring/README.md)      |   N/A    |
+| Nibiru (ITN)      | 224           | [Click Here](./nibiru/README.md)      | [Click Here](./nibiru/monitoring/README.md)      |   N/A    |
 | Okp4         | 225           | [Click Here](./okp4/README.md)        | [Click Here](./okp4/monitoring/README.md)        |   N/A    |
 | Nois         | 226           | [Click Here](./nois/README.md)        | [Click Here](./nois/monitoring/README.md)        |   N/A    |
 | Gitopia      | 227           | [Click Here](./gitopia/README.md)     | [Click Here](./gitopia/monitoring/README.md)     |   N/A    |
@@ -31,5 +31,8 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Andromeda       | 244           | [Click Here](./andromeda/README.md)        | [Click Here](./andromeda/monitoring/README.md)        |   N/A    |
 | Sao Network       | 245           | [Click Here](./saonetwork/README.md)        | [Click Here](./saonetwork/monitoring/README.md)        |   N/A    |
 | Ojo Network       | 246           | [Click Here](./ojonetwork/README.md)        | [Click Here](./ojonetwork/monitoring/README.md)        |   N/A    |
+| Haqq      | 247           | [Click Here](./haqq/README.md)        | [Click Here](./haqq/monitoring/README.md)        |   N/A    |
+| Bonus Block      | 248           | [Click Here](./bonusblock/README.md)        | [Click Here](./bonusblock/monitoring/README.md)        |   N/A    |
+
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)

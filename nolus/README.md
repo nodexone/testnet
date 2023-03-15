@@ -32,10 +32,9 @@ wget -O nolus-cosmovisor.sh https://raw.githubusercontent.com/nodexcapital/testn
 ```
 ### Public Endpoint
 
->- API : https://api.nolus.nodexcapital.com
->- RPC : https://rpc.nolus.nodexcapital.com
->- gRPC : https://grpc.nolus.nodexcapital.com
->- gRPC Web : https://grpc-web.nolus.nodexcapital.com
+>- API : https://rest.nolus-t.nodexcapital.com
+>- RPC : https://rpc.nolus-t.nodexcapital.com
+>- gRPC : https://grpc.nolus-t.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```
@@ -54,7 +53,7 @@ sudo systemctl start nolusd && sudo journalctl -fu nolusd -o cat
 ```
 nolusd tendermint unsafe-reset-all --home $HOME/.nolus --keep-addr-book
 
-SNAP_RPC="https://rpc.nolus.nodexcapital.com:443"
+SNAP_RPC="https://rpc.nolus-t.nodexcapital.com:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
@@ -64,6 +63,8 @@ sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
 s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
 s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
 s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.nolus/config/config.toml
+
+curl -L https://snapshots.kjnodes.com/nolus-testnet/wasm_latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.nolus
 
 sudo systemctl start nolusd && sudo journalctl -fu nolusd -o cat
 ```

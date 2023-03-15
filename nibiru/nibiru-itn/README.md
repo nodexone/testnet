@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://www.yeksin.net/wp-content/uploads/elementor/thumbs/nibiru-1-pxec4xhz4a2ae7d0zpdst55ws50bo3xhjhozbpn4j2.png">
 </p>
 
-# Nibiru  Incentivized Testnet | Chain ID : nibiru-itn-1 | Custom Port : 629
+# Nibiru  Incentivized Testnet | Chain ID : nibiru-itn-1 | Custom Port : 224
 
 ### Official Documentation:
 >- [Validator setup instructions](#)

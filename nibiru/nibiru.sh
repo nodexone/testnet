@@ -9,7 +9,7 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Nibiru Chain | Chain CHAIN : nibiru-testnet-2 <<<";
+echo ">>> Cosmovisor Automatic Installer for Nibiru Chain | Chain ID : nibiru-testnet-2 <<<";
 echo -e "\e[0m"
 
 sleep 1
@@ -26,7 +26,7 @@ COSMOVISOR=cosmovisor
 REPO=https://github.com/NibiruChain/nibiru.git
 GENESIS=https://snapshots.kjnodes.com/nibiru-testnet/genesis.json
 ADDRBOOK=https://snapshots.kjnodes.com/nibiru-testnet/addrbook.json
-PORT=34
+PORT=224
 
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile

@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://raw.githubusercontent.com/Nodeist/Kurulumlar/main/logos/humans.png">
 </p>
 
-# Humans Testnet | Chain ID : testnet-1
+# Humans Testnet | Chain ID : testnet-1 | Custom Port : 230
 
 ### Community Documentation:
 >- [Validator setup instructions](https://polkachu.com/testnets/humans)
@@ -25,10 +25,9 @@ wget -O humans.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/hu
 ```
 ### Public Endpoint
 
->- API : https://api.humans.nodexcapital.com
->- RPC : https://rpc.humans.nodexcapital.com
->- gRPC : https://grpc.humans.nodexcapital.com
->- gRPC Web : https://grpc-web.humans.nodexcapital.com
+>- API : https://rest.humans-t.nodexcapital.com
+>- RPC : https://rpc.humans-t.nodexcapital.com
+>- gRPC : https://grpc.humans-t.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```

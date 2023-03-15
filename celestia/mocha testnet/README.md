@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/170463282-576375f8-fa1e-4fce-8350-6312b415b50d.png">
 </p>
 
-# Celestia Testnet | Chain ID : mocha
+# Celestia Testnet | Chain ID : mocha | Custom Port : 223
 
 ### Official Documentation:
 >- https://docs.celestia.org/nodes/overview
@@ -21,14 +21,13 @@
 ### Automatic Installer
 You can setup your Celestia fullnode in few minutes by using automated script below.
 ```
-wget -O celestia.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/celestia/celestia.sh && chmod +x celestia.sh && ./celestia.sh
+wget -O mocha.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/celestia/mocha.sh && chmod +x mocha.sh && ./mocha.sh
 ```
 ### Public Endpoint
 
->- API : https://api.celestia.nodexcapital.com
->- RPC : https://rpc.celestia.nodexcapital.com
->- gRPC : https://grpc.celestia.nodexcapital.com
->- gRPC Web : https://grpc-web.celestia.nodexcapital.com
+>- API : https://rest.celestia-mocha.nodexcapital.com
+>- RPC : https://rpc.celestia-mocha.nodexcapital.com
+>- gRPC : https://grpc.celestia-mocha.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```

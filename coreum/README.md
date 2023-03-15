@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://github.com/nodexcapital/explorer/blob/master/public/logos/coreum.png">
 </p>
 
-# Coreum Testnet | Chain ID : coreum-testnet-1
+# Coreum Testnet | Chain ID : coreum-testnet-1 | Custom Port : 239
 
 ### Official Documentation:
 >- [Validator setup instructions](https://docs.coreum.dev/validator/run-validator.html)
@@ -25,10 +25,9 @@ wget -O coreum.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/co
 ```
 ### Public Endpoint
 
->- API : https://api.coreum.nodexcapital.com
->- RPC : https://rpc.coreum.nodexcapital.com
->- gRPC : https://grpc.coreum.nodexcapital.com
->- gRPC Web : https://grpc-web.coreum.nodexcapital.com
+>- API : https://rest.coreum-t.nodexcapital.com
+>- RPC : https://rpc.coreum-t.nodexcapital.com
+>- gRPC : https://grpc.coreum-t.nodexcapital.com
 
 ### Snapshot (Update every 5 hours)
 ```
@@ -46,7 +45,7 @@ sudo systemctl start cored && sudo journalctl -fu cored -o cat
 ```
 cored tendermint unsafe-reset-all --home $HOME/.core/coreum-testnet-1 --keep-addr-book
 
-SNAP_RPC="https://rpc.coreum.nodexcapital.com:443"
+SNAP_RPC="https://rpc.coreum-t.nodexcapital.com:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \

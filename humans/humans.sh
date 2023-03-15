@@ -26,7 +26,7 @@ COSMOVISOR=cosmovisor
 REPO=https://github.com/humansdotai/humans
 GENESIS=https://snapshots.polkachu.com/testnet-genesis/humans/genesis.json
 ADDRBOOK=https://snapshots.polkachu.com/testnet-addrbook/humans/addrbook.json
-PORT=40
+PORT=230
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
