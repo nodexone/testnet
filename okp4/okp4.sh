@@ -20,13 +20,35 @@ WALLET=wallet
 BINARY=okp4d
 CHAIN=okp4-nemeton-1
 FOLDER=.okp4d
-VERSION=v4.0.0
+VERSION=v4.1.0
 DENOM=uknow
 COSMOVISOR=cosmovisor
 REPO=https://github.com/okp4/okp4d.git
-GENESIS=https://snapshots.kjnodes.com/okp4-testnet/genesis.json
-ADDRBOOK=https://snapshots.kjnodes.com/okp4-testnet/addrbook.json
+GENESIS=https://snap.nodexcapital.com/okp4/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/okp4/addrbook.json
 PORT=225
+
+# Set Vars
+if [ ! $NODENAME ]; then
+        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
+        echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+fi
+
+echo "Verify the information below before proceeding with the installation!"
+echo ""
+echo -e "NODE NAME      : \e[1m\e[35m$NODENAME\e[0m"
+echo -e "WALLET NAME    : \e[1m\e[35m$WALLET\e[0m"
+echo -e "CHAIN NAME     : \e[1m\e[35m$CHAIN\e[0m"
+echo -e "NODE VERSION   : \e[1m\e[35m$VERSION\e[0m"
+echo -e "NODE FOLDER    : \e[1m\e[35m$FOLDER\e[0m"
+echo -e "NODE DENOM     : \e[1m\e[35m$DENOM\e[0m"
+echo -e "NODE ENGINE    : \e[1m\e[35m$COSMOVISOR\e[0m"
+echo -e "SOURCE CODE    : \e[1m\e[35m$REPO\e[0m"
+echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
+echo ""
+
+read -p "Is the above information correct? (y/n) " choice
+if [[ $choice == [Yy]* ]]; then
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
@@ -35,23 +57,16 @@ echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
 echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
 echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
-echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
 echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-# Set Vars
-if [ ! $NODENAME ]; then
-        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
-        echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+else
+    echo "Installation cancelled!"
+    exit 1
 fi
-echo ""
-echo -e "YOUR NODE NAME : \e[1m\e[35m$NODENAME\e[0m"
-echo -e "NODE CHAIN ID  : \e[1m\e[35m$CHAIN\e[0m"
-echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
-echo ""
 
 # Package
 sudo apt -q update
@@ -118,7 +133,7 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snapshots.kjnodes.com/okp4-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+curl -L https://snap.nodexcapital.com/okp4/okp4-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 [[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
@@ -147,11 +162,13 @@ sudo systemctl start $BINARY
 sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
 
-echo -e "\e[1m\e[35mSETUP FINISHED\e[0m"
+echo -e "\033[0;35m=============================================================\033[0m"
+echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"
 echo ""
-echo -e "CHECK STATUS BINARY : \e[1m\e[35msystemctl status $BINARY\e[0m"
-echo -e "CHECK RUNNING LOGS : \e[1m\e[35mjournalctl -fu $BINARY -o cat\e[0m"
-echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
-echo ""
+echo -e "CHECK STATUS BINARY : \033[1m\033[35msystemctl status $BINARY\033[0m"
+echo -e "CHECK RUNNING LOGS : \033[1m\033[35mjournalctl -fu $BINARY -o cat\033[0m"
+echo -e "CHECK LOCAL STATUS : \033[1m\033[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\033[0m"
+echo -e "\033[0;35m=============================================================\033[0m"
+
 
 # End

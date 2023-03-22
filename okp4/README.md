@@ -10,7 +10,7 @@
   <img src="https://user-images.githubusercontent.com/44331529/197152847-749c938c-c385-4698-bfa5-3f159297f391.png">
 </p>
 
-# Okp4 node setup for testnet — Okp4 Nemeton
+# Okp4 Testnet | Chain ID: okp4-nemeton-1 | Custom Port 225
 
 Guide Source :
 >- [Obajay - STAVR](https://github.com/obajay/nodes-Guides/tree/main/OKP4)
@@ -19,277 +19,44 @@ Explorer:
 >- https://explorer.nodexcapital.com/okp4
 
 
-## Usefull tools and references
-> To migrate your validator to another machine read [Migrate your validator to another machine](https://github.com/nodexcapital/testnet/blob/main/okp4/migrate_validator.md)
-
-## Hardware Requirements
-Like any Cosmos-SDK chain, the hardware requirements are pretty modest.
-
-### Minimum Hardware Requirements
- - 4x CPUs; the faster clock speed the better
- - 8GB RAM
- - 100GB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
-
-### Recommended Hardware Requirements 
- - 8x CPUs; the faster clock speed the better
- - 64GB RAM
- - 1TB of storage (SSD or NVME)
- - Permanent Internet connection (traffic will be minimal during testnet; 10Mbps will be plenty - for production at least 100Mbps is expected)
-
-## Set up your Okp4 fullnode
-### Option 1 (automatic)
-You can setup your nois fullnode in few minutes by using automated script below. It will prompt you to input your validator node name!
+### Automatic Installer (Must Using Ubuntu 22.04)
+You can setup your okp4 fullnode in few minutes by using automated script below.
 ```
 wget -O okp4.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/okp4/okp4.sh && chmod +x okp4.sh && ./okp4.sh
 ```
+### Public Endpoint
 
-### Option 2 (manual)
-You can follow [manual guide](https://github.com/nodexcapital/testnet/blob/main/okp4/manual_install.md) if you better prefer setting up node manually
+>- API : https://rest.okp4-t.nodexcapital.com
+>- RPC : https://rpc.okp4-t.nodexcapital.com
+>- gRPC : https://grpc.okp4-t.nodexcapital.com
 
-## Post installation
-
-When installation is finished please load variables into system
-```
-source $HOME/.bash_profile
-```
-
-Next you have to make sure your validator is syncing blocks. You can use command below to check synchronization status
-```
-okp4d status 2>&1 | jq .SyncInfo
-```
-
-### (OPTIONAL) State Sync
-You can state sync your node in minutes by running commands below
-```
-SNAP_RPC=https://okp4-testnet-rpc.polkachu.com:443
-peers=""
-sed -i.bak -e  "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" ~/.okp4d/config/config.toml
-LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 500)); \
-TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-
-echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
-
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
-s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.okp4d/config/config.toml
-
-okp4d tendermint unsafe-reset-all --home /root/.okp4d --keep-addr-book
-systemctl restart okp4d && journalctl -u okp4d -f -o cat
-```
-
-### Create wallet
-To create new wallet you can use command below. Don’t forget to save the mnemonic
-```
-okp4d keys add $WALLET
-```
-
-(OPTIONAL) To recover your wallet using seed phrase
-```
-okp4d keys add $WALLET --recover
-```
-
-To get current list of wallets
-```
-okp4d keys list
-```
-
-### Save wallet info
-Add wallet and valoper address into variables 
-```
-OKP4_WALLET_ADDRESS=$(okp4d keys show $WALLET -a)
-OKP4_VALOPER_ADDRESS=$(okp4d keys show $WALLET --bech val -a)
-echo 'export OKP4_WALLET_ADDRESS='${OKP4_WALLET_ADDRESS} >> $HOME/.bash_profile
-echo 'export OKP4_VALOPER_ADDRESS='${OKP4_VALOPER_ADDRESS} >> $HOME/.bash_profile
-source $HOME/.bash_profile
-```
-
-### Fund your wallet
-In order to create validator first you need to fund your wallet with testnet tokens here https://faucet.okp4.network/
-
-### Create validator
-Before creating validator please make sure that you have at least 1 strd (1 strd is equal to 1000000 unois) and your node is synchronized
-
-To check your wallet balance:
-```
-okp4d query bank balances $OKP4D_WALLET_ADDRESS
-```
-> If your wallet does not show any balance than probably your node is still syncing. Please wait until it finish to synchronize and then continue 
-
-To create your validator run command below
-```
-okp4d tx staking create-validator \
-  --amount 100000000uknow \
-  --from $WALLET \
-  --commission-max-change-rate "0.01" \
-  --commission-max-rate "0.2" \
-  --commission-rate "0.07" \
-  --min-self-delegation "1" \
-  --pubkey  $(okp4d tendermint show-validator) \
-  --moniker $NODENAME \
-  --chain-id okp4-nemeton-1
-```
-
-## Security
-To protect you keys please make sure you follow basic security rules
-
-### Set up ssh keys for authentication
-Good tutorial on how to set up ssh keys for authentication to your server can be found [here](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-20-04)
-
-### Basic Firewall security
-Start by checking the status of ufw.
-```
-sudo ufw status
-```
-
-Sets the default to allow outgoing connections, deny all incoming except ssh and 26656. Limit SSH login attempts
-```
-sudo ufw default allow outgoing
-sudo ufw default deny incoming
-sudo ufw allow ssh/tcp
-sudo ufw limit ssh/tcp
-sudo ufw allow ${OKP4_PORT}656,${OKP4_PORT}660/tcp
-sudo ufw enable
-```
-
-### Check your validator key
-```
-[[ $(okp4d q staking validator $OKP4D_VALOPER_ADDRESS -oj | jq -r .consensus_pubkey.key) = $(okp4d status | jq -r .ValidatorInfo.PubKey.value) ]] && echo -e "\n\e[1m\e[32mTrue\e[0m\n" || echo -e "\n\e[1m\e[31mFalse\e[0m\n"
-```
-
-### Get list of validators
-```
-okp4d q staking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_BONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
-```
-
-## Usefull commands
-### Service management
-Check logs
-```
-journalctl -fu okp4d -o cat
-```
-
-Start service
-```
-sudo systemctl start okp4d
-```
-
-Stop service
+### Snapshot (Update every 5 hours)
 ```
 sudo systemctl stop okp4d
+cp $HOME/.okp4d/data/priv_validator_state.json $HOME/.okp4d/priv_validator_state.json.backup
+rm -rf $HOME/.okp4d/data
+
+curl -L https://snap.nodexcapital.com/okp4/okp4-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.okp4d
+mv $HOME/.okp4d/priv_validator_state.json.backup $HOME/.okp4d/data/priv_validator_state.json
+
+sudo systemctl start okp4d && sudo journalctl -u okp4d -f --no-hostname -o cat
 ```
 
-Restart service
+### State Sync
 ```
-sudo systemctl restart okp4d
-```
-
-### Node info
-Synchronization info
-```
-okp4d status 2>&1 | jq .SyncInfo
+Coming Soon
 ```
 
-Validator info
+### Live Peers
 ```
-okp4d status 2>&1 | jq .ValidatorInfo
+PEERS="24a2bb2d06343b0f74ed0a6dc1d409ce0d996451@188.40.98.169:27656,14ae45e7f2ff7491cfa686a8fcac7cc095bc38ff@213.239.217.52:39656,5c2a752c9b1952dbed075c56c600c3a79b58c395@185.16.39.172:27066,d5519e378247dfb61dfe90652d1fe3e2b3005a5b@65.109.68.190:44656,6ba3b6ec03839afffa64c83e18ff80a681f4968d@65.108.194.40:21756,13a9209a4d08803a3becac57de8eb02dd51f8f41@65.109.23.114:19956,80922095c0766aabdaf9e93e9c38c45321347ac0@85.239.237.85:26656,3177033dfc8a88c0b1a4500e2812c74f41e9a32b@94.130.236.21:26656,ac7cefeff026e1c616035a49f3b00c78da63c2e9@18.215.128.248:26656,34271a6f82d755777a3db02be39e575bf4ebd415@65.109.30.197:28656,e593c7a9ca61f5616119d6beb5bd8ef5dd28d62d@34.246.190.1:26656,112fba64a7e5e27b0cf8f02c634334c957891abf@75.119.146.244:28656,7aa9d96f0a3f162385b743ef92a2c6e03a4a1d84@65.108.48.77:20656,eb7832932626c1c636d16e0beb49e0e4498fbd5e@65.108.231.124:20656,3a445bfdbe2d0c8ee82461633aa3af31bc2b4dc0@3.252.219.158:26656,ec8065014ed4814b12c884ed528b96f281104528@65.21.131.215:26686,e06519a36d7c780af9ad2be69616a98445112c7a@80.79.5.171:29656,433be6210ad6350bebebad68ec50d3e0d90cb305@217.13.223.167:60856,c44a02dba51e23ac06b006fb1285988c89051ce7@85.10.198.171:26556,5a469a75fb05eddf2d79fb17063cc59e84d0821a@207.180.236.115:34656,7fb838681ff9855a634c7823de605fb4a5d22eba@65.108.144.202:26656,013f0163d37428ed99eacd8ee84059da5c243981@5.161.132.217:26656,99327e5cf0f31ac3bb1ca8e39cc9f17c823b7ec1@109.236.88.8:26656,6b1d0465b3e2a32b5328e59eb75c38d88233b56f@80.82.215.19:60656,47385d0a7051109de5342e3b27890c4a4b9e0763@65.108.72.233:16656,fa908ede438730a87c02e113a95aac206398706d@207.180.207.68:26656,5e068fccd370b2f2e5ab4240a304323af6385f1f@172.93.110.154:27656,0925c475208d8e338907383ab87a094ad03c478e@65.109.55.186:40656,ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@176.9.82.221:19956,bc2e99e6004bb0b87c72ca10f20cd1617edf70fe@141.94.73.93:56656,e711b6631c3e5bb2f6c389cbc5d422912b05316b@213.239.216.252:33256"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.okp4d/config/config.toml
 ```
-
-Node info
+### Addrbook (Update every hour)
 ```
-okp4d status 2>&1 | jq .NodeInfo
+curl -Ls https://snap.nodexcapital.com/okp4/addrbook.json > $HOME/.okp4d/config/addrbook.json
 ```
-
-Show node id
+### Genesis
 ```
-okp4d tendermint show-node-id
-```
-
-### Wallet operations
-List of wallets
-```
-okp4d keys list
-```
-
-Recover wallet
-```
-okp4d keys add $WALLET --recover
-```
-
-Delete wallet
-```
-okp4d keys delete $WALLET
-```
-
-Get wallet balance
-```
-okp4d query bank balances $OKP4_WALLET_ADDRESS
-```
-
-Transfer funds
-```
-okp4d tx bank send $OKP4_WALLET_ADDRESS <TO_OKP4D_WALLET_ADDRESS> 10000000uknow
-```
-
-### Voting
-```
-okp4d tx gov vote 1 yes --from $WALLET --chain-id=$OKP4_CHAIN_ID
-```
-
-### Staking, Delegation and Rewards
-Delegate stake
-```
-okp4d tx staking delegate $OKP4_VALOPER_ADDRESS 10000000uknow --from=$WALLET --chain-id=$OKP4_CHAIN_ID --gas=auto
-```
-
-Redelegate stake from validator to another validator
-```
-okp4d tx staking redelegate <srcValidatorAddress> <destValidatorAddress> 10000000uknow --from=$WALLET --chain-id=$OKP4_CHAIN_ID --gas=auto
-```
-
-Withdraw all rewards
-```
-okp4d tx distribution withdraw-all-rewards --from=$WALLET --chain-id=$OKP4_CHAIN_ID --gas=auto
-```
-
-Withdraw rewards with commision
-```
-okp4d tx distribution withdraw-rewards $OKP4_VALOPER_ADDRESS --from=$WALLET --commission --chain-id=$OKP4_CHAIN_ID
-```
-
-### Validator management
-Edit validator
-```
-okp4d tx staking edit-validator \
-  --moniker=$NODENAME \
-  --identity=<your_keybase_id> \
-  --website="<your_website>" \
-  --details="<your_validator_description>" \
-  --chain-id=$OKP4_CHAIN_ID \
-  --from=$WALLET
-```
-
-Unjail validator
-```
-okp4d tx slashing unjail \
-  --broadcast-mode=block \
-  --from=$WALLET \
-  --chain-id=$OKP4_CHAIN_ID \
-  --gas=auto
-```
-
-### Delete node
-This commands will completely remove node from server. Use at your own risk!
-```
-sudo systemctl stop okp4d && \
-sudo systemctl disable okp4d && \
-rm /etc/systemd/system/okp4d.service && \
-sudo systemctl daemon-reload && \
-cd $HOME && \
-rm -rf okp4d && \
-rm -rf .okp4d && \
-rm -rf $(which okp4d)
+curl -Ls https://snap.nodexcapital.com/okp4/genesis.json > $HOME/.okp4d/config/genesis.json
 ```
