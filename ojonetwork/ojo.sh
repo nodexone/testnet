@@ -24,15 +24,36 @@ VERSION=v0.1.2
 DENOM=uojo
 COSMOVISOR=cosmovisor
 REPO=https://github.com/ojo-network/ojo
-GENESIS=https://snapshots.kjnodes.com/ojo-testnet/genesis.json
-ADDRBOOK=https://snapshots.kjnodes.com/ojo-testnet/addrbook.json
+GENESIS=https://snap.nodexcapital.com/ojo/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/ojo/addrbook.json
 PORT=246
+
+# Set Vars
+if [ ! $NODENAME ]; then
+        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
+        echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+fi
+
+echo "Verify the information below before proceeding with the installation!"
+echo ""
+echo -e "NODE NAME      : \e[1m\e[35m$NODENAME\e[0m"
+echo -e "WALLET NAME    : \e[1m\e[35m$WALLET\e[0m"
+echo -e "CHAIN NAME     : \e[1m\e[35m$CHAIN\e[0m"
+echo -e "NODE VERSION   : \e[1m\e[35m$VERSION\e[0m"
+echo -e "NODE FOLDER    : \e[1m\e[35m$FOLDER\e[0m"
+echo -e "NODE DENOM     : \e[1m\e[35m$DENOM\e[0m"
+echo -e "NODE ENGINE    : \e[1m\e[35m$COSMOVISOR\e[0m"
+echo -e "SOURCE CODE    : \e[1m\e[35m$REPO\e[0m"
+echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
+echo ""
+
+read -p "Is the above information correct? (y/n) " choice
+if [[ $choice == [Yy]* ]]; then
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
 echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
 echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
-echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
 echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
 echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
@@ -42,16 +63,10 @@ echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
 echo "export PORT=${PORT}" >> $HOME/.bash_profile
 source $HOME/.bash_profile
 
-# Set Vars
-if [ ! $NODENAME ]; then
-        read -p "hello@nodexcapital:~# [ENTER YOUR NODENAME] > " NODENAME
-        echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
+else
+    echo "Installation cancelled!"
+    exit 1
 fi
-echo ""
-echo -e "YOUR NODE NAME : \e[1m\e[35m$NODENAME\e[0m"
-echo -e "NODE CHAIN ID  : \e[1m\e[35m$CHAIN\e[0m"
-echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
-echo ""
 
 # Package
 sudo apt -q update
@@ -60,7 +75,7 @@ sudo apt -qy upgrade
 
 # Install GO
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.19.5.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.19.7.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
@@ -70,12 +85,12 @@ rm -rf $SOURCE
 git clone $REPO
 cd $SOURCE
 git checkout $VERSION
-make install
+make build
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
-mv $HOME/go/bin/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
+mv buil/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
 rm -rf build
 
 # Create application symlinks
@@ -93,10 +108,7 @@ curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Add seeds,gas-prices & peers
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ulava\"/" $HOME/$FOLDER/config/app.toml
-PEERS=""
-SEEDS="3f472746f46493309650e5a033076689996c8881@ojo-testnet.rpc.kjnodes.com:50659"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
+SEEDS="d5b2ae8815b09a30ab253957f7eca052dde3101d@rpc.ojo-t.nodexcapital.com:24656"
 sed -i.bak -e "s/^seeds =.*/seeds = \"$SEEDS\"/" $HOME/$FOLDER/config/config.toml
 
 # Set Port
@@ -112,38 +124,13 @@ sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/$FOLDER/config/app.tom
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
-read -p "Would you like to install using a snapshot or state sync? Enter 's' for snapshot, 'ss' for state sync, or 'n' for neither: " install_method
-
-if [ "$install_method" == "s" ]; then
-echo "Install Snapshot"
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
 curl -L https://snapshots.kjnodes.com/ojo-testnet/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
-    
-elif [ "$install_method" == "ss" ]; then
-echo "Install State Sync"
-sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
-$BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-
-STATE_SYNC_RPC=https://ojo-testnet.rpc.kjnodes.com:443
-STATE_SYNC_PEER=d5519e378247dfb61dfe90652d1fe3e2b3005a5b@ojo-testnet.rpc.kjnodes.com:50656
-LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
-SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
-SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-
-sed -i \
-  -e "s|^enable *=.*|enable = true|" \
-  -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \
-  -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
-  -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
-  -e "s|^persistent_peers *=.*|persistent_peers = \"$STATE_SYNC_PEER\"|" \
-  $HOME/$FOLDER/config/config.toml
-
-else
-echo "No installation method choosen!"
-fi
+[[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -161,6 +148,7 @@ Environment="DAEMON_HOME=$HOME/$FOLDER"
 Environment="DAEMON_NAME=$BINARY"
 Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
 Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/$FOLDER/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
@@ -172,11 +160,12 @@ sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
 sudo systemctl start $BINARY
 
-echo -e "\e[1m\e[35mSETUP FINISHED\e[0m"
+echo -e "\033[0;35m=============================================================\033[0m"
+echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"
 echo ""
-echo -e "CHECK STATUS BINARY : \e[1m\e[35msystemctl status $BINARY\e[0m"
-echo -e "CHECK RUNNING LOGS : \e[1m\e[35mjournalctl -fu $BINARY -o cat\e[0m"
-echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\e[0m"
-echo ""
+echo -e "CHECK STATUS BINARY : \033[1m\033[35msystemctl status $BINARY\033[0m"
+echo -e "CHECK RUNNING LOGS : \033[1m\033[35mjournalctl -fu $BINARY -o cat\033[0m"
+echo -e "CHECK LOCAL STATUS : \033[1m\033[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\033[0m"
+echo -e "\033[0;35m=============================================================\033[0m"
 
 # End
