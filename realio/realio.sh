@@ -9,7 +9,7 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Realio Network | Chain ID : realionetwork_1110-2 <<<";
+echo ">>> Cosmovisor Automatic Installer for Realio Network | Chain ID : realionetwork_3300-1 <<<";
 echo -e "\e[0m"
 
 sleep 1
@@ -18,41 +18,55 @@ sleep 1
 SOURCE=realio-network
 WALLET=wallet
 BINARY=realio-networkd
-CHAIN=realionetwork_1110-2
+CHAIN=realionetwork_3300-1
 FOLDER=.realio-network
-VERSION=v0.7.2
+VERSION=v0.8.0-rc2
 DENOM=ario
 COSMOVISOR=cosmovisor
 REPO=https://github.com/realiotech/realio-network.git
-GENESIS=https://snapshots.nodeist.net/t/realio/genesis.json
-ADDRBOOK=https://snapshots.nodeist.net/t/realio/addrbook.json
-PORT=42
-
-
-echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
-echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
-echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
-echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
-echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
-echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
-echo "export REPO=${REPO}" >> $HOME/.bash_profile
-echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
-echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
-echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
-echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
-echo "export PORT=${PORT}" >> $HOME/.bash_profile
-source $HOME/.bash_profile
+GENESIS=https://github.com/realiotech/testnets/blob/main/realionetwork_3300-1/genesis.json
+ADDRBOOK=https://files.itrocket.net/testnet/realio/addrbook.json
+PORT=231
 
 # Set Vars
 if [ ! $NODENAME ]; then
 	read -p "hello@nodexcapital:~# [ENTER YOUR NODE] > " NODENAME
 	echo 'export NODENAME='$NODENAME >> $HOME/.bash_profile
 fi
+
+echo "Verify the information below before proceeding with the installation!"
 echo ""
-echo -e "YOUR NODE NAME : \e[1m\e[35m$NODENAME\e[0m"
-echo -e "NODE CHAIN CHAIN  : \e[1m\e[35m$CHAIN\e[0m"
+echo -e "NODE NAME      : \e[1m\e[35m$NODENAME\e[0m"
+echo -e "WALLET NAME    : \e[1m\e[35m$WALLET\e[0m"
+echo -e "CHAIN NAME     : \e[1m\e[35m$CHAIN\e[0m"
+echo -e "NODE VERSION   : \e[1m\e[35m$VERSION\e[0m"
+echo -e "NODE FOLDER    : \e[1m\e[35m$FOLDER\e[0m"
+echo -e "NODE DENOM     : \e[1m\e[35m$DENOM\e[0m"
+echo -e "NODE ENGINE    : \e[1m\e[35m$COSMOVISOR\e[0m"
+echo -e "SOURCE CODE    : \e[1m\e[35m$REPO\e[0m"
 echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
 echo ""
+
+read -p "Is the above information correct? (y/n) " choice
+if [[ $choice == [Yy]* ]]; then
+
+echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
+echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
+echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
+echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
+echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
+echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
+echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
+echo "export REPO=${REPO}" >> $HOME/.bash_profile
+echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
+echo "export ADDRBOOK=${ADDRBOOK}" >> $HOME/.bash_profile
+echo "export PORT=${PORT}" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+else
+    echo "Installation cancelled!"
+    exit 1
+fi
 
 # Update
 sudo apt update && sudo apt upgrade -y
@@ -94,14 +108,18 @@ $BINARY config node tcp://localhost:${PORT}657
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-PEERS="13de8696c1a4211beb99896408cb0e9b5c174bac@65.109.34.9:65.109.34.9:36656,aa194e9f9add331ee8ba15d2c3d8860c5a50713f@143.110.230.177:26656"
-SEEDS=""
+PEERS="1057d9a2d9231093b4aadf3015efff8293290859@realio-testnet-peer.itrocket.net:23656,ec2dbd6e5d25501c50fb8585b5678a7460ef11da@144.126.196.99:26656,5bd91f6e7e3bcaaddead32fd37d67458723fec73@159.223.132.183:26656"
+SEEDS="ee23c6b2367c7df0d71a7def5540cda879a06dab@realio-testnet-seed.itrocket.net:23656"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Download genesis and addrbook
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
+
+# Disable Indexer
+indexer="null" && \
+sed -i -e "s/^indexer *=.*/indexer = \"$indexer\"/" $HOME/.realio-network/config/config.toml
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/$FOLDER/config/config.toml
@@ -123,7 +141,7 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snap.nodeist.net/t/realio-network/realio-network.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/$FOLDER
+curl -L https://files.itrocket.net/testnet/realio/snap_realio.tar.lz4  | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -150,11 +168,13 @@ sudo systemctl start $BINARY
 sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
 
-echo -e "\e[1m\e[35mSETUP FINISHED\e[0m"
+echo -e "\033[0;35m=============================================================\033[0m"
+echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"
 echo ""
-echo -e "CHECK STATUS BINARY : \e[1m\e[35msystemctl status $BINARY\e[0m"
-echo -e "CHECK RUNNING LOGS : \e[1m\e[35mjournalctl -fu $BINARY -o cat\e[0m"
-echo -e "CHECK LOCAL STATUS : \e[1m\e[35mcurl -s localhost:${PORT}657/status | jq .result.sync_info\e[0m"
-echo ""
+echo -e "CHECK STATUS BINARY : \033[1m\033[35msystemctl status $BINARY\033[0m"
+echo -e "CHECK RUNNING LOGS : \033[1m\033[35mjournalctl -fu $BINARY -o cat\033[0m"
+echo -e "CHECK LOCAL STATUS : \033[1m\033[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\033[0m"
+echo -e "\033[0;35m=============================================================\033[0m"
+
 
 # End

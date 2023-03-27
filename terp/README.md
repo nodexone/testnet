@@ -62,8 +62,8 @@ sudo systemctl start terpd && sudo journalctl -fu terpd -o cat
 
 ### Live Peers
 ```
-PEERS="c989593c89b511318aa6a0c0d361a7a7f4271f28@65.108.124.172:26656,f9d7b883594e651a45e91c49712151bf93322c08@141.95.65.26:29456,19566196191ca68c3688c14a73e47125bdebe352@62.171.171.91:26656,c2a177164098b317261d55fb1c946a97e5e35adb@75.119.134.69:30656,360c7c554ba16333b5901a2a341e466ad2c1db37@146.19.24.52:33656,c88a36db47a5f8dded9cd1eb5a7b1af75e5d9294@217.13.223.167:60656,8441f75ff50ccd2a892e5eafb65e4c2ea34aeac3@95.217.118.96:26757,aea62af2f5d457e35a79fbee295bdad3c85a9a8a@45.94.209.226:26656,9d0a1a041c468809dbc2d87e8f46b891b0c5cc58@164.92.116.202:33656,42dfe4bc0cacb118fdb72d251c4b794eb1ea285c@3.135.211.119:26656"
-sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.terp/config/config.toml
+PEERS="$(curl -sS https://rpc.terp-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.terp/config/config.toml
 ```
 ### Addrbook (Update every hour)
 ```

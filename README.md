@@ -21,11 +21,8 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 | Source       | 234           | [Click Here](./source/README.md)      | [Click Here](./source/monitoring/README.md)      |   N/A    |
 | Lava         | 235           | [Click Here](./lava/README.md)        | [Click Here](./lava/monitoring/README.md)        |   N/A    |
 | Blockx       | 236           | [Click Here](./blockx/README.md)      | [Click Here](./blockx/monitoring/README.md)      |   N/A    |
-| Mars         | 237           | [Click Here](./mars/README.md)        | [Click Here](./mars/monitoring/README.md)        |   N/A    |
 | Neutron      | 238           | [Click Here](./neutron/README.md)     | [Click Here](./neutron/monitoring/README.md)     |   N/A    |
-| Coreum       | 239           | [Click Here](./coreum/README.md)     | [Click Here](./coreum/monitoring/README.md)     |   N/A    |
 | Althea       | 240           | [Click Here](./atlhea/README.md)        | [Click Here](./altea/monitoring/README.md)        |   N/A    |
-| Quasar       | 241           | [Click Here](./quasar/README.md)        | [Click Here](./quasar/monitoring/README.md)        |   N/A    |
 | Dymension       | 242           | [Click Here](./dymension/README.md)        | [Click Here](./dymension/monitoring/README.md)        |   N/A    |
 | Babylon       | 243           | [Click Here](./babylon/README.md)        | [Click Here](./babylon/monitoring/README.md)        |   N/A    |
 | Andromeda       | 244           | [Click Here](./andromeda/README.md)        | [Click Here](./andromeda/monitoring/README.md)        |   N/A    |

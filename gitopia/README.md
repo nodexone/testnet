@@ -68,7 +68,8 @@ sudo systemctl start gitopiad && sudo journalctl -u gitopiad -f --no-hostname -o
 
 ### Live Peers
 ```
-COMING SOON
+PEERS="$(curl -sS https://rpc.gitopia-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.gitopia/config/config.toml
 ```
 ### Addrbook (Update every hour)
 ```
