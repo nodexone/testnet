@@ -28,15 +28,51 @@ wget -O realio.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/re
 >- API : https://rest.realio-t.nodexcapital.com
 >- RPC : https://rpc.realio-t.nodexcapital.com
 >- gRPC : https://grpc.realio-t.nodexcapital.com
+>- Json RPC : https://jsonrpc.realio-t.nodexcapital.com
 
-### Snapshot (Update every 5 hours)
+### Snapshot
 ```
-COMING SOON
+sudo systemctl stop realio-networkd
+cp $HOME/.realio-network/data/priv_validator_state.json $HOME/.realio-network/priv_validator_state.json.backup
+rm -rf $HOME/.realio-network/data
+
+curl -L https://snap.nodexcapital.com/realio/realio-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.realio-network
+
+mv $HOME/.realio-network/priv_validator_state.json.backup $HOME/.realio-network/data/priv_validator_state.json
+
+sudo systemctl start realio-networkd && sudo journalctl -fu realio-networkd -o cat
 ```
 
 ### State Sync
 ```
-COMING SOON
+sudo systemctl stop realio-networkd
+cp $HOME/.realio-network/data/priv_validator_state.json $HOME/.realio-network/priv_validator_state.json.backup
+realio-networkd tendermint unsafe-reset-all --home $HOME/.realio-network
+
+STATE_SYNC_RPC=https://rpc.realio-t.nodexcapital.com:443
+STATE_SYNC_PEER=b0db1d25f10e94c13ba5080268e3f8c58eea6b69@rpc.realio-t.nodexcapital.com:23156
+LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
+SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
+SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+sed -i \
+  -e "s|^enable *=.*|enable = true|" \
+  -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \
+  -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
+  -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
+  -e "s|^persistent_peers *=.*|persistent_peers = \"$STATE_SYNC_PEER\"|" \
+  $HOME/.realio-network/config/config.toml
+
+mv $HOME/.realio-network/priv_validator_state.json.backup $HOME/.realio-network/data/priv_validator_state.json
+
+sudo systemctl start realio-networkd && sudo journalctl -u realio-networkd -f --no-hostname -o cat
+```
+
+### Disable State Sync 
+After successful synchronization using state sync above, we advise you to disable synchronization with state sync and restart the node
+```
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.realio-network/config/config.toml
+sudo systemctl restart realio-networkd && journalctl -u realio-networkd -f -o cat
 ```
 
 ### Live Peers
@@ -46,9 +82,9 @@ sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.reali
 ```
 ### Addrbook (Update every hour)
 ```
-COMING SOON
+curl -Ls https://snap.nodexcapital.com/realio/addrbook.json > $HOME/.realio-network/config/addrbook.json
 ```
 ### Genesis
 ```
-COMING SOON
+curl -Ls https://snap.nodexcapital.com/realio/genesis.json > $HOME/.realio-network/config/genesis.json
 ```
