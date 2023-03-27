@@ -73,7 +73,7 @@ sudo systemctl restart nibid && journalctl -u nibid -f -o cat
 ### Live Peers
 ```
 PEERS="$(curl -sS https://rpc.nibiru-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.nibid/config/config.toml
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.nibid/config/config.toml
 ```
 ### Addrbook (Update every hour)
 ```

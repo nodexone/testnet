@@ -74,7 +74,7 @@ sudo systemctl restart sged && journalctl -u sged -f -o cat
 ### Live Peers
 ```
 PEERS="$(curl -sS https://rpc.sge-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.sge/config/config.toml
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.sge/config/config.toml
 ```
 ### Addrbook (Update every hour)
 ```

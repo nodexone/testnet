@@ -62,7 +62,7 @@ sudo systemctl start babylond && sudo journalctl -fu babylond -o cat
 ### Live Peers
 ```
 PEERS="$(curl -sS https://rpc.babylon-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.babylond/config/config.toml
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.babylond/config/config.toml
 ```
 ### Addrbook (Update every hour)
 ```

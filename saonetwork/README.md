@@ -35,7 +35,7 @@ sudo systemctl stop saod
 cp $HOME/.sao/data/priv_validator_state.json $HOME/.sao/data/priv_validator_state.json.backup
 rm -rf $HOME/.sao/data
 
-curl -L https://snap.nodexcapital.com/nolus/nolus-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.sao
+curl -L https://snap.nodexcapital.com/sao/sao-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.sao
 
 mv $HOME/.sao/data/priv_validator_state.json.backup $HOME/.sao/data/priv_validator_state.json
 
@@ -60,15 +60,16 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.sao/confi
 sudo systemctl start saod && sudo journalctl -fu saod -o cat
 ```
 
-### Seed Peers
+### Live Peers
 ```
-sed -i -e "s|^seeds *=.*|seeds = \"2aad459c0dd3a81b1d5eb297986c8d8309ad20e3@peers-sao.sxlzptprjkt.xyz:27656\"|" $HOME/.sao/config/config.toml
+PEERS="$(curl -sS https://rpc.sao-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.nibid/config/config.toml
 ```
 ### Addrbook (Update every hour)
 ```
-curl -Ls https://snap.nodexcapital.com/saonetwork/addrbook.json > $HOME/.sao/config/addrbook.json
+curl -Ls https://snap.nodexcapital.com/sao/addrbook.json > $HOME/.sao/config/addrbook.json
 ```
 ### Genesis
 ```
-curl -Ls https://snap.nodexcapital.com/saonetwork/genesis.json > $HOME/.sao/config/genesis.json
+curl -Ls https://snap.nodexcapital.com/sao/genesis.json > $HOME/.sao/config/genesis.json
 ```
