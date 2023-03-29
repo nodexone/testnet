@@ -20,7 +20,7 @@ WALLET=wallet
 BINARY=realio-networkd
 CHAIN=realionetwork_3300-1
 FOLDER=.realio-network
-VERSION=v0.8.0-rc2
+VERSION=v0.8.0-rc3
 DENOM=ario
 COSMOVISOR=cosmovisor
 REPO=https://github.com/realiotech/realio-network.git
@@ -78,7 +78,7 @@ sudo apt -qy upgrade
 
 # Install GO
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.19.7.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.20.2.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
