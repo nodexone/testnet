@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://user-images.githubusercontent.com/50621007/170463282-576375f8-fa1e-4fce-8350-6312b415b50d.png">
 </p>
 
-# Celestia Testnet | Chain ID : mocha | Custom Port : 223
+# Celestia Testnet | Chain ID : blockspacerace-0 | Custom Port : 223
 
 ### Official Documentation:
 >- https://docs.celestia.org/nodes/overview
@@ -21,15 +21,15 @@
 ### Automatic Installer
 You can setup your Celestia fullnode in few minutes by using automated script below.
 ```
-wget -O mocha.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/celestia/mocha.sh && chmod +x mocha.sh && ./mocha.sh
+wget -O blockspacerace.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/celestia/blockspacerace.sh && chmod +x blockspacerace.sh && ./blockspacerace.sh
 ```
 ### Public Endpoint
 
->- API : https://rest.celestia-mocha.nodexcapital.com
->- RPC : https://rpc.celestia-mocha.nodexcapital.com
->- gRPC : https://grpc.celestia-mocha.nodexcapital.com
+>- API : https://rest.celestia-t.nodexcapital.com
+>- RPC : https://rpc.celestia-t.nodexcapital.com
+>- gRPC : https://grpc.celestia-t.nodexcapital.com
 
-### Snapshot (Update every 5 hours)
+### Snapshot
 ```
 COMING SOON
 ```
@@ -41,7 +41,7 @@ COMING SOON
 
 ### Live Peers
 ```
-PEERS="$(curl -sS https://rpc.celestia-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+PEERS="$(curl -sS https://rpc-celestia-itn.sxlzptprjkt.xyz/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.celestia-app/config/config.toml
 ```
 ### Addrbook (Update every hour)
