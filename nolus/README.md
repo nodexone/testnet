@@ -1,13 +1,13 @@
 <h3><p style="font-size:14px" align="right">Founder :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<a href="https://discord.gg/bDUAwZhqBb" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<a href="https://nodexcapital.com" target="_blank">NodeX Capital Official</a></p></h3>
 <h3><p style="font-size:14px" align="right">Hetzner :
 <a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
 
 <p align="center">
-  <img height="100" height="auto" src="https://user-images.githubusercontent.com/34649601/207593974-32d7cb69-eca9-4096-bc96-246fe7038c88.png">
+  <img height="100" height="auto" src="https://raw.githubusercontent.com/kj89/cosmos-images/main/logos/nolus.png">
 </p>
 
 # Nolus Testnet | Chain ID : nolus-rila | Custom Port : 229
@@ -19,17 +19,12 @@
 >-  https://explorer.nodexcapital.com/nolus
 
 
-### Automatic Installer (Non Cosmovisor)
+### Automatic Installer
 You can setup your Nolus fullnode in few minutes by using automated script below.
 ```
 wget -O nolus.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nolus/nolus.sh && chmod +x nolus.sh && ./nolus.sh
 ```
 
-### Automatic Installer (Cosmovisor)
-You can setup your Nolus fullnode in few minutes by using automated script below.
-```
-wget -O nolus-cosmovisor.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nolus/nolus-cosmovisor.sh && chmod +x nolus-cosmovisor.sh && ./nolus-cosmovisor.sh
-```
 ### Public Endpoint
 
 >- API : https://rest.nolus-t.nodexcapital.com

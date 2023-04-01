@@ -1,7 +1,7 @@
 <h3><p style="font-size:14px" align="right">Founder :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<a href="https://discord.gg/bDUAwZhqBb" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<a href="https://nodexcapital.com" target="_blank">NodeX Capital Official</a></p></h3>
 <h3><p style="font-size:14px" align="right">Hetzner :
 <a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://raw.githubusercontent.com/Nodeist/Kurulumlar/main/logos/blockx.png">
 </p>
 
-# BlockX Testnet | Chain ID : blockx_12345-2 | Custom Port : 236
+# BlockX Testnet | Chain ID : blockx_12345-2 | Custom Port : 212
 
 ### Community Documentation:
 >- [Validator setup instructions](https://github.com/nodexcapital/testnet/tree/main/blockx)
@@ -29,7 +29,7 @@ wget -O blockx.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/bl
 >- RPC : https://rpc.blockx-t.nodexcapital.com
 >- gRPC : https://grpc.blockx-t.nodexcapital.com
 
-### Snapshot (Update every 5 hours)
+### Snapshot
 ```
 sudo systemctl stop blockxd
 cp $HOME/.blockxd/data/priv_validator_state.json $HOME/.blockxd/priv_validator_state.json.backup
@@ -58,13 +58,19 @@ s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.blockxd/c
 
 sudo systemctl start blockxd && sudo journalctl -fu blockxd -o cat
 ```
+### Disable State Sync 
+After successful synchronization using state sync above, we advise you to disable synchronization with state sync and restart the node
+```
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.blockxd/config/config.toml
+sudo systemctl restart blockxd && journalctl -u blockxd -f -o cat
+```
 
 ### Live Peers
 ```
 PEERS="$(curl -sS https://rpc.blockx-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.blockxd/config/config.toml
 ```
-### Addrbook (Update every hour)
+### Addrbook
 ```
 curl -Ls https://snap.nodexcapital.com/blockx/addrbook.json > $HOME/.blockxd/config/addrbook.json
 ```

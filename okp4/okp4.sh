@@ -26,7 +26,7 @@ COSMOVISOR=cosmovisor
 REPO=https://github.com/okp4/okp4d.git
 GENESIS=https://snap.nodexcapital.com/okp4/genesis.json
 ADDRBOOK=https://snap.nodexcapital.com/okp4/addrbook.json
-PORT=225
+PORT=204
 
 # Set Vars
 if [ ! $NODENAME ]; then

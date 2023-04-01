@@ -1,7 +1,7 @@
 <h3><p style="font-size:14px" align="right">Founder :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<a href="https://discord.gg/bDUAwZhqBb" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<a href="https://nodexcapital.com" target="_blank">NodeX Capital Official</a></p></h3>
 <h3><p style="font-size:14px" align="right">Hetzner :
 <a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
@@ -10,26 +10,26 @@
   <img height="100" height="auto" src="https://www.yeksin.net/wp-content/uploads/elementor/thumbs/nibiru-1-pxec4xhz4a2ae7d0zpdst55ws50bo3xhjhozbpn4j2.png">
 </p>
 
-# Nibiru  Incentivized Testnet | Chain ID : nibiru-itn-1 | Custom Port : 224
+# Nibiru  Incentivized Testnet | Chain ID : nibiru-itn-1 | Custom Port : 203
 
 ### Official Documentation:
->- [Validator setup instructions](#)
+>- [Validator setup instructions](https://services.kjnodes.com/home/testnet/nibiru)
 
 ### Explorer:
->-  https://explorer.nodexcapital.com/nibiru-itn
+>-  https://explorer.nodexcapital.com/nibiru
 
 ### Automatic  (Must Using Ubuntu 22.04)
 You can setup your Nibiru Incentivized Testnet fullnode in few minutes by using automated script below.
 ```
-wget -O itn-1.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nibiru/nibiru-itn/itn-1.sh && chmod +x itn-1.sh && ./itn-1.sh
+wget -O itn.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nibiru/nibiru-itn/itn.sh && chmod +x itn.sh && ./itn.sh
 ```
 ### Public Endpoint
 
->- API : https://rest.nibiru-itn.nodexcapital.com
->- RPC : https://rpc.nibiru-itn.nodexcapital.com
->- gRPC : https://grpc.nibiru-itn.nodexcapital.com
+>- API : https://rest.nibiru-t.nodexcapital.com
+>- RPC : https://rpc.nibiru-t.nodexcapital.com
+>- gRPC : https://grpc.nibiru-t.nodexcapital.com
 
-### Snapshot (Update every 5 hours)
+### Snapshot
 ```
 sudo systemctl stop nibid
 cp $HOME/.nibid/data/priv_validator_state.json $HOME/.nibid/priv_validator_state.json.backup
@@ -47,7 +47,7 @@ sudo systemctl stop nibid
 cp $HOME/.nibid/data/priv_validator_state.json $HOME/.nibid/priv_validator_state.json.backup
 nibid tendermint unsafe-reset-all --home $HOME/.nibid
 
-STATE_SYNC_RPC=https://rpc.nibid-itn.nodexcapital.com:443
+STATE_SYNC_RPC=https://rpc.nibiru-t.nodexcapital.com:443
 STATE_SYNC_PEER=d5519e378247dfb61dfe90652d1fe3e2b3005a5b@dymension-testnet.rpc.kjnodes.com:46656
 LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
 SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
@@ -69,17 +69,17 @@ After successful synchronization using state sync above, we advise you to disabl
 ```
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.nibid/config/config.toml
 sudo systemctl restart nibid && journalctl -u nibid -f -o cat
-
+```
 ### Live Peers
 ```
 PEERS="$(curl -sS https://rpc.nibiru-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.nibid/config/config.toml
 ```
-### Addrbook (Update every hour)
+### Addrbook
 ```
-curl -Ls https://ss-t.nibiru.nodestake.top/addrbook.json > $HOME//.nibid/config/addrbook.json
+curl -Ls https://snap.nodexcapital.com/nibiru/addrbook.json > $HOME//.nibid/config/addrbook.json
 ```
 ### Genesis
 ```
-curl -Ls https://snapshot.yeksin.net/nibiru/genesis.json > $HOME/.nibid/config/genesis.json
+curl -Lshttps://snap.nodexcapital.com/nibiru/genesis.json > $HOME/.nibid/config/genesis.json
 ```

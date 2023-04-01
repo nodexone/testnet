@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # // Copyright (C) 2023 By NodeX Capital
 #
@@ -31,7 +32,7 @@ ADDRBOOK=https://snap.nodexcapital.com/celestia/addrbook.json
 NODE_REPO=https://github.com/celestiaorg/celestia-app.git
 LIGHT_REPO=https://github.com/celestiaorg/celestia-node.git
 DENOM=utia
-PORT=223
+PORT=202
 
 # Set Vars
 if [ ! $NODENAME ]; then
@@ -120,20 +121,19 @@ curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Set Seers and Peers
-PEERS="$(curl -sS https://rpc-celestia-itn.sxlzptprjkt.xyz/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+PEERS="$(curl -sS https://celestia-testnet.rpc.kjnodes.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 SEEDS="3f472746f46493309650e5a033076689996c8881@celestia-testnet.rpc.kjnodes.com:20659"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.celestia-app/config/config.toml
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
 # Set Port
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"tcp://127.0.0.1::${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \"tcp://127.0.0.1:${PORT}60\"%" $HOME/$FOLDER/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://127.0.0.1:${PORT}17\"%; s%^address = \":8080\"%address = \"127.0.0.1::${PORT}80\"%; s%^address = \"0.0.0.0:9090\"%address = \"127.0.0.1:${PORT}90\"%; s%^address = \"0.0.0.0:9091\"%address = \"127.0.0.1:${PORT}91\"%" $HOME/$FOLDER/config/app.toml
-
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"tcp://127.0.0.1:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \"127.0.0.1:${PORT}60\"%" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://127.0.0.1:${PORT}17\"%; s%^address = \":8080\"%address = \"127.0.0.1:${PORT}80\"%; s%^address = \"0.0.0.0:9090\"%address = \"127.0.0.1:${PORT}90\"%; s%^address = \"0.0.0.0:9091\"%address = \"127.0.0.1:${PORT}91\"%" $HOME/$FOLDER/config/app.toml
 # Set Config Pruning
 pruning="nothing"
 pruning_keep_recent="100"
 pruning_keep_every="0"
-pruning_interval="10"
+pruning_interval="19"
 sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
@@ -197,11 +197,11 @@ cel-key add $LIGHT_WALLET --node.type light --p2p.network blockspacerace
 # Init light node
 $LIGHT_BIN light init \
  --keyring.accname $LIGHT_WALLET \
- --core.ip localhost \
- --core.grpc.port ${PORT}90 \
+ --core.ip celestia-testnet.grpc.kjnodes.com \
+ --core.grpc.port 20657 \
  --gateway \
- --gateway.addr localhost \
- --gateway.port ${PORT}59 \
+ --gateway.addr 20090  \
+ --gateway.port 20658  \
  --p2p.network blockspacerace
 
 # Create service light node
@@ -215,13 +215,13 @@ User=$USER
 ExecStart=$(which celestia) light start \\
 --keyring.accname $LIGHT_WALLET \\
 --core.ip localhost \\
---core.rpc.port ${PORT}57 \\
---core.grpc.port ${PORT}90 \\
+--core.rpc.port 20657 \\
+--core.grpc.port 20090 \\
 --p2p.network blockspacerace \\
---rpc.port ${PORT}58 \\
+--rpc.port 20658 \\
 --gateway \\
 --gateway.addr localhost \\
---gateway.port ${PORT}59 \\
+--gateway.port 20659  \\
 --metrics.tls=false \\
 --metrics \\
 --metrics.endpoint otel.celestia.tools:4318 

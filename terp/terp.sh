@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # // Copyright (C) 2022 Salman Wahib Recoded By NodeX Capital
 #
@@ -26,7 +27,7 @@ COSMOVISOR=cosmovisor
 REPO=https://github.com/terpnetwork/terp-core.git
 GENESIS=https://snapshots.nodeist.net/t/terp/genesis.json
 ADDRBOOK=https://snapshots.nodeist.net/t/terp/addrbook.json
-PORT=233
+PORT=210
 
 echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
@@ -119,8 +120,7 @@ $BINARY config node tcp://localhost:${PORT}57
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-PEERS="15f5bc75be9746fd1f712ca046502cae8a0f6ce7@terpnetwork-testnet.nodejumper.io:30656,b0167b898f42b763760cb43c3278a9997bf5a904@116.202.227.117:33656,f9d7b883594e651a45e91c49712151bf93322c08@141.95.65.26:29456,19566196191ca68c3688c14a73e47125bdebe352@62.171.171.91:26656,c2a177164098b317261d55fb1c946a97e5e35adb@75.119.134.69:30656,360c7c554ba16333b5901a2a341e466ad2c1db37@146.19.24.52:33656,e343bd1d153fe8aa97383b74f00d5de23768aad3@65.108.131.190:27456,8441f75ff50ccd2a892e5eafb65e4c2ea34aeac3@95.217.118.96:26757,aea62af2f5d457e35a79fbee295bdad3c85a9a8a@45.94.209.226:26656,133e71b574df8f54f9ff6ba0347db8aebfba09ed@154.53.62.88:26656,b5f7b8728e846be528c25606789e0e197fc88474@95.214.55.155:19656"
-sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/$FOLDER/config/config.toml
+PEERS="$(curl -sS https://terpnetwork-testnet.nodejumper.io/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 SEEDS="15f5bc75be9746fd1f712ca046502cae8a0f6ce7@terpnetwork-testnet.nodejumper.io:30656"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
@@ -130,14 +130,14 @@ curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Set Port
-sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}60\"%" $HOME/$FOLDER/config/config.toml
-sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}17\"%; s%^address = \":8080\"%address = \":${PORT}80\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}90\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}91\"%" $HOME/$FOLDER/config/app.toml
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"tcp://127.0.0.1:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \"127.0.0.1:${PORT}60\"%" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://127.0.0.1:${PORT}17\"%; s%^address = \":8080\"%address = \"127.0.0.1:${PORT}80\"%; s%^address = \"0.0.0.0:9090\"%address = \"127.0.0.1:${PORT}90\"%; s%^address = \"0.0.0.0:9091\"%address = \"127.0.0.1:${PORT}91\"%" $HOME/$FOLDER/config/app.toml
 
 # Set Config Pruning
 pruning="custom"
 pruning_keep_recent="100"
 pruning_keep_every="0"
-pruning_interval="10"
+pruning_interval="19"
 sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
@@ -149,7 +149,7 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.001$DENOM\"/" $HO
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snap.nodeist.net/t/terp/terp.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/$FOLDER --strip-components 2
+curl -L https://snap.nodexcapital.com/terp/terp-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -173,8 +173,8 @@ WantedBy=multi-user.target
 EOF
 
 # Register And Start Service
-sudo systemctl start $BINARY
 sudo systemctl daemon-reload
+sudo systemctl start $BINARY
 sudo systemctl enable $BINARY
 
 echo -e "\033[0;35m=============================================================\033[0m"

@@ -1,16 +1,17 @@
 <h3><p style="font-size:14px" align="right">Founder :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<a href="https://discord.gg/bDUAwZhqBb" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<a href="https://nodexcapital.com" target="_blank">NodeX Capital Official</a></p></h3>
 <h3><p style="font-size:14px" align="right">Hetzner :
 <a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
+
 
 <p align="center">
   <img height="100" height="auto" src="https://avatars.githubusercontent.com/u/108675945?s=200&v=4">
 </p>
 
-# Neutron Testnet | Chain ID : baryon-1 | Custom Port : 238
+# Neutron Testnet | Chain ID : baryon-1 | Custom Port : 213
 
 ### Official Documentation:
 >- [Validator setup instructions](https://docs.neutron.org)

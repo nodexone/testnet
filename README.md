@@ -2,34 +2,37 @@ List of Cosmos ecosystem projets with custom ports configured below ✨ Special 
 
 
 
-| Project name | Port Testnet | Automatic Installer                           | Monitoring                                       | Snapshot |
-|--------------|--------------|-----------------------------------------------|--------------------------------------------------|----------|
-| Sei          | 220           | [Click Here](./sei/README.md)         | [Click Here](./sei/monitoring/README.md)         |   N/A    |
-| Deweb        | 221           | [Click Here](./deweb/README.md)       | [Click Here](./deweb/monitoring/README.md)       |   N/A    |
-| Uptick       | 222           | [Click Here](./uptick/README.md)        | [Click Here](./uptick/monitoring/README.md)        |   N/A    |    
-| Celestia     | 223           | [Click Here](./celestia/README.md)    | [Click Here](./celestia/monitoring/README.md)    |   N/A    |         
-| Nibiru (ITN)      | 224           | [Click Here](./nibiru/README.md)      | [Click Here](./nibiru/monitoring/README.md)      |   N/A    |
-| Okp4         | 225           | [Click Here](./okp4/README.md)        | [Click Here](./okp4/monitoring/README.md)        |   N/A    |
-| Nois         | 226           | [Click Here](./nois/README.md)        | [Click Here](./nois/monitoring/README.md)        |   N/A    |
-| Gitopia      | 227           | [Click Here](./gitopia/README.md)     | [Click Here](./gitopia/monitoring/README.md)     |   N/A    |
-| Defund       | 228           | [Click Here](./defund/README.md)      | [Click Here](./defund/monitoring/README.md)      |   N/A    |
-| Nolus        | 229           | [Click Here](./nolus/README.md)       | [Click Here](./nolus/monitoring/README.md)       |   N/A    |
-| Humans       | 230           | [Click Here](./humans/README.md)      | [Click Here](./humans/monitoring/README.md)      |   N/A    |
-| Realio       | 231           | [Click Here](./realio/README.md)      | [Click Here](./realio/monitoring/README.md)      |   N/A    |
-| Sigma        | 232           | [Click Here](./sge/README.md)         | [Click Here](./sge/monitoring/README.md)         |   N/A    |
-| Terp         | 233           | [Click Here](./terp/README.md)        | [Click Here](./terp/monitoring/README.md)        |   N/A    |
-| Source       | 234           | [Click Here](./source/README.md)      | [Click Here](./source/monitoring/README.md)      |   N/A    |
-| Lava         | 235           | [Click Here](./lava/README.md)        | [Click Here](./lava/monitoring/README.md)        |   N/A    |
-| Blockx       | 236           | [Click Here](./blockx/README.md)      | [Click Here](./blockx/monitoring/README.md)      |   N/A    |
-| Neutron      | 238           | [Click Here](./neutron/README.md)     | [Click Here](./neutron/monitoring/README.md)     |   N/A    |
-| Althea       | 240           | [Click Here](./atlhea/README.md)        | [Click Here](./altea/monitoring/README.md)        |   N/A    |
-| Dymension       | 242           | [Click Here](./dymension/README.md)        | [Click Here](./dymension/monitoring/README.md)        |   N/A    |
-| Babylon       | 243           | [Click Here](./babylon/README.md)        | [Click Here](./babylon/monitoring/README.md)        |   N/A    |
-| Andromeda       | 244           | [Click Here](./andromeda/README.md)        | [Click Here](./andromeda/monitoring/README.md)        |   N/A    |
-| Sao Network       | 245           | [Click Here](./saonetwork/README.md)        | [Click Here](./saonetwork/monitoring/README.md)        |   N/A    |
-| Ojo Network       | 246           | [Click Here](./ojonetwork/README.md)        | [Click Here](./ojonetwork/monitoring/README.md)        |   N/A    |
-| Haqq      | 247           | [Click Here](./haqq/README.md)        | [Click Here](./haqq/monitoring/README.md)        |   N/A    |
-| Bonus Block      | 248           | [Click Here](./bonusblock/README.md)        | [Click Here](./bonusblock/monitoring/README.md)        |   N/A    |
+| Project Name | Port Testnet | Automatic Installer|Manual Installation|
+|--------------|--------------|--------------------|-------------------|
+
+| Andromeda    | 201  | [Click Here](./andromeda/README.md) |[Andromeda Manual](https://nodexcapital.com/andromeda/| 
+| Celestia     | 202  | [Click Here](./celestia/README.md)  |[Celestia Manual ](https://nodexcapital.com/celestia/ |   
+| Nibiru       | 203  | [Click Here](./nibiru/README.md)    |[Nibiru Manual](https://nodexcapital.com/nibiru/      |
+| Okp4         | 204  | [Click Here](./okp4/README.md)      |[Okp4 Manual](https://nodexcapital.com/okp4/          |
+| Gitopia      | 205  | [Click Here](./gitopia/README.md)   |[Gitopia Manual](https://nodexcapital.com/gitopia/    |
+| Defund       | 206  | [Click Here](./defund/README.md)    |[Defund Manual](https://nodexcapital.com/defund/      |
+| Nolus        | 207  | [Click Here](./nolus/README.md)     |[Nolus Manual](https://nodexcapital.com/nolus/        |
+| Realio       | 208  | [Click Here](./realio/README.md)    |[Realio Manual](https://nodexcapital.com/realio/      |
+| Sigma        | 209  | [Click Here](./sge/README.md)       |[Sigma Manual](https://nodexcapital.com/sge/          |
+| Terp         | 210  | [Click Here](./terp/README.md)      |[Terp Manual](https://nodexcapital.com/terp/          |
+| Lava         | 211  | [Click Here](./lava/README.md)      |[Lava Manual](https://nodexcapital.com/lava/          |
+| Blockx       | 212  | [Click Here](./blockx/README.md)    |[BlockX Manual](https://nodexcapital.com/blockx/      |
+| Neutron      | 213  | [Click Here](./neutron/README.md)   |[Neutron Manual](https://nodexcapital.com/neutron/    |
+| Dymension    | 214  | [Click Here](./dymension/README.md) |[Dymension Manual](https://nodexcapital.com/dymension/|
+| Sao          | 215  | [Click Here](./saonetwork/README.md)|[Sao Manual](https://nodexcapital.com/sao/            |
+| Ojo          | 216  | [Click Here](./ojonetwork/README.md)|[Ojo Manual](https://nodexcapital.com/ojo/            |
+| BonusBlock   | 217  | [Click Here](./bonusblock/README.md)|[Bonus Block Manual](https://nodexcapital.com/bonus/  |
+
+
+| Archieved Project|Port Testnet|Automatic Installer|Manual Installation|
+|------------------|------------|-------------------|-------------------|
+
+| Nois   | N/A           | [Click Here](./nois/README.md)    |   N/A    |
+| Humans | N/A           | [Click Here](./humans/README.md)  |   N/A    |
+| Source | N/A           | [Click Here](./source/README.md)  |   N/A    |
+| Althea | N/A           | [Click Here](./atlhea/README.md)  |   N/A    |
+| Babylon| N/A           | [Click Here](./babylon/README.md) |   N/A    |
+| Haqq   | N/A           | [Click Here](./haqq/README.md)    |   N/A    |
 
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)

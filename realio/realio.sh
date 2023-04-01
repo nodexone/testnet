@@ -26,7 +26,7 @@ COSMOVISOR=cosmovisor
 REPO=https://github.com/realiotech/realio-network.git
 GENESIS=https://snap.nodexcapital.com/realio/genesis.json
 ADDRBOOK=https://snap.nodexcapital.com/realio/addrbook.json
-PORT=231
+PORT=208
 
 # Set Vars
 if [ ! $NODENAME ]; then

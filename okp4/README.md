@@ -1,25 +1,25 @@
 <h3><p style="font-size:14px" align="right">Founder :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<a href="https://discord.gg/bDUAwZhqBb" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<a href="https://nodexcapital.com" target="_blank">NodeX Capital Official</a></p></h3>
 <h3><p style="font-size:14px" align="right">Hetzner :
 <a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/44331529/197152847-749c938c-c385-4698-bfa5-3f159297f391.png">
+  <img height="100" height="100"  src="https://raw.githubusercontent.com/kj89/cosmos-images/main/logos/okp4.png">
 </p>
 
-# Okp4 Testnet | Chain ID: okp4-nemeton-1 | Custom Port 225
+# Okp4 Testnet | Chain ID: okp4-nemeton-1 | Custom Port 204
 
-Guide Source :
+### Community Documentation:
 >- [Obajay - STAVR](https://github.com/obajay/nodes-Guides/tree/main/OKP4)
 
-Explorer:
+### Explorer:
 >- https://explorer.nodexcapital.com/okp4
 
 
-### Automatic Installer (Must Using Ubuntu 22.04)
+### Automatic Installer
 You can setup your okp4 fullnode in few minutes by using automated script below.
 ```
 wget -O okp4.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/okp4/okp4.sh && chmod +x okp4.sh && ./okp4.sh
@@ -30,7 +30,7 @@ wget -O okp4.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/okp4
 >- RPC : https://rpc.okp4-t.nodexcapital.com
 >- gRPC : https://grpc.okp4-t.nodexcapital.com
 
-### Snapshot (Update every 5 hours)
+### Snapshot
 ```
 sudo systemctl stop okp4d
 cp $HOME/.okp4d/data/priv_validator_state.json $HOME/.okp4d/priv_validator_state.json.backup
@@ -52,7 +52,7 @@ Coming Soon
 PEERS="$(curl -sS https://rpc.okp4-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.okp4d/config/config.toml
 ```
-### Addrbook (Update every hour)
+### Addrbook
 ```
 curl -Ls https://snap.nodexcapital.com/okp4/addrbook.json > $HOME/.okp4d/config/addrbook.json
 ```

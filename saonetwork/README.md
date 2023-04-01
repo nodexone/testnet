@@ -1,7 +1,7 @@
 <h3><p style="font-size:14px" align="right">Founder :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Discord Community</a></p></h3>
+<a href="https://discord.gg/bDUAwZhqBb" target="_blank">NodeX Capital Discord Community</a></p></h3>
 <h3><p style="font-size:14px" align="right">Visit Our Website :
-<a href="https://discord.gg/nodexcapital" target="_blank">NodeX Capital Official</a></p></h3>
+<a href="https://nodexcapital.com" target="_blank">NodeX Capital Official</a></p></h3>
 <h3><p style="font-size:14px" align="right">Hetzner :
 <a href="https://hetzner.cloud/?ref=bMTVi7dcwSgA" target="_blank">Deploy Hetzner VPS Get 20€ Bonus!</a></h3>
 <hr>
@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://i.imgur.com/bZzE0Ie.png">
 </p>
 
-# Sao Network Testnet | Chain ID : sao-testnet0 | Port : 245
+# Sao Network Testnet | Chain ID : sao-testnet0 | Port : 215
 
 ### Official Documentation:
 >- [Validator setup instructions](https://docs.sao.network/participate-in-sao-network/run-sao-validator)
