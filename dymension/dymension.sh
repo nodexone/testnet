@@ -26,8 +26,8 @@ DENOM_DYMD=udym
 DENOM_ATOM=uatom
 COSMOVISOR=cosmovisor
 REPO=https://github.com/dymensionxyz/dymension.git
-GENESIS=https://snapshots.kjnodes.com/dymension-testnet/genesis.json
-ADDRBOOK=https://snapshots.kjnodes.com/dymension-testnet/addrbook.json
+GENESIS=https://snap.nodexcapital.com/dymension/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/dymension/addrbook.json
 PORT=214
 
 # Set Vars
@@ -163,9 +163,8 @@ EOF
 
 # Register And Start Service
 sudo systemctl daemon-reload
-
-sudo systemctl start $BINARY
 sudo systemctl enable $BINARY
+sudo systemctl start $BINARY
 
 echo -e "\033[0;35m=============================================================\033[0m"
 echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"

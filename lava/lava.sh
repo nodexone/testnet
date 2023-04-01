@@ -25,8 +25,8 @@ VERSION=v0.7.0
 DENOM=ulava
 COSMOVISOR=cosmovisor
 REPO=https://github.com/lavanet/lava.git
-GENESIS=https://snap.nodexcapital.com/nolus/genesis.json
-ADDRBOOK=https://snap.nodexcapital.com/nolus/addrbook.json
+GENESIS=https://snap.nodexcapital.com/lava/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/lava/addrbook.json
 PORT=211
 
 # Set Vars

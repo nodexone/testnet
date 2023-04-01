@@ -154,8 +154,8 @@ EOF
 
 # Register And Start Service
 sudo systemctl daemon-reload
-sudo systemctl start $BINARY
 sudo systemctl enable $BINARY
+sudo systemctl start $BINARY
 
 echo -e "\033[0;35m=============================================================\033[0m"
 echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"
@@ -164,6 +164,5 @@ echo -e "CHECK STATUS BINARY : \033[1m\033[35msystemctl status $BINARY\033[0m"
 echo -e "CHECK RUNNING LOGS : \033[1m\033[35mjournalctl -fu $BINARY -o cat\033[0m"
 echo -e "CHECK LOCAL STATUS : \033[1m\033[35mcurl -s localhost:${PORT}57/status | jq .result.sync_info\033[0m"
 echo -e "\033[0;35m=============================================================\033[0m"
-
 
 # End
