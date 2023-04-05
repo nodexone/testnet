@@ -10,7 +10,7 @@
   <img height="100" height="auto" src="https://raw.githubusercontent.com/kj89/cosmos-images/main/logos/nolus.png">
 </p>
 
-# Nolus Testnet | Chain ID : nolus-rila | Custom Port : 229
+# Nolus Testnet | Chain ID : nolus-rila | Custom Port : 207
 
 ### Official documentation:
 >- [Validator setup instructions](https://docs-nolus-protocol.notion.site/Nolus-Protocol-Docs-a0ddfe091cc5456183417a68502705f8)

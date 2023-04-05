@@ -185,6 +185,9 @@ db_file = "/etc/chainflip/data.db"
 ws_node_endpoint = "wss://pdot.chainflip.io:443"
 EOF
 
+# Start chainflip
+sudo systemctl start chainflip-node
+
 echo -e "\033[0;35m=============================================================\033[0m"
 echo -e "\033[0;35mCONGRATS! CHAINFLIP SETUP FINISHED\033[0m"
 echo ""
