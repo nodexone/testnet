@@ -20,7 +20,8 @@
 | Dymension    | 214  | [Click Here](./dymension/README.md) |[Click Here](https://nodexcapital.com/dymension)|
 | Sao          | 215  | [Click Here](./saonetwork/README.md)|[Click Here](https://nodexcapital.com/sao)      |
 | Ojo          | 216  | [Click Here](./ojonetwork/README.md)|[Click Here](https://nodexcapital.com/ojo)      |
-| BonusBlock   | 217  | [Click Here](./bonusblock/README.md)|[Click Here](https://nodexcapital.com/bonus)|
+| BonusBlock   | 217  | [Click Here](./bonusblock/README.md)|[Click Here](https://nodexcapital.com/bonus)    |
+| Althea       | 218  | [Click Here](./althea/README.md)    |[Click Here](https://nodexcapital.com/althea)    |
 
 
 ### Archieved Project
@@ -29,7 +30,6 @@
 | Nois   | N/A           | [Click Here](./nois/README.md)    |   N/A    |
 | Humans | N/A           | [Click Here](./humans/README.md)  |   N/A    |
 | Source | N/A           | [Click Here](./source/README.md)  |   N/A    |
-| Althea | N/A           | [Click Here](./atlhea/README.md)  |   N/A    |
 | Babylon| N/A           | [Click Here](./babylon/README.md) |   N/A    |
 | Haqq   | N/A           | [Click Here](./haqq/README.md)    |   N/A    |
 
