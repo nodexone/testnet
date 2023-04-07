@@ -77,7 +77,7 @@ sudo systemctl restart althea && journalctl -u althea -f -o cat
 PEERS="$(curl -sS https://rpc.althea-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.althea/config/config.toml
 ```
-### Addrbook (Update every hour)
+### Addrbook
 ```
 curl -Ls https://snap.nodexcapital.com/althea/addrbook.json > $HOME/.althea/config/addrbook.json
 ```

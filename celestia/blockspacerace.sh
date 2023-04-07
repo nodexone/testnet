@@ -25,7 +25,7 @@ NODE_WALLET=wallet
 NODE_VER=v0.12.1
 LIGHT_BIN=celestia
 LIGHT_WALLET=light
-LIGHT_VER=v0.8.0
+LIGHT_VER=v0.8.1
 COSMOVISOR=cosmovisor
 GENESIS=https://snap.nodexcapital.com/celestia/genesis.json
 ADDRBOOK=https://snap.nodexcapital.com/celestia/addrbook.json
@@ -111,7 +111,7 @@ ln -s $HOME/$FOLDER/cosmovisor/genesis $HOME/$FOLDER/cosmovisor/current
 sudo ln -s $HOME/$FOLDER/cosmovisor/current/bin/$NODE_BIN /usr/local/bin/$NODE_BIN
 
 # Init generation
-$NODE_BIN config chain-CHAIN $CHAIN
+$NODE_BIN config chain-id $CHAIN
 $NODE_BIN config keyring-backend test
 $NODE_BIN config node tcp://localhost:${PORT}57
 $NODE_BIN init $NODENAME --chain-id $CHAIN
@@ -214,7 +214,7 @@ After=network-online.target
 User=$USER
 ExecStart=$(which celestia) light start \\
 --keyring.accname $LIGHT_WALLET \\
---core.ip localhost \\
+--core.ip celestia-testnet.grpc.kjnodes.com \\
 --core.rpc.port 20657 \\
 --core.grpc.port 20090 \\
 --p2p.network blockspacerace \\
