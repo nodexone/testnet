@@ -70,9 +70,6 @@ else
     exit 1
 fi
 
-# Update
-sudo apt update && sudo apt upgrade -y
-
 # Package
 sudo apt -q update
 sudo apt -qy install curl git jq lz4 build-essential
@@ -156,6 +153,7 @@ LimitNOFILE=65535
 Environment="DAEMON_HOME=$HOME/$FOLDER"
 Environment="DAEMON_NAME=$BINARY"
 Environment="UNSAFE_SKIP_BACKUP=true"
+
 
 [Install]
 WantedBy=multi-user.target
