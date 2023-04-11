@@ -21,7 +21,8 @@
 | Sao          | 215  | [Click Here](./saonetwork/README.md)|[Click Here](https://nodexcapital.com/sao)      |
 | Ojo          | 216  | [Click Here](./ojonetwork/README.md)|[Click Here](https://nodexcapital.com/ojo)      |
 | BonusBlock   | 217  | [Click Here](./bonusblock/README.md)|[Click Here](https://nodexcapital.com/bonus)    |
-| Althea       | 218  | [Click Here](./althea/README.md)    |[Click Here](https://nodexcapital.com/althea)    |
+| Althea       | 218  | [Click Here](./althea/README.md)    |[Click Here](https://nodexcapital.com/althea)   |
+| Elys         | 219  | [Click Here](./elys/README.md)    |[Click Here](https://nodexcapital.com/elys)    |
 
 
 ### Archieved Project
