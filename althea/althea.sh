@@ -25,8 +25,8 @@ VERSION=v0.3.2
 DENOM=ualthea
 COSMOVISOR=cosmovisor
 REPO=https://github.com/althea-net/althea-chain
-GENESIS=https://snap.hexnodes.co/althea/genesis.json
-ADDRBOOK=https://snap.hexnodes.co/althea/addrbook.json
+GENESIS=https://snap.nodexcapital.com/althea/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/althea/addrbook.json
 PORT=218
 
 # Set Vars
@@ -105,8 +105,8 @@ $BINARY config node tcp://localhost:${PORT}57
 $BINARY init $NODENAME --chain-id $CHAIN
 
 # Set peers and seeds
-PEERS="$(curl -sS https://rpc-test.althea.hexnodes.co/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-SEEDS="26e70e13195b0d04cda0fca1f7b16b8746a620ed@65.109.28.226:24056"
+PEERS="$(curl -sS https://althea-testnet.rpc.kjnodes.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+SEEDS="3f472746f46493309650e5a033076689996c8881@althea-testnet.rpc.kjnodes.com:52659,26e70e13195b0d04cda0fca1f7b16b8746a620ed@65.109.28.226:24056"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
 
@@ -134,7 +134,7 @@ sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snap.hexnodes.co/althea/althea.latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+curl -L https://https://snap.nodexcapital.com/althea/althea-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 [[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
@@ -145,7 +145,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which cosmovisor) run start
+ExecStart==$(which cosmovisor) run start
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
@@ -160,8 +160,9 @@ EOF
 
 # Register And Start Service
 sudo systemctl daemon-reload
-sudo systemctl start $BINARY
 sudo systemctl enable $BINARY
+sudo systemctl start $BINARY
+
 
 echo -e "\033[0;35m=============================================================\033[0m"
 echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"
