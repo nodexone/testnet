@@ -35,7 +35,7 @@ sudo systemctl stop lavad
 cp $HOME/.lava/data/priv_validator_state.json $HOME/.lava/priv_validator_state.json.backup
 rm -rf $HOME/.lava/data
 
-curl -L https://snap.nodexcapital.com/nolus/nolus-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
+curl -L https://snap.nodexcapital.com/lava/lava-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.lava
 mv $HOME/.lava/priv_validator_state.json.backup $HOME/.lava/data/priv_validator_state.json
 
 sudo systemctl start lavad && sudo journalctl -u lavad -f --no-hostname -o cat
