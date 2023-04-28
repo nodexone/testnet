@@ -12,7 +12,7 @@
 | Defund       | 206  | [Click Here](./defund/README.md)    |[Click Here](https://nodexcapital.com/defund)    |
 | Nolus        | 207  | [Click Here](./nolus/README.md)     |[Click Here](https://nodexcapital.com/nolus)    |
 | Realio       | 208  | [Click Here](./realio/README.md)    |[Click Here](https://nodexcapital.com/realio)   |
-| Sigma        | 209  | [Click Here](./sge/README.md)       |[Click Here](https://nodexcapital.com/sge)      |
+| Sigma        | 209  | [Click Here](./sigma/README.md)       |[Click Here](https://nodexcapital.com/sge)      |
 | Terp         | 210  | [Click Here](./terp/README.md)      |[Click Here](https://nodexcapital.com/terp)     |
 | Lava         | 211  | [Click Here](./lava/README.md)      |[Click Here](https://nodexcapital.com/lava)     |
 | Blockx       | 212  | [Click Here](./blockx/README.md)    |[Click Here](https://nodexcapital.com/blockx)   |
