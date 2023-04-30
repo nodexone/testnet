@@ -45,7 +45,7 @@ sudo systemctl start blockxd && sudo journalctl -fu blockxd -o cat
 ```
 blockxd tendermint unsafe-reset-all --home $HOME/.blockxd --keep-addr-book
 
-SNAP_RPC="https://rpc.blockx.nodexcapital.com:443"
+SNAP_RPC="https://rpc.blockx-t.nodexcapital.com:443"
 
 LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
 BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \

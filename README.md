@@ -23,6 +23,7 @@
 | BonusBlock   | 217  | [Click Here](./bonusblock/README.md)|[Click Here](https://nodexcapital.com/bonus)    |
 | Althea       | 218  | [Click Here](./althea/README.md)    |[Click Here](https://nodexcapital.com/althea)   |
 | Elys         | 219  | [Click Here](./elys/README.md)    |[Click Here](https://nodexcapital.com/elys)    |
+| Cascadia     | 220  | [Click Here](./cascadia/README.md)    |[Click Here](https://nodexcapital.com/cascadia)    |
 
 
 ### Archieved Project
