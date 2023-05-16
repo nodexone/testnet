@@ -8,7 +8,7 @@
 | Celestia     | 202  | [Click Here](./celestia/README.md)  |[Click Here](https://nodexcapital.com/celestia) |   
 | Nibiru       | 203  | [Click Here](./nibiru/README.md)    |[Click Here](https://nodexcapital.com/nibiru)   |
 | Okp4         | 204  | [Click Here](./okp4/README.md)      |[Click Here](https://nodexcapital.com/okp4)     |
-| Gitopia      | 205  | [Click Here](./gitopia/README.md)   |[Click Here](https://nodexcapital.com/gitopia)  |
+| Gitopia      | N/A  | [Click Here](./gitopia/README.md)   |[Click Here](https://nodexcapital.com/gitopia)  |
 | Defund       | 206  | [Click Here](./defund/README.md)    |[Click Here](https://nodexcapital.com/defund)    |
 | Nolus        | 207  | [Click Here](./nolus/README.md)     |[Click Here](https://nodexcapital.com/nolus)    |
 | Realio       | 208  | [Click Here](./realio/README.md)    |[Click Here](https://nodexcapital.com/realio)   |
