@@ -24,6 +24,7 @@
 | Althea       | 218  | [Click Here](./althea/README.md)    |[Click Here](https://nodexcapital.com/althea)   |
 | Elys         | 219  | [Click Here](./elys/README.md)    |[Click Here](https://nodexcapital.com/elys)    |
 | Cascadia     | 220  | [Click Here](./cascadia/README.md)    |[Click Here](https://nodexcapital.com/cascadia)    |
+| Composable | 221  | [Click Here](./composable/README.md)    |[Click Here](https://nodexcapital.com/composable)  |
 
 
 ### Archieved Project
@@ -34,6 +35,7 @@
 | Source | N/A           | [Click Here](./source/README.md)  |   N/A    |
 | Babylon| N/A           | [Click Here](./babylon/README.md) |   N/A    |
 | Haqq   | N/A           | [Click Here](./haqq/README.md)    |   N/A    |
+| Gitopia| N/A           | [Click Here](./gitopia/README.md)    |   N/A    |
 
 
 Regards ~ [Whyme | NodeX Capital](https://discord.com/users/928575843641479198)

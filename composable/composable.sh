@@ -10,25 +10,24 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Gitopiad | Chain ID : gitopia-janus-testnet-2  <<<";
+echo ">>> Cosmovisor Automatic Installer for Composable | Chain ID : banksy-testnet-2 <<<";
 echo -e "\e[0m"
 
 sleep 1
 
 # Variable
-SOURCE=gitopia
+SOURCE=composable-testnet
 WALLET=wallet
-BINARY=gitopiad 
-CHAIN=gitopia-janus-testnet-2
-FOLDER=.gitopia
-VERSION=v1.2.0
-DENOM=utlore
+BINARY=banksyd
+CHAIN=banksy-testnet-2
+FOLDER=.banksy
+VERSION=v2.3.2
+DENOM=upica
 COSMOVISOR=cosmovisor
-BASH=https://get.gitopia.com
-REPO=gitopia://gitopia/gitopia
-GENESIS=https://snap.nodexcapital.com/gitopia/genesis.json
-ADDRBOOK=https://snap.nodexcapital.com/gitopia/addrbook.json
-PORT=205
+REPO=https://github.com/notional-labs/composable-testnet
+GENESIS=https://snap.nodexcapital.com/composable/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/composable/addrbook.json
+PORT=221
 
 # Set Vars
 if [ ! $NODENAME ]; then
@@ -82,10 +81,8 @@ curl -Ls https://go.dev/dl/go1.19.7.linux-amd64.tar.gz | sudo tar -xzf - -C /usr
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get testnet version of Gitopia
+# Get testnet version of Elys
 cd $HOME
-curl -Ls $BASH | sudo bash
-cd
 rm -rf $SOURCE
 git clone $REPO
 cd $SOURCE
@@ -108,15 +105,18 @@ $BINARY config keyring-backend test
 $BINARY config node tcp://localhost:${PORT}57
 $BINARY init $NODENAME --chain-id $CHAIN
 
-# Set peers and seeds
-SEEDS="3f472746f46493309650e5a033076689996c8881@gitopia-testnet.rpc.kjnodes.com:41659"
-PEERS="$(curl -sS https://gitopia-testnet.rpc.kjnodes.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i 's|^persistent_peers *=.*|persistent_peers = "'$PEERS'"|' $HOME/$FOLDER/config/config.toml
-sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/$FOLDER/config/config.toml
-
 # Download genesis and addrbook
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
+
+# Add seeds,gas-prices & peers
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
+
+#Set Peers & Seeds
+PEERS="$(curl -sS https://rpc.composable-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+SEEDS="872c8a78a17a24d6f44e1126c46ef52069c7bb18@65.109.80.150:2630,5c2a752c9b1952dbed075c56c600c3a79b58c395@composable-testnet-seed.autostake.com:26976,20e1000e88125698264454a884812746c2eb4807@seeds.lavenderfive.com:22256,3f472746f46493309650e5a033076689996c8881@composable-testnet.rpc.kjnodes.com:15959,ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@testnet-seeds.polkachu.com:22256,945e8384ea51c5c6f7b9a90df8d8da120516d897@rpc.composable-t.indonode.net:47656"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
+sed -i.bak -e "s/^seeds =.*/seeds = \"$SEEDS\"/" $HOME/$FOLDER/config/config.toml
 
 # Set Port
 sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}58\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}57\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"tcp://127.0.0.1:${PORT}60\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}56\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \"127.0.0.1:${PORT}60\"%" $HOME/$FOLDER/config/config.toml
@@ -132,13 +132,10 @@ sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_rec
 sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/$FOLDER/config/app.toml
 sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/$FOLDER/config/app.toml
 
-# Set minimum gas price
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.001$DENOM\"/" $HOME/$FOLDER/config/app.toml
-
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snap.nodexcapital.com/gitopia/gitopia-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+curl -L https://snap.nodexcapital.com/composable/composable-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 [[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
@@ -150,23 +147,25 @@ After=network-online.target
 [Service]
 User=$USER
 ExecStart=$(which cosmovisor) run start
+WorkingDirectory=$HOME
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
 Environment="DAEMON_HOME=$HOME/$FOLDER"
 Environment="DAEMON_NAME=$BINARY"
+Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
 Environment="UNSAFE_SKIP_BACKUP=true"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/$FOLDER/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
+
 # Register And Start Service
 sudo systemctl daemon-reload
 sudo systemctl enable $BINARY
 sudo systemctl start $BINARY
-
-
 
 echo -e "\033[0;35m=============================================================\033[0m"
 echo -e "\033[0;35mCONGRATS! SETUP FINISHED\033[0m"

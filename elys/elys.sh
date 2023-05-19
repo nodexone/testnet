@@ -110,7 +110,7 @@ curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
 curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Add seeds,gas-prices & peers
-sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0ulava\"/" $HOME/$FOLDER/config/app.toml
+sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
 #Set Peers & Seeds
 PEERS="$(curl -sS https://rpc.elys-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
