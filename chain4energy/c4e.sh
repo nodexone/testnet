@@ -107,7 +107,7 @@ $BINARY init $NODENAME --chain-id $CHAIN
 
 # Download genesis and addrbook
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
-curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
+#curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Add seeds,gas-prices & peers
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
