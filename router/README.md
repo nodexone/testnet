@@ -12,12 +12,17 @@
 
 # Router Testnet | Chain ID: router_9601-1 | Custom Port 222
 
+### Official Links
+- [Website](https://www.routerprotocol.com/)
+- [Discord](https://discord.gg/7hBuaVkNMv)
+- [Twitter](https://twitter.com/routerprotocol)
+- [Telegram](https://t.me/routerprotocol)
+- [Github](https://github.com/router-protocol)
 ### Community Documentation:
->- [NodeX Emperor Service](https://github.com/nodexcapital/testnet/tree/main/router)
+- [NodeX Emperor Service](https://github.com/nodexcapital/testnet/tree/main/router)
 
 ### Explorer:
->- https://explorer.nodexcapital.com/router
-
+- https://explorer.nodexcapital.com/router
 
 ### Automatic Installer
 You can setup your router fullnode in few minutes by using automated script below.
@@ -26,8 +31,8 @@ wget -O router.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/ro
 ```
 ### Public Endpoint
 
->- API : https://rest.router-t.nodexcapital.com
->- RPC : https://rpc.router-t.nodexcapital.com
+- API : https://rest.router-t.nodexcapital.com
+- RPC : https://rpc.router-t.nodexcapital.com
 
 ### Snapshot
 ```
@@ -42,7 +47,6 @@ sudo systemctl start routerd && sudo journalctl -u routerd -f --no-hostname -o c
 ```
 
 ### State Sync
-```
 After successful synchronization using state sync above, we advise you to disable synchronization with state sync and restart the node
 ```
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.routerd/config/config.toml
