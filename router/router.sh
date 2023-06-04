@@ -10,23 +10,23 @@ echo " ██╔██╗ ██║██║   ██║██║  ██║█�
 echo " ██║╚██╗██║██║   ██║██║  ██║██╔══╝   ██╔██╗     ██║     ██╔══██║██╔═══╝ ██║   ██║   ██╔══██║██║     ";
 echo " ██║ ╚████║╚██████╔╝██████╔╝███████╗██╔╝ ██╗    ╚██████╗██║  ██║██║     ██║   ██║   ██║  ██║███████╗";
 echo " ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝     ╚═════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝";
-echo ">>> Cosmovisor Automatic Installer for Chain4energy | Chain ID : babajaga-1 <<<";
+echo ">>> Cosmovisor Automatic Installer for Router Protocol | Chain ID : router_9601-1 <<<";
 echo -e "\e[0m"
 
 sleep 1
 
 # Variable
-SOURCE=c4e-chain
+#SOURCE=routerd
 WALLET=wallet
-BINARY=c4ed
-CHAIN=babajaga-1
-FOLDER=.c4e-chain
-VERSION=v1.2.0
-DENOM=uc4e
+BINARY=routerd
+CHAIN=router_9601-1
+FOLDER=.routerd
+#VERSION=
+DENOM=trouter
 COSMOVISOR=cosmovisor
-REPO=https://github.com/chain4energy/c4e-chain.git
-GENESIS=https://raw.githubusercontent.com/chain4energy/c4e-chains/main/babajaga-1/genesis.json
-#ADDRBOOK=https://snap.nodexcapital.com/composable/addrbook.json
+REPO=https://github.com/router-protocol/router-chain-releases/raw/main/linux/routerd.tar
+GENESIS=https://snap.nodexcapital.com/router/genesis.json
+ADDRBOOK=https://snap.nodexcapital.com/router/addrbook.json
 PORT=222
 
 # Set Vars
@@ -40,24 +40,24 @@ echo ""
 echo -e "NODE NAME      : \e[1m\e[35m$NODENAME\e[0m"
 echo -e "WALLET NAME    : \e[1m\e[35m$WALLET\e[0m"
 echo -e "CHAIN NAME     : \e[1m\e[35m$CHAIN\e[0m"
-echo -e "NODE VERSION   : \e[1m\e[35m$VERSION\e[0m"
+#echo -e "NODE VERSION   : \e[1m\e[35m$VERSION\e[0m"
 echo -e "NODE FOLDER    : \e[1m\e[35m$FOLDER\e[0m"
 echo -e "NODE DENOM     : \e[1m\e[35m$DENOM\e[0m"
 echo -e "NODE ENGINE    : \e[1m\e[35m$COSMOVISOR\e[0m"
-echo -e "SOURCE CODE    : \e[1m\e[35m$REPO\e[0m"
+#echo -e "SOURCE CODE    : \e[1m\e[35m$REPO\e[0m"
 echo -e "NODE PORT      : \e[1m\e[35m$PORT\e[0m"
 echo ""
 
 read -p "Is the above information correct? (y/n) " choice
 if [[ $choice == [Yy]* ]]; then
 
-echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
+#echo "export SOURCE=${SOURCE}" >> $HOME/.bash_profile
 echo "export WALLET=${WALLET}" >> $HOME/.bash_profile
 echo "export BINARY=${BINARY}" >> $HOME/.bash_profile
 echo "export DENOM=${DENOM}" >> $HOME/.bash_profile
 echo "export CHAIN=${CHAIN}" >> $HOME/.bash_profile
 echo "export FOLDER=${FOLDER}" >> $HOME/.bash_profile
-echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
+#echo "export VERSION=${VERSION}" >> $HOME/.bash_profile
 echo "export COSMOVISOR=${COSMOVISOR}" >> $HOME/.bash_profile
 echo "export REPO=${REPO}" >> $HOME/.bash_profile
 echo "export GENESIS=${GENESIS}" >> $HOME/.bash_profile
@@ -75,25 +75,25 @@ sudo apt -q update
 sudo apt -qy install curl git jq lz4 build-essential
 sudo apt -qy upgrade
 
+#Libwasm compatibility
+sudo wget -P /usr/lib https://github.com/CosmWasm/wasmvm/raw/main/internal/api/libwasmvm.x86_64.so
+
 # Install GO
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.19.7.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.20.4.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
-# Get testnet version of Elys
-cd $HOME
-rm -rf $SOURCE
-git clone $REPO
-cd $SOURCE
-git checkout $VERSION
-make build
+# Get testnet version of Router
+wget $REPO
+tar -xvf $BINARY.tar
+chmod +x $BINARY
+rm -f $BINARY.tar
 go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
 
 # Prepare binaries for Cosmovisor
 mkdir -p $HOME/$FOLDER/$COSMOVISOR/genesis/bin
-mv build/$BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
-rm -rf build
+mv $BINARY $HOME/$FOLDER/$COSMOVISOR/genesis/bin/
 
 # Create application symlinks
 ln -s $HOME/$FOLDER/$COSMOVISOR/genesis $HOME/$FOLDER/$COSMOVISOR/current
@@ -107,14 +107,14 @@ $BINARY init $NODENAME --chain-id $CHAIN
 
 # Download genesis and addrbook
 curl -Ls $GENESIS > $HOME/$FOLDER/config/genesis.json
-#curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
+curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 
 # Add seeds,gas-prices & peers
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
 #Set Peers & Seeds
-PEERS="$(curl -sS https://rpc-testnet.c4e.io/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-SEEDS=""
+PEERS="$(curl -sS https://rpc-t.router.nodestake.top/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+SEEDS="06952dd421e75835e8871de3f60507812156ea03@13.127.165.58:26656"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i.bak -e "s/^seeds =.*/seeds = \"$SEEDS\"/" $HOME/$FOLDER/config/config.toml
 
@@ -135,22 +135,8 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-#curl -L https://snap.nodexcapital.com/composable/composable-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
-#[[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
-
-#State Sync
-SNAP_RPC1="https://rpc-testnet.c4e.io:443"
-SNAP_RPC2="https://rpc-testnet.c4e.io:443"
-
-LATEST_HEIGHT=$(curl -s https://rpc-testnet.c4e.io:443/block | jq -r .result.block.header.height); \
-BLOCK_HEIGHT=$((LATEST_HEIGHT - 1000)); \
-TRUST_HASH=$(curl -s "https://rpc-testnet.c4e.io:443/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
-echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
-
-sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
-s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC1,$SNAP_RPC2\"| ; \
-s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
-s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"|" $HOME/.c4e-chain/config/config.toml
+curl -L https://snap.nodexcapital.com/router/router-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+[[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
 sudo tee /etc/systemd/system/$BINARY.service > /dev/null << EOF
@@ -160,7 +146,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which cosmovisor) run start
+ExecStart=/data/router/go/bin/cosmovisor run start
 Restart=on-failure
 RestartSec=10
 LimitNOFILE=65535
@@ -168,7 +154,6 @@ Environment="DAEMON_HOME=$HOME/$FOLDER"
 Environment="DAEMON_NAME=$BINARY"
 Environment="DAEMON_ALLOW_DOWNLOAD_BINARIES=true"
 Environment="UNSAFE_SKIP_BACKUP=true"
-Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/$FOLDER/cosmovisor/current/bin"
 
 [Install]
 WantedBy=multi-user.target

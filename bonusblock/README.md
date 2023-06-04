@@ -67,8 +67,6 @@ After successful synchronization using state sync above, we advise you to disabl
 ```
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.bonusblock/config/config.toml
 sudo systemctl restart bonus-blockd && journalctl -u bonus-blockd -f -o cat
-
-### Live Peers
 ```
 PEERS="$(curl -sS https://rpc.bonusblock-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.bonusblock/config/config.toml

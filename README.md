@@ -24,8 +24,8 @@
 | Althea       | 218  | [Click Here](./althea/README.md)    |[Click Here](https://nodexcapital.com/althea)   |
 | Elys         | 219  | [Click Here](./elys/README.md)    |[Click Here](https://nodexcapital.com/elys)    |
 | Cascadia     | 220  | [Click Here](./cascadia/README.md)    |[Click Here](https://nodexcapital.com/cascadia)    |
-| Composable | 221  | [Click Here](./composable/README.md)    |[Click Here](https://nodexcapital.com/composable)  |
-| Chain4energy | 222  | [Click Here](./chain4energy/README.md)    |[Click Here](https://nodexcapital.com/c4e)  |
+| Composable   | 221  | [Click Here](./composable/README.md)    |[Click Here](https://nodexcapital.com/composable)  |
+| Router       | 222  | [Click Here](./router/README.md)    |[Click Here](https://nodexcapital.com/router)  |
 
 
 ### Archieved Project
