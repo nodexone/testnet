@@ -21,7 +21,7 @@ WALLET=wallet
 BINARY=elysd
 CHAIN=elystestnet-1
 FOLDER=.elys
-VERSION=v0.4.0
+VERSION=v0.6.0
 DENOM=uelys
 COSMOVISOR=cosmovisor
 REPO=https://github.com/elys-network/elys
@@ -77,7 +77,7 @@ sudo apt -qy upgrade
 
 # Install GO
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.19.7.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.19.9.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
