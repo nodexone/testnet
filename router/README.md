@@ -45,8 +45,30 @@ mv $HOME/.routerd/priv_validator_state.json.backup $HOME/.routerd/data/priv_vali
 
 sudo systemctl start routerd && sudo journalctl -u routerd -f --no-hostname -o cat
 ```
-
 ### State Sync
+```
+sudo systemctl stop routerd
+cp $HOME/.routerd/data/priv_validator_state.json $HOME/.routerd/priv_validator_state.json.backup
+routerd tendermint unsafe-reset-all --home $HOME/.routerd
+
+STATE_SYNC_RPC=https://rpc.router-t.nodexcapital.com:443
+LATEST_HEIGHT=$(curl -s $STATE_SYNC_RPC/block | jq -r .result.block.header.height)
+SYNC_BLOCK_HEIGHT=$(($LATEST_HEIGHT - 2000))
+SYNC_BLOCK_HASH=$(curl -s "$STATE_SYNC_RPC/block?height=$SYNC_BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+sed -i \
+  -e "s|^enable *=.*|enable = true|" \
+  -e "s|^rpc_servers *=.*|rpc_servers = \"$STATE_SYNC_RPC,$STATE_SYNC_RPC\"|" \
+  -e "s|^trust_height *=.*|trust_height = $SYNC_BLOCK_HEIGHT|" \
+  -e "s|^trust_hash *=.*|trust_hash = \"$SYNC_BLOCK_HASH\"|" \
+  $HOME/.routerd/config/config.toml
+
+mv $HOME/.routerd/priv_validator_state.json.backup $HOME/.routerd/data/priv_validator_state.json
+sudo systemctl start routerd && sudo journalctl -u routerd -f --no-hostname -o cat
+```
+
+
+### Disable State Sync
 After successful synchronization using state sync above, we advise you to disable synchronization with state sync and restart the node
 ```
 sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1false|" $HOME/.routerd/config/config.toml
