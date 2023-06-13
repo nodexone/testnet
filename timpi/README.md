@@ -18,7 +18,7 @@
 ### Explorer:
 >-  https://explorer.nodexcapital.com/ojo
 
-### Automatic Installer
+### Automatic Installer (Must Using Ubuntu 22.04)
 You can setup your Ojo Network fullnode in few minutes by using automated script below.
 ```
 wget -O ojo.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/ojonetwork/ojo.sh && chmod +x ojo.sh && ./ojo.sh
@@ -29,7 +29,7 @@ wget -O ojo.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/ojone
 >- RPC : https://rpc.ojo-t.nodexcapital.com
 >- gRPC : https://grpc.ojo-t.nodexcapital.com
 
-### Snapshot
+### Snapshot (Update every 5 hours)
 ```
 sudo systemctl stop ojod
 cp $HOME/.ojo/data/priv_validator_state.json $HOME/.ojo/priv_validator_state.json.backup

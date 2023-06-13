@@ -25,7 +25,10 @@
 | Elys         | 219  | [Click Here](./elys/README.md)    |[Click Here](https://nodexcapital.com/elys)      |
 | Cascadia     | 220  | [Click Here](./cascadia/README.md)    |[Click Here](https://nodexcapital.com/cascadia)    |
 | Composable   | 221  | [Click Here](./composable/README.md)    |[Click Here](https://nodexcapital.com/composable)  |
-| Router       | 222  | [Click Here](./router/README.md)    |[Click Here](https://nodexcapital.com/router)  |
+| Router       | 222  | [Click Here](./router/README.md)    |[Click Here](https://nodexcapital.com/router)    |
+| Router       | 223  | [Click Here](./router/README.md)    |[Click Here](https://nodexcapital.com/router)    |
+| Noria        | 224  | [Click Here](./noria/README.md)    |[Click Here](https://nodexcapital.com/noria)     |
+| Timpi        | 225  | [Click Here](./timpi/README.md)    |[Click Here](https://nodexcapital.com/timpi)     |
 
 
 ### Archieved Project
