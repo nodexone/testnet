@@ -7,13 +7,13 @@
 <hr>
 
 <p align="center">
-  <img height="100" height="auto" src="https://noria.network/wp-content/uploads/2023/01/logo2_matte.gif">
+  <img height="100" height="auto" src="https://raw.githubusercontent.com/kj89/cosmos-images/main/logos/noria.png">
 </p>
 
 # Noria Testnet | Chain ID : oasis-3 | Custom Port : 224
 
 ### Community Documentation :
->- [Validator Setup Instructions](https://services.kjnodes.com/home/testnet/noria)
+>- [Kjnodes Setup Instructions](https://services.kjnodes.com/home/testnet/noria)
 
 ### Explorer:
 >-  https://explorer.nodexcapital.com/noria
@@ -29,7 +29,7 @@ wget -O noria.sh https://raw.githubusercontent.com/nodexcapital/testnet/main/nor
 >- RPC : https://rpc.noria-t.nodexcapital.com
 >- gRPC : https://grpc.noria-t.nodexcapital.com
 
-### Snapshot (Update every 5 hours)
+### Snapshot
 ```
 sudo systemctl stop noriad
 cp $HOME/.noria/data/priv_validator_state.json $HOME/.noria/priv_validator_state.json.backup
