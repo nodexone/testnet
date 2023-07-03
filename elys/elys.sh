@@ -21,7 +21,7 @@ WALLET=wallet
 BINARY=elysd
 CHAIN=elystestnet-1
 FOLDER=.elys
-VERSION=v0.6.0
+VERSION=v0.8.0
 DENOM=uelys
 COSMOVISOR=cosmovisor
 REPO=https://github.com/elys-network/elys
@@ -77,7 +77,7 @@ sudo apt -qy upgrade
 
 # Install GO
 sudo rm -rf /usr/local/go
-curl -Ls https://go.dev/dl/go1.19.9.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+curl -Ls https://go.dev/dl/go1.19.10.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
 eval $(echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/golang.sh)
 eval $(echo 'export PATH=$PATH:$HOME/go/bin' | tee -a $HOME/.profile)
 
@@ -113,7 +113,7 @@ curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
 #Set Peers & Seeds
-PEERS="$(curl -sS https://rpc.elys-t.nodexcapital.com/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+PEERS=""
 SEEDS="3f472746f46493309650e5a033076689996c8881@elys-testnet.rpc.kjnodes.com:53659,ade4d8bc8cbe014af6ebdf3cb7b1e9ad36f412c0@testnet-seeds.polkachu.com:22056"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i.bak -e "s/^seeds =.*/seeds = \"$SEEDS\"/" $HOME/$FOLDER/config/config.toml
