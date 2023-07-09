@@ -12,7 +12,7 @@
 | Defund       | 206  | [Click Here](./defund/README.md)    |[Click Here](https://nodexcapital.com/testnet/defund)    |
 | Nolus        | N/A  | [Click Here](./nolus/README.md)     |[Click Here](https://nodexcapital.com/testnet/nolus)     |
 | Realio       | 208  | [Click Here](./realio/README.md)    |[Click Here](https://nodexcapital.com/testnet/realio)    |
-| Sigma        | 209  | [Click Here](./sigma/README.md)       |[Click Here](https://nodexcapital.com/testnet/sge)      |
+| Sigma        | 209  | [Click Here](./sigma/README.md)     |[Click Here](https://nodexcapital.com/testnet/sge)       |
 | Terp         | 210  | [Click Here](./terp/README.md)      |[Click Here](https://nodexcapital.com/testnet/terp)      |
 | Lava         | 211  | [Click Here](./lava/README.md)      |[Click Here](https://nodexcapital.com/testnet/lava)      |
 | Blockx       | 212  | [Click Here](./blockx/README.md)    |[Click Here](https://nodexcapital.com/testnet/blockx)    |
@@ -22,14 +22,16 @@
 | Ojo          | 216  | [Click Here](./ojonetwork/README.md)|[Click Here](https://nodexcapital.com/testnet/ojo)       |
 | BonusBlock   | 217  | [Click Here](./bonusblock/README.md)|[Click Here](https://nodexcapital.com/testnet/bonus)     |
 | Althea       | 218  | [Click Here](./althea/README.md)    |[Click Here](https://nodexcapital.com/testnet/althea)    |
-| Elys         | 219  | [Click Here](./elys/README.md)    |[Click Here](https://nodexcapital.com/testnet/elys)      |
-| Cascadia     | 220  | [Click Here](./cascadia/README.md)    |[Click Here](https://nodexcapital.com/testnet/cascadia)    |
-| Composable   | 221  | [Click Here](./composable/README.md)    |[Click Here](https://nodexcapital.com/testnet/composable)  |
+| Elys         | 219  | [Click Here](./elys/README.md)      |[Click Here](https://nodexcapital.com/testnet/elys)      |
+| Cascadia     | 220  | [Click Here](./cascadia/README.md)  |[Click Here](https://nodexcapital.com/testnet/cascadia)  |
+| Composable   | 221  | [Click Here](./composable/README.md)|[Click Here](https://nodexcapital.com/testnet/composable)|
 | Router       | 222  | [Click Here](./router/README.md)    |[Click Here](https://nodexcapital.com/testnet/router)    |
 | Router       | 223  | [Click Here](./router/README.md)    |[Click Here](https://nodexcapital.com/testnet/router)    |
-| Noria        | 224  | [Click Here](./noria/README.md)    |[Click Here](https://nodexcapital.com/testnet/noria)     |
-| Timpi        | 225  | [Click Here](./timpi/README.md)    |[Click Here](https://nodexcapital.com/testnet/timpi)     |
-| Zetachain    | 226  | [Click Here](./zetachain/README.md)    |[Click Here](https://nodexcapital.com/testnet/zetachain)     |
+| Noria        | 224  | [Click Here](./noria/README.md)     |[Click Here](https://nodexcapital.com/testnet/noria)     |
+| Timpi        | 225  | [Click Here](./timpi/README.md)     |[Click Here](https://nodexcapital.com/testnet/timpi)     |
+| Zetachain    | 226  | [Click Here](./zetachain/README.md) |[Click Here](https://nodexcapital.com/testnet/zetachain) |
+| Babylon      | 227  | [Click Here](./babylon/README.md)   |[Click Here](https://nodexcapital.com/testnet/babylon)   |
+| Burnt        | 228  | [Click Here](./burnt/README.md)     |[Click Here](https://nodexcapital.com/testnet/burnt)     |
 
 
 ### Archieved Project
