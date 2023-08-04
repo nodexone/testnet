@@ -25,8 +25,8 @@ FOLDER=.routerd
 DENOM=route
 COSMOVISOR=cosmovisor
 REPO=https://raw.githubusercontent.com/router-protocol/router-chain-releases/main/linux/routerd.tar
-GENESIS=https://snap.nodexcapital.com/router/genesis.json
-ADDRBOOK=https://snap.nodexcapital.com/router/addrbook.json
+GENESIS=https://ss-t.router.nodestake.top/genesis.json
+ADDRBOOK=https://ss-t.router.nodestake.top/addrbook.json
 PORT=222
 
 # Set Vars
@@ -113,7 +113,7 @@ curl -Ls $ADDRBOOK > $HOME/$FOLDER/config/addrbook.json
 sed -i -e "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0$DENOM\"/" $HOME/$FOLDER/config/app.toml
 
 #Set Peers & Seeds
-PEERS="$(curl -sS https://tm.rpc.testnet.routerchain.dev/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
+PEERS="$(curl -sS https://rpc-t.router.nodestake.top/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
 SEEDS="074d7d3c5d142cbec150093086055d73be0080cf@35.178.32.171:26656,840b426e3d5520dd9e5e15b1ac8efb85920f06d7@109.236.82.5:1076,38e859e63c114a87cb71c23977966bf24e68827a@148.251.2.19:26656,b6a858bf5bc231c54ba42a5cdbf59fbc35315f77@136.243.131.108:26656,5fb7234ba7fe56a0d6e8023daa46885c50c00f27@65.109.82.112:22256,7edf6ea9751dd5ced32f2dedf226d5215d3a907d@135.181.207.28:26656,ee6ff5cff02c5a0f9434e7f371adba548bf0f7c1@95.217.77.173:26656,6aaba24641cc075b6182ea6ca19b643504485e26@162.19.237.134:26656,16bc9a252c2cb82c6aefdc82826f7d7021114f0a@13.127.165.58:26656"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/$FOLDER/config/config.toml
 sed -i.bak -e "s/^seeds =.*/seeds = \"$SEEDS\"/" $HOME/$FOLDER/config/config.toml
@@ -135,7 +135,7 @@ sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $
 # Enable snapshots
 sed -i -e "s/^snapshot-interval *=.*/snapshot-interval = \"2000\"/" $HOME/$FOLDER/config/app.toml
 $BINARY tendermint unsafe-reset-all --home $HOME/$FOLDER --keep-addr-book
-curl -L https://snap.nodexcapital.com/router/router-latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
+curl -L https://ss-t.router.nodestake.top/2023-08-03_router_1347912.tar.lz4 | tar -Ilz4 -xf - -C $HOME/$FOLDER
 [[ -f $HOME/$FOLDER/data/upgrade-info.json ]] && cp $HOME/$FOLDER/data/upgrade-info.json $HOME/$FOLDER/cosmovisor/genesis/upgrade-info.json
 
 # Create Service
