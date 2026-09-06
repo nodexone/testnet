@@ -1,0 +1,1109 @@
+# AGENT_BRIEF.md — Baby Care Affiliate Platform
+**Versi:** R11 (konsolidasi R7–R11)
+**Tanggal:** 2026-09-04
+**Status OpenSpec:** `explore` → change proposal aktif. BELUM archived.
+**Wajib sebelum coding:** `openspec validate --strict` harus lulus.
+
+---
+
+# 0. Cara pakai dokumen ini
+
+Dokumen ini adalah satu-satunya sumber kebenaran. Kalau ada konflik dengan
+percakapan sebelumnya, dokumen ini yang menang.
+
+Urutan kerja: baca §1–§3 (konteks), §2 (aturan yang tidak boleh dilanggar),
+lalu eksekusi §11 secara berurutan. Jangan lompat fase. Jangan tambah
+dependency yang tidak ada di §3.
+
+Kalau ada requirement yang ambigu, JANGAN mengarang. Tulis pertanyaan di
+`openspec/questions.md` dan lanjut ke task berikutnya.
+
+---
+
+# 1. Definisi produk
+
+## 1.1 Apa ini
+Platform affiliate produk perawatan bayi untuk pasar Indonesia, terdiri dari
+tiga komponen:
+
+1. **Katalog publik** — agregator produk baby care lintas marketplace
+   (Shopee, Tokopedia, Lazada, Blibli) via datafeed Involve Asia. Fokus pada
+   **barang habis pakai** (diapers, tisu basah, detergen bayi, skincare bayi,
+   pakaian). Nilai jual utama: netralitas lintas-marketplace + riwayat harga.
+2. **Dashboard admin** — traffic, klik, konversi, EPC, revenue per program,
+   manajemen katalog, dan control room live commerce.
+3. **Control room live** — panel untuk menjalankan sesi live selling di
+   marketplace (bukan di situs kita). Termasuk overlay untuk OBS dan AI host
+   agent yang menjawab komentar.
+
+Revenue 100% dari komisi affiliate. Tidak ada transaksi di situs kita.
+
+## 1.2 Apa ini BUKAN
+- **Bukan** marketplace. Tidak ada cart, checkout, atau payment.
+- **Bukan** situs live streaming. Kita tidak pernah menyiarkan video dari
+  server sendiri. Live tetap di Shopee/TikTok. Dashboard hanya control panel.
+- **Bukan** situs konten parenting. Artikel hanya pendukung SEO, bukan produk.
+- **Bukan** tool otomasi platform. Tidak ada bot, tidak ada multi-akun,
+  tidak ada proxy/fingerprint spoofing. Lihat §2.8.
+
+## 1.3 Posisi kompetitif (hasil riset, jangan diubah tanpa riset baru)
+Kompetitor terverifikasi: **Miniapoly.com** (ID, sudah punya katalog + AI +
+baby registry), **Orami.co.id** (ID, konten + commerce, SEO dominan),
+**Lucie's List** (US, benchmark editorial affiliate).
+
+Konsekuensi: "AI" dan "katalog" BUKAN diferensiasi — sudah dimiliki Miniapoly.
+Diferensiasi kita ada tiga:
+1. **Riwayat harga + price alert** untuk barang habis pakai (repeat purchase).
+2. **Netralitas lintas-marketplace** — tidak bisa ditiru pemain yang punya stok.
+3. **Baby registry** sebagai mesin akuisisi email organik.
+
+Headline landing page DILARANG memakai kata "AI". Lihat §6.4.
+
+---
+
+# 2. Aturan yang tidak boleh dilanggar
+
+Setiap pelanggaran di bagian ini = blocker rilis, bukan bug biasa.
+
+## 2.1 Single exit point
+Semua link keluar ke marketplace HARUS melewati `lib/compliance/gate.ts`.
+Tidak ada `<a href>` ke domain marketplace di mana pun kecuali hasil dari
+gate. Grep test wajib: nol hasil untuk pola `href.*shopee\.` /
+`href.*tokopedia\.` di luar `lib/compliance/`.
+
+## 2.2 Blocked categories
+Tabel `blocked_categories` dengan 4 seed row wajib:
+`infant_formula`, `breastmilk_substitute`, `feeding_bottle`, `pacifier`.
+
+Alasan: regulasi Indonesia (PP 33/2012 dan Permenkes terkait) melarang
+promosi susu formula bayi, pengganti ASI, botol susu, dan dot. Ini bukan
+preferensi editorial — ini hukum. Produk dari kategori ini WAJIB
+di-drop pada tahap ingest, bukan disembunyikan di UI.
+
+Gate harus menolak dengan exception, bukan return null diam-diam.
+
+## 2.3 Harga
+Harga HANYA berasal dari `price_history` yang diisi cron dari datafeed.
+DILARANG input harga manual. DILARANG hardcode harga di komponen atau seed.
+Setiap harga yang ditampilkan wajib punya `captured_at` dan ditampilkan
+dengan disclaimer "harga per <tanggal>, cek marketplace untuk harga final".
+
+## 2.4 Badge diskon
+Badge diskon HANYA muncul jika salah satu terpenuhi:
+- `price_reference` tersedia dari feed (harga sebelum diskon dari merchant), ATAU
+- harga sekarang ≥ 22% lebih rendah dari median 30 hari di `price_history`.
+
+Kalau `price_history` punya < 7 titik data, badge TIDAK muncul. Tanpa kecuali.
+
+## 2.5 Klaim stok
+DILARANG menampilkan atau mengucapkan klaim stok apa pun: "stok terbatas",
+"tinggal 3", "hampir habis". Kita tidak punya data stok. Validator live
+(`lib/live/validator.ts`) wajib menolak output yang mengandung pola ini.
+
+## 2.6 Data pribadi
+Yang boleh disimpan dari user: email, nomor telepon (opsional), minat kategori.
+Setiap baris di `contacts` wajib punya `lawful_basis` dan `consent_source`
+NOT NULL. User-agent di-hash (SHA-256). IP TIDAK PERNAH disimpan.
+Data bayi (nama, tanggal lahir, berat, kondisi medis) TIDAK PERNAH disimpan —
+registry memakai rentang usia (`age_band`), bukan tanggal lahir.
+
+## 2.7 Secret
+Server-side only, tanpa prefix `NEXT_PUBLIC_`:
+`SUPABASE_SERVICE_ROLE_KEY`, `DATABASE_URL`, `INVOLVE_API_KEY`,
+`INVOLVE_API_SECRET`, `LLM_API_KEY`, `TTS_API_KEY`, `RESEND_API_KEY`,
+`CRON_SECRET`. Test wajib: nol hasil grep `NEXT_PUBLIC_.*(SECRET|SERVICE|KEY)`
+kecuali `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+## 2.8 Tidak ada bypass platform
+DILARANG mengimplementasikan: multi-akun dengan proxy/fingerprint unik,
+scraping komentar via userscript/browser injection, otomasi UI marketplace,
+atau akses API tanpa otorisasi resmi. Semua ini masuk kategori
+"Deceptive Behavior" (Shopee) / "Account Manipulation" (TikTok) dan
+membatalkan komisi. Komentar hanya dibaca via input resmi (§10.5).
+
+## 2.9 Affiliate disclosure
+Setiap halaman yang memuat link affiliate wajib menampilkan disclosure yang
+terlihat tanpa scroll ke footer. Teks di `content/disclosure.md`, dirender
+di komponen `<AffiliateDisclosure />`. Ini syarat program affiliate dan
+UU Perlindungan Konsumen.
+
+---
+
+# 3. Stack & budget
+
+| Layer | Pilihan | Catatan |
+|---|---|---|
+| Framework | Next.js 15, App Router, TypeScript strict | Server Components default |
+| DB | Supabase Postgres | RLS wajib di SEMUA tabel |
+| Auth | Supabase Auth, magic link | Allowlist `ADMIN_EMAIL` |
+| ORM | Drizzle | Migration SQL manual di `openspec/migrations/` |
+| Styling | Tailwind CSS | Token di `lib/design/tokens.ts` |
+| Hosting | Vercel Hobby + Vercel Cron | Batas: 5.000 image transform/bulan |
+| Email | Resend | Domain wajib diverifikasi |
+| LLM | Provider-agnostic, OpenAI-compatible | Lihat §8.4 |
+| TTS | Provider-agnostic | Lihat §8.5 |
+| Feed | Involve Asia Datafeed | Lihat §9 |
+| Test | Vitest | Lihat §12 |
+| Storage | Supabase Storage bucket `tts` | private, signed URL 1 jam |
+
+**DILARANG:** Docker, Redis, chart library (Recharts/Chart.js/D3), UI kit
+(MUI/Chakra/AntD), state manager (Redux/Zustand), ORM lain, SDK vendor LLM.
+
+**Budget:** < Rp 400.000/bulan total. Konsekuensi arsitektural:
+- Gambar produk pakai `unoptimized` (hindari limit transform Vercel).
+- Tidak ada video egress dari server kita (1080p 24 jam ≈ 1,3 TB/bulan ≈
+  $120 di cloud egress — mati sebelum mulai).
+- Chart pakai inline SVG buatan sendiri (sparkline + bar), bukan library.
+
+---
+
+# 4. Struktur repo
+
+```
+app/
+  (public)/
+    page.tsx                    # landing
+    kategori/[slug]/page.tsx
+    produk/[ref]/page.tsx
+    turun-harga/page.tsx        # feed price drop
+    registry/
+      page.tsx                  # buat registry
+      [slug]/page.tsx           # registry publik (share link)
+    bandingkan/page.tsx
+    tentang/page.tsx
+    disclosure/page.tsx
+  admin/
+    layout.tsx                  # shell + auth guard
+    page.tsx                    # overview KPI
+    katalog/page.tsx
+    harga/page.tsx
+    program/page.tsx
+    revenue/page.tsx
+    kontak/page.tsx
+    live/
+      page.tsx                  # console
+      prepare/page.tsx          # pre-warm + estimasi biaya
+      costs/page.tsx
+      sesi/[id]/page.tsx        # replay & audit
+  overlay/
+    [sessionId]/page.tsx        # OBS browser source, 1080x1920
+  go/[subid]/route.ts           # redirector (Involve only)
+  api/
+    cron/
+      ingest-feed/route.ts
+      price-snapshot/route.ts
+      price-alert/route.ts
+      prune-tts-cache/route.ts
+    live/
+      stream/route.ts           # SSE console -> overlay
+      comment/route.ts          # input komentar manual
+      reply/route.ts
+      session/route.ts
+    contact/route.ts
+    registry/route.ts
+lib/
+  compliance/gate.ts
+  feeds/involve.ts
+  catalog/{query.ts,discount.ts,image.ts}
+  llm/client.ts
+  live/{platforms.ts,brain.ts,validator.ts,queue.ts,session.ts,tts.ts,costguard.ts,overlay.ts}
+  attribution/{subid.ts,click.ts}
+  design/tokens.ts
+  db/{schema.ts,client.ts}
+components/
+  catalog/{ProductCard.tsx,ProductImage.tsx,PriceBlock.tsx,PriceSparkline.tsx,DiscountBadge.tsx}
+  ui/{Button.tsx,Input.tsx,Table.tsx,Tabs.tsx,Badge.tsx,Callout.tsx,Stat.tsx}
+  layout/{Header.tsx,Footer.tsx,AffiliateDisclosure.tsx}
+  admin/{Shell.tsx,SideNav.tsx,DataTable.tsx,KpiStrip.tsx}
+  live/{Console.tsx,CommentQueue.tsx,ProductSpotlight.tsx,CostMeter.tsx,StatusPill.tsx}
+  overlay/{OverlayRoot.tsx,PriceCard.tsx,Ticker.tsx,AiLabel.tsx}
+content/
+  disclosure.md
+  tentang.md
+fixtures/
+  involve-sample.json           # DIBUTUHKAN DARI OWNER (blocker B1)
+openspec/
+  migrations/0001..0006.sql
+  changes/
+  questions.md
+```
+
+---
+
+# 5. Environment variables
+
+```
+# --- Supabase ---
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+DATABASE_URL=
+
+# --- Site ---
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ADMIN_EMAIL=
+
+# --- Affiliate (Involve Asia) ---
+INVOLVE_API_KEY=
+INVOLVE_API_SECRET=
+
+# --- LLM (provider-agnostic, OpenAI-compatible) ---
+LLM_BASE_URL=https://openrouter.ai/api/v1
+LLM_API_KEY=
+LLM_MODEL=
+LLM_MODEL_FALLBACK=
+
+# --- TTS (provider-agnostic) ---
+TTS_PROVIDER=
+TTS_API_KEY=
+TTS_VOICE_ID=
+
+# --- Email ---
+RESEND_API_KEY=
+
+# --- Cron ---
+CRON_SECRET=
+```
+
+| Var | Guna |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Endpoint project Supabase, ikut ke browser |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Key publik; keamanan bergantung 100% pada RLS |
+| `SUPABASE_SERVICE_ROLE_KEY` | Key admin, bypass RLS. Server only. Cron & import |
+| `DATABASE_URL` | Postgres connection string, dipakai Drizzle migrate |
+| `NEXT_PUBLIC_SITE_URL` | Base URL untuk `/go/`, canonical, sitemap, link email |
+| `ADMIN_EMAIL` | Allowlist login `/admin` |
+| `INVOLVE_API_KEY/SECRET` | Tarik datafeed produk + report konversi |
+| `LLM_BASE_URL` | Menentukan provider. Ganti ini = ganti vendor |
+| `LLM_API_KEY` | Kredensial provider LLM |
+| `LLM_MODEL` / `_FALLBACK` | Model utama & cadangan saat sesi live |
+| `TTS_PROVIDER/API_KEY/VOICE_ID` | Vendor suara AI host + pilihan voice |
+| `RESEND_API_KEY` | Email opt-in, price alert, registry |
+| `CRON_SECRET` | Bearer token proteksi `/api/cron/*` |
+
+**Wajib untuk Fase A–C:** 4 var Supabase, `NEXT_PUBLIC_SITE_URL`,
+`ADMIN_EMAIL`, `CRON_SECRET`.
+
+**Aturan degraded:** setiap modul yang butuh key kosong WAJIB return 503
+dengan pesan eksplisit. DILARANG crash saat build atau boot.
+
+---
+
+# 6. Design system (anti-slop)
+
+## 6.1 Prinsip
+Referensi rasa: dashboard data / dokumentasi teknis, bukan landing page SaaS
+generik. Empat aturan keras:
+
+1. **Tidak ada gradient.** Background solid. Tidak ada `bg-gradient-*`.
+2. **Tidak ada emoji** di UI, copy, atau seed data.
+3. **Radius maksimal `rounded-lg` (8px).** Tidak ada pill button, tidak ada
+   `rounded-full` kecuali avatar dan status dot.
+4. **Angka pakai monospace + tabular-nums.** Harga, persen, count, currency.
+
+Tambahan: hirarki dibangun dengan **border 1px dan spacing**, bukan shadow.
+Shadow hanya untuk elemen floating (dropdown, modal), satu level saja.
+Tidak ada glassmorphism, tidak ada blob dekoratif, tidak ada ilustrasi 3D.
+
+## 6.2 Token — `lib/design/tokens.ts`
+
+```ts
+export const color = {
+  // surface
+  bg:        '#FFFFFF',
+  bgSubtle:  '#FAFAF9',
+  bgMuted:   '#F4F4F2',
+  // border
+  line:      '#E4E4E1',
+  lineStrong:'#C9C9C4',
+  // text
+  ink:       '#18181B',
+  inkMuted:  '#6B6B6B',
+  inkFaint:  '#9A9A96',
+  // accent tunggal
+  accent:    '#1F5C4A',   // hijau tua, bukan pastel bayi
+  accentInk: '#FFFFFF',
+  accentBg:  '#EDF3F0',
+  // semantik data
+  drop:      '#166534',   // harga turun
+  rise:      '#9A3412',   // harga naik
+  warn:      '#8A6A00',
+  danger:    '#991B1B',
+} as const;
+
+export const radius = { sm: '4px', md: '6px', lg: '8px' } as const;
+
+export const space = [0,4,8,12,16,24,32,48,64,96] as const;
+
+export const font = {
+  sans: 'var(--font-sans)',   // Inter / Geist Sans
+  mono: 'var(--font-mono)',   // Geist Mono / JetBrains Mono
+} as const;
+
+export const type = {
+  display: { size:'34px', lh:'40px', weight:600, tracking:'-0.02em' },
+  h1:      { size:'26px', lh:'32px', weight:600, tracking:'-0.01em' },
+  h2:      { size:'20px', lh:'28px', weight:600 },
+  h3:      { size:'16px', lh:'24px', weight:600 },
+  body:    { size:'15px', lh:'24px', weight:400 },
+  small:   { size:'13px', lh:'20px', weight:400 },
+  micro:   { size:'11px', lh:'16px', weight:500, tracking:'0.04em', upper:true },
+  num:     { family:'mono', variant:'tabular-nums' },
+} as const;
+```
+
+Aturan: DILARANG memakai nilai warna/spacing literal di komponen. Semua
+lewat token. Test wajib: nol hasil grep hex color di `components/**`.
+
+## 6.3 Komponen dasar
+
+**Button** — tiga varian saja. `primary` (bg accent, teks putih),
+`secondary` (bg putih, border `line`), `ghost` (transparan, teks `inkMuted`).
+Tinggi 36px default / 32px kecil. Tidak ada shadow, tidak ada transisi warna
+> 120ms, tidak ada ikon kecuali `secondary` untuk aksi eksternal.
+
+**Table** — inti dari dashboard. Header `micro` uppercase, `inkFaint`,
+border-bottom `lineStrong`. Baris tinggi 40px, border-bottom `line`.
+Kolom angka `text-right` + `font-mono` + `tabular-nums`. Zebra striping
+DILARANG. Hover baris `bgSubtle`. Sort indicator berupa karakter `↑`/`↓`
+teks, bukan ikon SVG.
+
+**Stat** — label `micro` di atas, angka `display` mono di bawah, delta
+`small` mono berwarna `drop`/`rise`. Tanpa card, tanpa border, tanpa ikon.
+Dipisah antar-stat dengan `border-l` `line`.
+
+**Badge** — border 1px, bg transparan atau `bgMuted`, teks `micro`,
+`radius.sm`. Tidak ada bg penuh warna kecuali `DiscountBadge`.
+
+**Callout** — border-left 3px warna semantik, bg `bgSubtle`. Untuk
+disclaimer harga dan disclosure.
+
+## 6.4 Landing page — layout & copy
+
+Urutan section dari atas:
+
+**1. Header** (h 56px, border-b `line`, sticky)
+Wordmark teks kiri (bukan logo grafis). Nav tengah/kanan: Kategori,
+Turun Harga, Registry, Bandingkan. Tidak ada CTA button di header.
+
+**2. Hero** (padding-y 64px, bg `bg`, tanpa gambar besar)
+Struktur: eyebrow `micro` → headline `display` maks 2 baris → subhead
+`body` maks 2 baris → satu baris search input → tiga stat inline.
+
+Copy headline harus menyebut manfaat konkret, DILARANG menyebut "AI",
+DILARANG kata "revolusi/terbaik/nomor 1". Contoh yang benar:
+> eyebrow: `PEMANTAU HARGA KEBUTUHAN BAYI`
+> headline: "Lihat harga diapers dan perlengkapan bayi di 4 marketplace sekaligus."
+> subhead: "Kami catat pergerakan harga tiap 6 jam. Beli saat turun, bukan saat butuh."
+> stat inline: `1.240 produk dipantau` · `4 marketplace` · `update 6 jam`
+
+Angka stat WAJIB dibaca dari DB, bukan hardcode. Kalau DB kosong, section
+stat tidak dirender.
+
+**3. Feed Turun Harga** (bg `bgSubtle`, padding-y 48px)
+Judul `h2` + link "lihat semua". Grid 4 kolom desktop / 2 tablet / 1 mobile.
+Ini section paling penting — taruh di atas kategori.
+
+**4. Kategori** (padding-y 48px)
+Grid 6 kolom. Tiap item: border 1px `line`, `radius.lg`, padding 16px,
+nama kategori `h3`, jumlah produk mono `small` `inkFaint`. Tanpa ikon,
+tanpa gambar.
+
+**5. Registry CTA** (border-y `line`, padding-y 48px, bg `accentBg`)
+Dua kolom: kiri copy + button, kanan preview list registry statis.
+Copy fokus pada "bagikan satu link ke keluarga", bukan pada fitur.
+
+**6. Konten pendukung** (padding-y 48px)
+Maks 3 kartu artikel dari `content_pages`. Judul + excerpt + tanggal mono.
+Tanpa thumbnail.
+
+**7. Email capture** (padding-y 48px, bg `bgSubtle`)
+Satu input email + dropdown minat kategori + checkbox consent eksplisit
+(unchecked default) + button. Teks consent menyebut apa yang dikirim dan
+cara berhenti. Ini yang mengisi `contacts.consent_source`.
+
+**8. Footer** (border-t `line`)
+Empat kolom link + `<AffiliateDisclosure />` + baris copyright mono.
+
+## 6.5 Anatomi Product Card
+
+Urutan vertikal dalam border 1px `radius.lg`, tanpa shadow, hover
+`borderColor: lineStrong`:
+
+1. Area gambar rasio 1:1, bg `bgMuted`. `ProductImage` wajib `unoptimized`,
+   `loading="lazy"`, `referrerPolicy="no-referrer"`.
+   Default `object-contain` (tampilkan produk utuh) — ini keputusan final,
+   karena foto marketplace punya rasio tidak konsisten dan `object-cover`
+   memotong label kemasan yang justru info penting.
+2. Merchant + kategori: `micro` `inkFaint`, satu baris.
+3. Judul: `body`, maks 2 baris, `line-clamp-2`.
+4. `PriceBlock`: harga sekarang `h2` mono. Jika ada, harga referensi
+   `small` mono `inkFaint` strikethrough di sebelahnya.
+5. `DiscountBadge` — hanya jika §2.4 terpenuhi.
+6. `PriceSparkline` — inline SVG 30 hari, tinggi 24px, stroke 1px,
+   warna `drop`/`rise` berdasarkan delta ujung-ke-ujung. Tidak dirender
+   kalau titik data < 7.
+7. Baris timestamp: `micro` `inkFaint`, "harga per <dd MMM, HH:mm>".
+8. Button `primary` full-width: "Lihat di <Merchant>" → `/go/<subid>`,
+   `rel="nofollow sponsored noopener"`, `target="_blank"`.
+
+## 6.6 Admin shell
+
+Sidebar kiri 220px fixed, bg `bgSubtle`, border-r `line`. Nav item tinggi
+32px, teks `small`, active state: bg `bg` + border-l 2px `accent`.
+Tanpa ikon.
+
+Konten: max-width 1280px, padding 24px. Tiap halaman: judul `h1` +
+deskripsi `small` `inkMuted` + `KpiStrip` + isi.
+
+`KpiStrip`: 4–6 `Stat` dalam flex row, dipisah `border-l`. DILARANG
+membungkusnya jadi card terpisah dengan shadow.
+
+Tabel adalah tampilan default untuk semua data. Chart hanya sparkline dan
+horizontal bar, keduanya inline SVG.
+
+Empty state: teks `small` `inkMuted` di dalam area border-dashed `line`,
+plus satu aksi konkret. DILARANG ilustrasi.
+
+## 6.7 Overlay (OBS browser source)
+
+Kanvas **1080×1920**, `background: transparent`, `body { margin:0 }`.
+Safe area: 120px atas (UI platform), 320px bawah (komentar & keranjang
+platform). Semua elemen di dalam 1080×1480 tengah.
+
+Font minimum **32px** — overlay sering di-scale turun ke 720p, di bawah
+32px jadi tidak terbaca. Harga pakai 64px mono bold.
+Kontras: teks selalu di atas panel solid `ink` opacity 0.88, bukan langsung
+di atas video.
+
+Komponen: `PriceCard` (nama produk + harga + badge diskon jika valid),
+`Ticker` (baris bawah, produk yang sedang dibahas), `AiLabel` (wajib
+tampil saat mode AI host aktif, teks "Siaran ini dibantu AI", tidak bisa
+disembunyikan lewat UI).
+
+Update spotlight produk wajib tampil < 1 detik setelah admin klik di console.
+Transisi maks 150ms, hanya opacity/translate. DILARANG animasi looping —
+visual statis berulang adalah pelanggaran ToS TikTok dan penyebab QC gagal
+di Shopee.
+
+## 6.8 Aksesibilitas & responsive
+Kontras teks minimum 4.5:1. Semua interaktif punya `:focus-visible`
+outline 2px `accent`. Breakpoint: 640 / 768 / 1024 / 1280.
+Mobile: grid produk 1 kolom di < 640px, 2 kolom di ≥ 640px.
+Admin di bawah 1024px: sidebar jadi drawer.
+
+---
+
+# 7. Database
+
+Semua tabel WAJIB `enable row level security`. Policy default: deny.
+Publik hanya boleh SELECT dari: `catalog_products` (yang `is_active`),
+`price_history`, `content_pages` (published), `live_sessions` (kolom status
+saja), `registries` (yang `is_public`).
+
+## 7.1 `0001_init.sql`
+`settings(key pk, value, updated_at)`
+`blocked_categories(slug pk, reason, source_regulation, created_at)`
+`contacts(id uuid pk, email, phone, interest_category, lawful_basis not null,
+consent_source not null, consent_at, ua_hash, unsubscribed_at, created_at)`
+`programs(id uuid pk, merchant, network, route, channel_scope text[],
+commission_rate numeric, commission_cap_idr int, cookie_days int,
+payout_terms_days int, min_payout_idr int, payout_frequency, is_active,
+verified_at, notes, created_at)`
+`tracked_links(id uuid pk, subid unique not null, route, channel, program_id fk,
+product_ref, target_url, category_slug, created_at, retired_at)`
+`link_clicks(id bigserial pk, subid fk, ua_hash, referer_host, country,
+device_class, created_at)`
+`conversions(id uuid pk, program_id fk, subid, external_ref, order_at,
+gmv_idr bigint, commission_idr bigint, status, imported_at)`
+`outreach_log(id uuid pk, contact_id fk, kind, sent_at, resend_id, status)`
+`content_pages(id uuid pk, slug unique, title, excerpt, body_md,
+published_at, updated_at)`
+`ingest_runs(id uuid pk, source, started_at, finished_at, rows_in,
+rows_kept, rows_blocked, error_text)`
+
+Constraint penting:
+`programs.route text not null default 'involve' check (route in ('involve','direct'))`
+`tracked_links.channel text not null default 'web' check (channel in ('web','email','social','video','chat','live'))`
+
+## 7.2 `0002_seed.sql`
+4 baris `blocked_categories` (§2.2, dengan `source_regulation` diisi).
+Baris `settings` awal. DILARANG seed produk atau harga palsu.
+
+## 7.3 `0003_catalog.sql`
+`catalog_products(id uuid pk, product_ref unique, merchant, program_id fk,
+title, brand, category_slug not null, image_url, affiliate_url,
+price_current bigint, price_reference bigint, currency default 'IDR',
+unit_size, unit_price_idr bigint, rating numeric, review_count int,
+is_active bool default true, first_seen_at, last_seen_at, search_tsv tsvector)`
+`price_history(id bigserial pk, product_ref fk, price_idr bigint not null,
+price_reference bigint, captured_at not null, source)`
+`reviews(id uuid pk, product_ref fk, source, rating, snippet, captured_at)`
+
+Index: `price_history(product_ref, captured_at desc)`,
+`catalog_products(category_slug, price_current)`,
+GIN pada `search_tsv`.
+
+`unit_price_idr` (harga per pcs/ml/gram) adalah kolom kunci untuk barang
+habis pakai — ini pembanding yang sebenarnya, bukan harga total.
+
+## 7.4 `0004_live.sql`
+`live_sessions(id uuid pk, platform, category_slug, mode, status, subid,
+planned_minutes int, started_at, ended_at, degraded_mode bool default false,
+created_at)`
+`live_events(id bigserial pk, session_id fk, kind, payload jsonb, at)`
+`live_scripts(id uuid pk, category_slug, kind, body, is_active, created_at)`
+`comment_queue(id bigserial pk, session_id fk, raw_text, author_label,
+priority int, status, entered_at, answered_at)`
+`filler_angles(id uuid pk, category_slug, angle_text, weight int,
+last_used_at, is_active)`
+`tts_cache(id uuid pk, ...)` — lihat §7.6
+`personas(id uuid pk, name, style_notes, do_list text[], dont_list text[],
+is_active)`
+
+`live_sessions.mode text not null check (mode in ('second_screen','overlay','ai_host'))`
+`comment_queue.priority`: 1 = harga, 2 = ketersediaan/varian,
+3 = rekomendasi, 5 = pertanyaan umum, 7 = sapaan.
+
+## 7.5 `0005_host_agent.sql`
+Tambah ke `live_sessions`: `idle_fills int default 0`,
+`unique_units int default 0`, `total_units int default 0`.
+`concierge_sessions(id uuid pk, ...)` untuk chat asisten di situs.
+
+## 7.6 `0006_llm_tts.sql`
+
+```sql
+insert into settings (key, value) values
+  ('llm_model_primary',            ''),
+  ('llm_model_fallback',           ''),
+  ('llm_cost_per_1k_input_idr',    '3'),
+  ('llm_cost_per_1k_output_idr',   '12'),
+  ('live_llm_daily_cap_idr',       '15000'),
+  ('tts_cost_per_1k_chars_idr',    '260'),
+  ('live_tts_daily_cap_idr',       '30000'),
+  ('tts_prewarm_required',         'true'),
+  ('tts_chars_per_minute_est',     '750'),
+  ('idle_fill_after_ms',           '4000'),
+  ('loop_guard_window_s',          '120'),
+  ('queue_max',                    '12'),
+  ('max_concurrent_sessions',      '1'),
+  ('discount_min_drop_pct',        '22'),
+  ('price_history_min_points',     '7')
+on conflict (key) do nothing;
+
+alter table tts_cache
+  add column if not exists provider        text not null default '',
+  add column if not exists voice_id        text not null default '',
+  add column if not exists model_version   text not null default '',
+  add column if not exists speed           numeric(3,2) not null default 1.00,
+  add column if not exists cache_key       text,
+  add column if not exists text_normalized text,
+  add column if not exists char_count      int not null default 0,
+  add column if not exists class           text not null default 'filler'
+      check (class in ('greeting','filler','cta','product_static','faq_static')),
+  add column if not exists product_ref     text,
+  add column if not exists storage_path    text,
+  add column if not exists duration_ms     int,
+  add column if not exists hit_count       int not null default 0,
+  add column if not exists last_used_at    timestamptz;
+
+create unique index if not exists tts_cache_key_uq   on tts_cache (cache_key);
+create index        if not exists tts_cache_class_idx on tts_cache (class, product_ref);
+create index        if not exists tts_cache_prune_idx on tts_cache (last_used_at, hit_count);
+
+alter table live_sessions
+  add column if not exists llm_tokens_in       bigint not null default 0,
+  add column if not exists llm_tokens_out      bigint not null default 0,
+  add column if not exists tts_chars_generated bigint not null default 0,
+  add column if not exists tts_chars_served    bigint not null default 0,
+  add column if not exists degraded_reason     text;
+
+alter table live_events
+  add column if not exists source text
+      check (source in ('llm','llm_fallback','cache','filler','template'));
+
+alter table tts_cache enable row level security;
+```
+
+## 7.7 `0007_registry.sql`
+`registries(id uuid pk, owner_contact_id fk, slug unique, title,
+age_band text check (age_band in ('pregnancy','0_6m','6_12m','12_24m')),
+is_public bool default false, created_at)`
+`registry_items(id uuid pk, registry_id fk, product_ref fk, qty_wanted int,
+qty_fulfilled int default 0, note, sort_order)`
+
+DILARANG kolom tanggal lahir, nama bayi, atau berat. Hanya `age_band` (§2.6).
+
+---
+
+# 8. Kontrak modul inti
+
+## 8.1 `lib/compliance/gate.ts`
+
+```ts
+export type ExitRequest = {
+  productRef: string;
+  categorySlug: string;
+  merchant: string;
+  route: 'involve' | 'direct';
+  channel: 'web'|'email'|'social'|'video'|'chat'|'live';
+  affiliateUrl: string;
+};
+export type ExitResult = { subid: string; url: string };
+
+export function assertNotBlocked(categorySlug: string): void;      // throws
+export function assertSingleRoutePerSurface(
+  merchant: string, channel: string, route: 'involve'|'direct'): void; // throws
+export async function buildExit(req: ExitRequest): Promise<ExitResult>;
+export function assertNoStockClaim(text: string): void;             // throws
+export function assertDiscountBasis(
+  current: number, reference: number|null, median30: number|null,
+  points: number): boolean;
+```
+
+`assertSingleRoutePerSurface`: satu merchant DILARANG dipromosikan lewat
+dua route pada channel yang sama (konflik akun affiliate).
+
+## 8.2 `lib/feeds/involve.ts`
+Fungsi `fetchFeed()` → normalisasi ke bentuk `catalog_products`.
+Wajib: drop baris yang `category_slug` ada di `blocked_categories`;
+hitung `unit_size` dan `unit_price_idr` dari judul bila memungkinkan;
+catat hasil ke `ingest_runs`. Idempoten berdasarkan `product_ref`.
+Jika SKU baby care < 500, sistem beralih ke mode katalog kurasi manual
+(flag `settings.curated_mode`).
+
+## 8.3 `lib/attribution/subid.ts`
+Format SubID: `<r>-<channel>-<6char>` dengan `r` = `w` (Involve/web-route)
+atau `d` (direct). Contoh: `w-web-a3f9k2`, `w-live-k91mzq`, `d-vid-p04xzq`.
+`6char` = base32 lowercase, tanpa vokal ambigu.
+`/go/[subid]` HANYA menangani route `involve`. Link direct dilacak di
+dashboard marketplace, bukan lewat redirector kita.
+
+## 8.4 `lib/llm/client.ts`
+Satu implementasi, target `POST {LLM_BASE_URL}/chat/completions`
+(OpenAI-compatible). DILARANG import SDK vendor apa pun.
+
+```ts
+export type LlmMessage = { role:'system'|'user'|'assistant'; content:string };
+export type LlmRequest = {
+  messages: LlmMessage[];
+  maxTokens?: number;   // default 200 — jawaban live harus pendek
+  temperature?: number; // default 0.7
+  timeoutMs?: number;   // default 8000
+  purpose: 'comment_reply'|'script_gen'|'validation'|'filler_gen';
+};
+export type LlmResult =
+  | { ok:true; text:string; tokensIn:number; tokensOut:number;
+      model:string; usedFallback:boolean }
+  | { ok:false; reason:'no_key'|'timeout'|'rate_limit'|'server_error'|'content_filter' };
+
+export async function llm(req: LlmRequest): Promise<LlmResult>;
+export function llmConfigured(): boolean;
+```
+
+`llm()` TIDAK PERNAH throw. Retry 1x ke primary (backoff 500ms), lalu
+fallback ke `LLM_MODEL_FALLBACK`, lalu `{ok:false}`.
+Token usage dicatat ke `live_sessions` oleh caller, bukan adapter.
+
+## 8.5 `lib/live/tts.ts`
+
+```ts
+export type TtsClass = 'greeting'|'filler'|'cta'|'product_static'
+                     |'faq_static'|'comment_reply';
+export type TtsRequest = {
+  text: string; class: TtsClass;
+  productRef?: string;    // wajib jika class='product_static'
+  allowGenerate: boolean; // false = cache-only mode
+};
+export type TtsResult =
+  | { ok:true; audioUrl:string; durationMs:number;
+      source:'cache'|'generated'; charCount:number }
+  | { ok:false; reason:'no_key'|'cache_miss_generate_blocked'|'cap_reached'|'vendor_error' };
+
+export async function speak(req: TtsRequest): Promise<TtsResult>;
+export async function prewarm(categorySlug: string): Promise<PrewarmReport>;
+export function ttsConfigured(): boolean;
+```
+
+**Cache key** = `sha256(provider|voice_id|model_version|speed|normalized_text)`.
+`normalized_text` = trim + collapse whitespace ganda. Casing dan tanda baca
+DIPERTAHANKAN (mempengaruhi prosodi).
+
+`class:'comment_reply'` DILARANG masuk `tts_cache` (unik, hanya menumpuk
+storage). Audio: mp3 mono 64kbps di bucket `tts`, ≈ 8KB per detik.
+
+## 8.6 `lib/live/brain.ts`
+DILARANG mengimpor `lib/live/tts` — pemisahan otak dan mulut.
+Input: komentar dari queue + konteks produk dari retrieval + persona.
+Output: teks jawaban ≤ 300 karakter, sudah lewat validator.
+
+## 8.7 `lib/live/validator.ts`
+Menolak output yang: menyebut harga yang tidak sama dengan `price_current`
+(contoh: `price_current` 89000, output "Rp 85.000" → REJECT); mengandung
+klaim stok; mengandung klaim diskon tanpa basis (§2.4); menyebut kategori
+di `blocked_categories`; menyebut nama platform kompetitor saat live di
+satu platform. Output yang di-reject digantikan filler, bukan diucapkan.
+
+## 8.8 `lib/live/costguard.ts`
+Semua tarif dibaca dari `settings`. DILARANG angka tarif di dalam file `.ts`.
+Saat cap TTS tercapai: sesi TIDAK diputus; beralih ke cache-only; balasan
+unik ditampilkan sebagai teks di overlay tanpa suara;
+`degraded_reason='tts_cap_reached'`.
+
+---
+
+# 9. Affiliate routing (dual-route)
+
+Pemisahan berdasarkan **CHANNEL**, bukan merchant.
+
+| | Involve Asia | Direct (Shopee/Tokopedia) |
+|---|---|---|
+| Datafeed produk | Ada | **Tidak ada** — blocker untuk katalog |
+| Deeplink & attribution | Ada | Manual, rawan hilang atribusi |
+| Payout | Bulanan per campaign | Mingguan (Shopee) |
+| Fitur video/live internal | Tidak | Ya |
+| Cakupan | Ratusan merchant | Per platform |
+
+**Keputusan:** Fase 1–2 memakai **Involve Asia saja**. Alasan tunggal dan
+menentukan: katalog 10.000 SKU dengan sinkronisasi harga 6 jam MUSTAHIL
+tanpa datafeed. Direct tidak punya datafeed.
+
+Direct diaktifkan hanya jika: situs sudah berjalan ≥ 3 bulan, ada lini
+konten video terpisah dengan ≥ 3 posting/minggu selama 2 minggu, dan
+merchant-nya berbeda dari yang dipakai Involve.
+
+`promo_assets(id uuid pk, route, merchant, product_title, product_ref,
+affiliate_url, channel, content_ref, category_slug not null, created_at,
+retired_at)` — untuk aset direct/video, index `(merchant, channel)`.
+
+`revenue_entries(id uuid pk, route, program_id fk, period_start, period_end,
+clicks, orders, gmv_idr, commission_idr, status check('pending','approved',
+'paid','reversed'), imported_from, external_ref, created_at)`
+unique `(route, program_id, period_start, period_end, external_ref)`.
+
+**Diversifikasi:** dashboard memberi peringatan jika > 70% revenue berasal
+dari satu program.
+
+**Koreksi asumsi lama (jangan diulang di copy):** Involve tidak memotong
+komisi di dashboard (angka yang tampil adalah net publisher); tidak ada
+"enkripsi" dalam validasi order — istilah yang benar adalah validasi
+setelah order selesai; jangan tulis klaim komisi "up to 70%" — data uji
+Apr–Mei 2026 menunjukkan 3,58% GMV dan Rp 307 per klik.
+
+---
+
+# 10. Live commerce — Shopee first
+
+## 10.1 Arsitektur
+Kita **tidak** menyiarkan video. Live tetap di marketplace. Sistem kita
+menyediakan: control room di dashboard, overlay yang di-capture OBS di
+komputer lokal, otak agent yang menyusun jawaban, dan validator yang
+menjaga kepatuhan.
+
+Video encoding pakai **OBS di komputer lokal**, bukan di VPS. Alasan:
+OBS butuh GPU dan mati saat sesi RDP diputus; egress video dari cloud
+≈ $120/bulan. OBS dan ffmpeg memakai encoder libx264 yang sama — dengan
+setting identik, kualitas output identik. Kualitas ditentukan bitrate,
+resolusi, fps, dan preset, bukan front-end-nya.
+
+Preset OBS: output 1080×1920 (9:16), bitrate 3000–4000 kbps,
+keyframe interval **2 detik**, fps 30. Blur biasanya berasal dari rasio
+output yang tidak 9:16, keyframe interval kosong, atau font < 32px.
+Setup ffmpeg headless disimpan sebagai opsi masa depan, tidak dikerjakan
+sekarang.
+
+## 10.2 Tiga mode, berurutan
+| Mode | Prasyarat | Status |
+|---|---|---|
+| 1. Second screen | Tidak ada | Bisa sekarang |
+| 2. Overlay OBS | Stream key platform | Bisa sekarang (akun sudah 1k follower) |
+| 3. AI host bersuara | Whitelist Shopee | Kode siap, flag off |
+
+Karena akun sudah ≥ 1.000 follower, **Mode 2 adalah prioritas**. Mode 1
+jadi layout sekunder (tablet). Mode 3 dibangun penuh tapi flag
+`live_ai_host_enabled = false`.
+
+## 10.3 Matriks kapabilitas platform — `lib/live/platforms.ts`
+
+```ts
+export const PLATFORM_CAPS = {
+  shopee: {
+    aiVoiceNarration: true,
+    requiresAiLabel: true,
+    requiresDeclaration: true,
+    requiresWhitelisting: true,
+    officialCommentSource: false,
+    terminateOn: ['low_interaction','video_loop','shared_ai_host'],
+  },
+  tiktok: {
+    aiVoiceNarration: false,          // dilarang sejak 23 Mei 2026
+    requiresAiLabel: false,
+    requiresDeclaration: false,
+    requiresWhitelisting: false,
+    officialCommentSource: false,
+    penaltySystem: 'creator_health_rating',
+  },
+} as const;
+```
+
+TikTok **ditunda** — matriks tetap disimpan, task terkait di-pause.
+Menjalankan AI voice di TikTok menurunkan Creator Health Rating dan bisa
+memblokir akses affiliate. Di TikTok, jalur legal satu-satunya adalah
+host manusia dengan panel bantuan.
+
+## 10.4 Aturan Shopee yang membentuk desain
+- **"No interaction"** = host diam, terlepas dari ada tidaknya penonton.
+  Ini penyebab utama sesi diterminasi. Konsekuensi: agent DILARANG idle.
+  `idle_fill_after_ms = 4000` → lewat 4 detik tanpa ucapan, filler dari
+  `filler_angles` diputar.
+- **Loop audio dilarang.** `loop_guard_window_s = 120` → satu unit ucapan
+  tidak boleh terulang dalam 120 detik. Console menampilkan rasio
+  `unique_units / total_units`; di bawah 0,6 muncul peringatan.
+- **AI label wajib terlihat**, tidak bisa disembunyikan lewat UI.
+- **AI Declaration Form + whitelist KAM** (1–2 hari) wajib sebelum AI host.
+- Lipsync ≤ 200ms (relevan hanya jika nanti pakai avatar).
+- Satu AI host DILARANG dipakai lintas akun.
+
+## 10.5 Sumber komentar
+Tidak ada API komentar publik yang bisa dipakai sekarang. Komentar masuk
+lewat **input manual di console** (admin/operator mengetik atau
+menempelkan komentar) atau lewat Livestream OpenAPI kalau otorisasi
+affiliate streamer nanti disetujui. DILARANG scraping (§2.8).
+
+## 10.6 Comment queue
+`queue_max = 12`. Prioritas: harga=1, ketersediaan/varian=2, rekomendasi=3,
+umum=5, sapaan=7. Diproses berurutan per prioritas lalu FIFO.
+Target latensi jawaban ≤ 5 detik. Rate limit 5 pertanyaan/menit.
+Panjang jawaban maks 300 karakter. Antrean penuh → item prioritas 7
+di-drop lebih dulu.
+
+## 10.7 Sesi
+`max_concurrent_sessions = 1`. Satu sesi = satu `category_slug`
+(spesialisasi kategori dilakukan lewat **penjadwalan segmen**, bukan
+multi-akun: misal Senin diapers, Rabu pakaian, Jumat mainan).
+SubID sesi: `w-live-<6char>`.
+
+---
+
+# 11. Fase & task
+
+## Fase A — Fondasi
+- **A1** Bootstrap Next.js 15 + TS strict + Tailwind + Vitest. `.env.example`.
+- **A2** Migration 0001–0002 + Drizzle schema + client. RLS aktif semua tabel.
+- **A3** Supabase Auth magic link + guard `/admin` dengan allowlist `ADMIN_EMAIL`.
+- **A4** `lib/design/tokens.ts` + komponen `ui/*` (§6.3). Storybook TIDAK dipakai;
+  buat halaman `/admin/tokens` sebagai katalog visual internal.
+- **A5** `lib/compliance/gate.ts` + 12 test (§12).
+
+**Acceptance A:** deploy Vercel hijau, `/admin` menolak email non-allowlist,
+`npm test` lulus, grep test §2.1 dan §2.7 bersih.
+
+## Fase B — Katalog
+- **B1** `lib/feeds/involve.ts` + normalisasi. **BLOCKER:**
+  `fixtures/involve-sample.json` dari owner.
+- **B2** Cron `ingest-feed` (proteksi `CRON_SECRET`) + `ingest_runs`.
+- **B3** Migration 0003 + `lib/catalog/query.ts` + full-text search.
+- **B4** Cron `price-snapshot` tiap 6 jam → `price_history`.
+- **B5** `lib/catalog/discount.ts` (§2.4) + `PriceSparkline` inline SVG.
+- **B6** `components/catalog/*` sesuai §6.5. `next.config.ts` `remotePatterns`
+  diisi dari host CDN yang ditemukan di fixture (verifikasi, jangan tebak).
+
+**Acceptance B:** ingest fixture menghasilkan baris `catalog_products`,
+0 baris kategori terblokir, badge diskon tidak muncul saat data < 7 titik.
+
+## Fase C — Publik & dashboard
+- **C1** Landing page §6.4 (stat dari DB, tanpa hardcode).
+- **C2** Halaman kategori, produk, turun-harga, bandingkan.
+- **C3** `/go/[subid]` + `link_clicks` + `lib/attribution/*`.
+- **C4** Admin: overview, katalog, harga, program, revenue (import CSV),
+  kontak. Semua tabel, chart hanya sparkline/bar SVG.
+- **C5** Email capture + Resend + double opt-in + unsubscribe.
+
+**Acceptance C:** klik produk tercatat dengan SubID benar, redirect < 300ms,
+Lighthouse mobile ≥ 90 performance, disclosure tampil di semua halaman
+berlink.
+
+## Fase D — Live control room
+- **D1** Migration 0004–0006.
+- **D2** `lib/live/platforms.ts` + `retrieval` + `validator` + test.
+- **D3** SSE `api/live/stream` console → overlay.
+- **D4** `/overlay/[sessionId]` sesuai §6.7. Harga langsung dari
+  `catalog_products`/`price_history`, tanpa input manual.
+- **D5** Console desktop: spotlight produk, comment queue, status pill,
+  cost meter, linter kepatuhan (peringatan sebutan platform / klaim stok).
+- **D6** `lib/live/queue.ts` + prioritas + rate limit.
+- **D7** `lib/live/brain.ts` via `lib/llm/client.ts` (§8.4, §8.6).
+- **D8** Idle filler + loop guard + indikator `unique/total` di console.
+- **D9** `lib/live/tts.ts` + cache + Storage (§8.5).
+- **D10** `prewarm()` + `/admin/live/prepare` (progress + estimasi Rp).
+- **D11** `lib/live/costguard.ts` + mode cache-only + `degraded_reason`.
+- **D12** `/admin/live/costs`: biaya per sesi, cache hit rate, biaya per
+  balasan, tren 30 hari.
+- **D13** Cron `prune-tts-cache`.
+- **D14** Layout tablet (Mode 1, second screen) — prioritas rendah.
+- **D15** Flag `live_ai_host_enabled` + gate tiga setting Shopee
+  (`shopee_ai_declaration_ref`, `shopee_ai_whitelist_confirmed_at`,
+  `shopee_pc_stream_access_at`). Kode lengkap, flag off.
+
+**Acceptance D:** sesi bisa jalan tanpa `TTS_API_KEY` (mode teleprompter,
+teks saja); agent tidak pernah idle > 4 detik; validator menolak harga
+yang tidak match; cap tercapai tidak memutus sesi.
+
+## Fase E — Registry
+- **E1** Migration 0007 (tanpa data bayi, §2.6).
+- **E2** Buat/edit registry + slug publik + share link.
+- **E3** Halaman registry publik: daftar item, tandai sudah dibeli
+  (tanpa login, token per item).
+- **E4** KPI registry di dashboard: registry dibuat, item ditambah, share
+  diklik, email terkumpul.
+
+**Acceptance E:** registry publik bisa dibuka tanpa login, tidak ada field
+data bayi, item terhubung ke `/go/<subid>` dengan channel `web`.
+
+## Patch R11 (sudah termasuk di atas)
+R11.1 = D7 adapter · R11.2 refactor bebas SDK vendor · R11.3 = D1 ·
+R11.4 = D9 · R11.5 = D10 · R11.6 = D11 · R11.7 = D8 indikator ·
+R11.8 = D13 · R11.9 = D12.
+
+---
+
+# 12. Test wajib (Vitest)
+
+**Compliance (12):**
+1. `assertNotBlocked('infant_formula')` throw.
+2. Ingest fixture berisi kategori terblokir → baris di-drop, `rows_blocked` naik.
+3. `buildExit` menolak kategori terblokir.
+4. `assertSingleRoutePerSurface` throw untuk merchant sama, channel sama, route beda.
+5. `assertNoStockClaim('stok terbatas')` throw.
+6. Badge diskon false saat `price_history` < 7 titik.
+7. Badge diskon false saat drop 15% tanpa `price_reference`.
+8. Badge diskon true saat drop 25% dengan ≥ 7 titik.
+9. `contacts` insert tanpa `lawful_basis` gagal di level DB.
+10. Grep: nol `href` langsung ke domain marketplace di luar `lib/compliance/`.
+11. Grep: nol `NEXT_PUBLIC_` pada nama secret.
+12. Grep: nol hex color literal di `components/**`.
+
+**LLM & TTS (12):**
+13. `llm()` return `{ok:false,reason:'no_key'}` saat env kosong, tidak throw.
+14. Primary 500 → fallback dipakai, `usedFallback === true`.
+15. Primary + fallback gagal → filler dipilih, `degraded_mode === true`.
+16. Cache key beda saat `voice_id` berubah, teks sama.
+17. Cache key sama untuk whitespace ganda vs tunggal.
+18. Cache key beda untuk `"Harga 89rb"` vs `"harga 89rb"`.
+19. `class:'comment_reply'` tidak pernah menulis baris `tts_cache`.
+20. Cap tercapai + `allowGenerate:false` → `cache_miss_generate_blocked`,
+    sesi tetap `running`.
+21. Costguard baca tarif dari settings; ubah settings → estimasi berubah
+    tanpa rebuild.
+22. Prune tidak pernah menghapus class `filler`/`greeting`/`cta`.
+23. `brain.ts` tidak mengimpor `lib/live/tts` (assert via analisis import).
+24. Prewarm gagal → sesi tidak bisa start saat `tts_prewarm_required=true`.
+
+**Live (6):**
+25. Validator reject "Rp 85.000" saat `price_current`=89000.
+26. Queue penuh → prioritas 7 di-drop lebih dulu.
+27. Loop guard menolak unit yang sama dalam 120 detik.
+28. Idle > 4 detik → event filler tercatat dengan `source='filler'`.
+29. Overlay merender font ≥ 32px (assert computed style).
+30. SubID live cocok pola `^w-live-[a-z2-7]{6}$`.
+
+---
+
+# 13. Model biaya (untuk kalibrasi, bukan janji)
+
+Asumsi: host bicara ≈ 750 karakter/menit. Sesi 2 jam ≈ 90.000 karakter.
+
+**LLM:** 1 balasan ≈ 800 token input + 120 token output. 400 balasan/sesi
+≈ 320k in + 48k out. Di kelas model "flash/mini" jatuhnya ≈ Rp 2.000–5.000
+per sesi. Aman di bawah cap 15.000.
+
+**TTS:** ini pos yang berbahaya. Tanpa cache, 90k karakter di harga vendor
+premium = Rp 75.000–150.000 **per sesi**. Vendor kelas menengah ≈ Rp 23.000.
+Dengan target cache hit ≥ 55%, karakter ter-generate turun ke ≈ 40.000/sesi.
+
+Karena itu: cache WAJIB, pre-warm adalah **blocker start sesi**, dan cap
+dinaikkan ke Rp 30.000/hari.
+
+Dua alasan pre-warm dijadikan blocker: biaya, dan jeda 1–2 detik per
+kalimat kalau TTS di-generate on-demand di tengah live — jeda itulah yang
+membuat suara terdengar seperti AI, bukan kualitas voice-nya.
+
+Alasan cap tercapai tidak memutus sesi: di Shopee, "no interaction" adalah
+penyebab utama terminasi. Sesi mati di tengah jalan lebih mahal daripada
+beberapa balasan yang hanya muncul sebagai teks.
+
+---
+
+# 14. Yang dibutuhkan dari owner
+
+**Blocker (Fase B tidak bisa mulai tanpa ini):**
+1. `fixtures/involve-sample.json` — ± 10 baris asli dari datafeed Involve.
+   Menentukan adapter B1, cron B2, dan host CDN di `next.config.ts`.
+
+**Perlu diisi sebelum Fase D selesai:**
+2. `TTS_PROVIDER` + `TTS_API_KEY` + `TTS_VOICE_ID`.
+3. Tarif TTS aktual per 1.000 karakter dalam Rupiah → isi
+   `settings.tts_cost_per_1k_chars_idr`. Default `260` hanya placeholder.
+4. Tarif LLM aktual per 1k input/output → `settings.llm_cost_per_1k_*`.
+   Harga dan nama model kelas flash berubah cepat; cek halaman pricing
+   provider, jangan pakai angka di dokumen ini.
+5. Baris `programs`: rate aktual per offer, `commission_cap_idr`
+   (Tokopedia diketahui punya cap per transaksi), `cookie_days`,
+   `payout_terms_days`, `min_payout_idr`, `payout_frequency`.
+   Cek Dashboard Involve > Payment/Withdrawal — angka MYR 80/$20 yang
+   beredar di internet adalah untuk program referral, bukan payout publisher.
+
+**Untuk Mode 3 (AI host):**
+6. `settings.shopee_ai_declaration_ref` — nomor/ref AI Declaration Form.
+7. `settings.shopee_ai_whitelist_confirmed_at` — tanggal konfirmasi KAM.
+8. `settings.shopee_pc_stream_access_at` — akses PC streaming.
+
+**Verifikasi lapangan:**
+9. Jumlah SKU baby care di feed. Jika < 500, aktifkan mode katalog kurasi.
+10. Tes deeplink mobile: pastikan SubID terbaca saat link dibuka dari
+    browser HP ke aplikasi marketplace.
+11. Cache hit rate setelah 3 sesi pertama. Target ≥ 55%. Di bawah 40%
+    berarti persona terlalu banyak improvisasi — perbesar porsi
+    `filler_angles` dan `product_static`.
+12. Validasi konsep registry ke 5–10 ibu (satu pertanyaan, via grup WA)
+    sebelum Fase E dikerjakan.
+
+---
+
+# 15. Riwayat patch
+
+| Rev | Isi |
+|---|---|
+| R7 | Katalog, price history, compliance gate, image handling |
+| R8 | Dual-route affiliate (channel-based), promo_assets, revenue_entries |
+| R9 | Pivot positioning: pembanding harga barang habis pakai + registry; "AI" turun dari headline |
+| R10 | Shopee-first, TikTok ditunda; agent never-idle; loop guard; overlay jadi deliverable utama; self-hosted live room dihapus |
+| R11 | LLM & TTS provider-agnostic (Anthropic dihapus); tts_cache wajib; pre-warm jadi blocker; cap TTS 10.000 → 30.000; tarif pindah ke settings |
+
+## Fakta yang sudah diverifikasi (jangan diriset ulang)
+- TikTok Shop melarang AI voice sebagai narasi utama di LIVE promosi
+  (berlaku 23 Mei 2026); avatar boleh < 50% frame; pelanggaran menurunkan
+  Creator Health Rating dan bisa memblokir akses affiliate.
+- Shopee Live mengizinkan AI livestream dengan AI Declaration, whitelist KAM,
+  label AI terlihat, dan lolos QC.
+- Shopee "no interaction" = host diam, terlepas jumlah penonton.
+- Shopee Livestream OpenAPI mensyaratkan developer membagikan auth link ke
+  seller **atau affiliate streamer** — jalur affiliate terbuka, perlu
+  konfirmasi lanjutan.
+- Shopee Live PC/OBS: butuh toko aktif 30 hari, live ≥ 1 jam/sesi dalam 14
+  hari terakhir, dan ≥ 25 order/hari dari livestream dalam 30 hari terakhir.
+- Involve Asia menyediakan datafeed + Conversions API; Shopee dan Tokopedia
+  direct tidak menyediakan datafeed.
+- Repo `bOOOOcG/live-stream-chat-ai-agent` adalah **viewer bot**, AGPL-3.0,
+  berbasis userscript — tidak bisa dipakai (lisensi + ToS + bukan host).
+- Vercel Hobby: batas 5.000 image transformation/bulan → gambar produk
+  `unoptimized`.
+- OBS dan ffmpeg memakai encoder libx264 yang sama; kualitas identik pada
+  setting identik.
+
+## Yang BELUM terverifikasi (jangan diklaim di kode atau copy)
+- ToS AI livestream Shopee versi **Indonesia** (sumber yang dibaca versi PH).
+- Jalur whitelisting AI untuk **affiliate** (bukan seller) di Shopee ID.
+- Dukungan RTMP/stream key TikTok pada akun 1k follower (cek LIVE Studio).
+- Status "Add products to LIVE" di Creator/Seller Center.
+- Biaya TTS dan LLM aktual dalam Rupiah.
